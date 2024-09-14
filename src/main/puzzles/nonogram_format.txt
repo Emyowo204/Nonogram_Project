@@ -1,0 +1,8 @@
+[Columns] [Rows]
+0 1 0 1 0 1 0 1 0 1 ... (Column times)
+1 0 1 0 1 0 1 0 1 0 ...
+.
+.
+.
+(Row times)
+...
