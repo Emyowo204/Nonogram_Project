@@ -5,8 +5,8 @@ class Cuadrilla:
             self.board = []
             self.__loadCuadrilla(name)
         else:
-            self.r = rows
             self.c = columns
+            self.r = rows
             self.board = []
             self._cleanBoard()
 
@@ -20,8 +20,11 @@ class Cuadrilla:
     def getBoard(self):
         return self.board
 
-    def setCell(self, r, c, value):
-        self.board[r][c]=value
+    def getSize(self):
+        return [self.c,self.r]
+
+    def setCell(self, c, r, value):
+        self.board[c][r]=value
 
     def __loadCuadrilla(self,name):
         archivo = open(f'../puzzles/{name}','r')
@@ -35,6 +38,19 @@ class Cuadrilla:
                 index = i*self.r+j
                 self.board[i][j] = int(textos[index])
 
+    def checkDifference(self,cuadrilla):
+        matrix = cuadrilla.getBoard()
+        mSize = cuadrilla.getSize()
+        if self.c != mSize[0] or self.r != mSize[1]:
+            print("Size missmatch")
+        else:
+            output = []
+            for c in range(self.c):
+                output.append([])
+                for r in range(self.r):
+                    output[c].append(1 if(self.board[c][r]!=matrix[c][r]) else 0)
+            return output
+
 
 
     def print(self):
@@ -42,8 +58,4 @@ class Cuadrilla:
             for j in range(self.r):
                 print(self.board[i][j], end=" ")
             print()
-
-
-c = Cuadrilla(None,None,'test.txt')
-c.print()
 

@@ -1,5 +1,5 @@
-from src.main.classes.Cuadrilla import Cuadrilla
-from src.main.classes.BoardEnum import BoardEnum
+from src.main.classes.models.Cuadrilla import Cuadrilla
+from src.main.classes.models.BoardEnum import BoardEnum
 
 class Partida:
 
