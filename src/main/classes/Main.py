@@ -1,6 +1,9 @@
-from src.main.classes.models import Juego
+from src.main.classes.visuals import Juego
 
 
-class Main:
-    def __init__(self):
-        juego = Juego()
+def main():
+    Juego.Juego().start()
+
+
+if __name__ == '__main__':
+    main()
