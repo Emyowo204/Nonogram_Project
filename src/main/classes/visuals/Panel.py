@@ -10,6 +10,10 @@ class Panel(Componente):
         self.surface.fill((255,0,0)) #Rojo
         self.container = []
 
+    def setPos(self,x,y):
+        self.x = x
+        self.y = y
+
     def add(self, component):
         self.container.append(component)
 
