@@ -2,7 +2,6 @@ import pygame
 
 from src.main.classes.visuals.Panel import Panel
 
-
 class PanelCuadrilla(Panel):
     def __init__(self,cuadrilla,x,y,width,height):
         self.size = cuadrilla.getSize()
