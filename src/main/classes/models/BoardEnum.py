@@ -1,9 +1,9 @@
-import enum
+from enum import Enum
 
-class BoardEnum:
-    def __init__(enum):
-        EASY = {"test.txt"}
-        MEDIUM = {}
-        HARD = {}
+class BoardEnum(Enum):
+        EASY = ["test.txt"]
+        MEDIUM = []
+        HARD = []
+        TEST = ["test.txt"]
 
 

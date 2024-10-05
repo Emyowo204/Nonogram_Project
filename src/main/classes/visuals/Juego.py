@@ -1,6 +1,7 @@
 import pygame
 
 from src.main.classes.models.Cuadrilla import Cuadrilla
+from src.main.classes.models.Partida import Partida
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelCuadrilla import PanelCuadrilla
@@ -9,6 +10,11 @@ from src.main.classes.visuals.Musica import Musica
 
 
 class Juego:
+    def __init__(self):
+        self.panelActual = None
+        self.musica = None
+        self.partida = None
+
     def start(self):
         pygame.init()
         pygame.mixer.init()
@@ -22,8 +28,9 @@ class Juego:
         window = pygame.display.set_mode((window_size,window_size))
         clock = pygame.time.Clock()
 
-        cuadrilla = Cuadrilla(None, None, 'test.txt')
-        self.panelCuadrilla = PanelCuadrilla(cuadrilla, 26, 26, 300, 300)
+        self.partida = Partida(26,26,300,630,'TEST',0)
+
+
         ## self.panelOpciones = PanelOpciones(self.musica, 0, 0, window_size, window_size)
 
         self.mostrarPanelCuadrilla()
@@ -37,7 +44,8 @@ class Juego:
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    self.panelCuadrilla.handle_click(event.pos)
+                    self.partida.handleClick(event.pos)
+                    self.partida.checkResult()
                 #elif event.type == pygame.MOUSEBUTTONDOWN:
                 #    if botonOpciones.collidepoint(event.pos): # presiona boton
                 #        self.mostrarPanelOpciones()
@@ -58,7 +66,7 @@ class Juego:
         pygame.quit()
 
     def mostrarPanelCuadrilla(self):
-        self.panelActual = self.panelCuadrilla
+        self.panelActual = self.partida
         # self.musica.cambiarMusica("src/main/sounds/cuadrillamusica.wav")
         # self.musica.play()
 
