@@ -24,10 +24,10 @@ class PanelOpciones(Panel):
                 nuevoVolumen = (self.slider.x - (self.x +50)) / 200
                 self.musica.setVolumen(nuevoVolumen)
 
-    def draw(self, destSurface):
-        destSurface.fill((0,0,0,)) # panel en negro por mientras
+    def draw(self, dest_surface):
+        dest_surface.fill((0, 0, 0,)) # panel en negro por mientras
 
-        pygame.draw.rect(destSurface, (100, 100, 100), (self.x + 50, self.y + 50, 200, 20))  # fondo slider
-        pygame.draw.rect(destSurface, (255, 0, 0), self.slider)  # el rectangulito del slide
+        pygame.draw.rect(dest_surface, (100, 100, 100), (self.x + 50, self.y + 50, 200, 20))  # fondo slider
+        pygame.draw.rect(dest_surface, (255, 0, 0), self.slider)  # el rectangulito del slide
 
         # añadir texto o indicador de volumen actual

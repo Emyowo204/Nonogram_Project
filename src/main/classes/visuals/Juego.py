@@ -12,6 +12,8 @@ class Juego:
     def start(self):
         pygame.init()
         pygame.mixer.init()
+        program_icon = ImageLoader().getIcon()
+        pygame.display.set_icon(program_icon)
         self.musica = Musica("../../sounds/cuadrillamusica.wav")
         self.panelActual = None
         grid_size = 10
@@ -34,7 +36,9 @@ class Juego:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                # elif event.type == pygame.MOUSEBUTTONDOWN:
+                elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.panelCuadrilla.handle_click(event.pos)
+                #elif event.type == pygame.MOUSEBUTTONDOWN:
                 #    if botonOpciones.collidepoint(event.pos): # presiona boton
                 #        self.mostrarPanelOpciones()
                 # elif event.type == pygame.MOUSEMOTION:
