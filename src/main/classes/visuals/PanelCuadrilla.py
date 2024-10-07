@@ -17,12 +17,12 @@ class PanelCuadrilla(Panel):
                 self.board[col][row] = not self.board[col][row]
 
     def draw(self, dest_surface):
-
+        super().draw(dest_surface)
         for row in range(self.size[0]):
             for col in range(self.size[1]):
                 color = (128,128,128)
                 if self.board[col][row] == 0:
-                    color = (0, 0, 0)
+                    color = (30, 30, 30)
                 elif self.board[col][row] == 1:
                     color = (255, 255, 255)
                 elif self.board[col][row] == -1:
