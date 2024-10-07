@@ -2,6 +2,7 @@ import pygame
 import os
 
 class Musica:
+
     def __init__(self, archivo, volumen = 0.5):
         self.archivo = archivo
         self.volumen = volumen
@@ -25,4 +26,6 @@ class Musica:
 
     def cambiarMusica(self, nuevoArchivo):
         self.stop()
+        self.archivo = None
         self.archivo = nuevoArchivo
+        self.play()
