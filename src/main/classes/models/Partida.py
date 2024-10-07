@@ -1,3 +1,5 @@
+import pygame
+
 from src.main.classes.models.Cuadrilla import Cuadrilla
 from src.main.classes.models.BoardEnum import BoardEnum
 from src.main.classes.visuals.Panel import Panel
@@ -11,18 +13,24 @@ class Partida(Panel):
         super().__init__(x,y,width,height)
         self.vidas = 5
         self.errores = 0
+        self.setColor(0,100,0)
         self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum[game_difficulty].value[game_index])
-        self.panelResultado = PanelCuadrilla(self.cuadrilla_resultado, x, y+330, 300, 300)
+        self.panelResultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300, 300)
         self.size = self.cuadrilla_resultado.getSize()
+        self.panelResultado.setColor(0,0,0)
         self.cuadrilla_jugador = Cuadrilla(self.size[0],self.size[1],None)
-        self.panelJugador = PanelCuadrilla(self.cuadrilla_jugador, x, y, 300, 300)
+        self.panelJugador = PanelCuadrilla(self.cuadrilla_jugador, 0, 0, 300, 300)
+        self.panelJugador.setColor(0,0,0)
 
 
     def handleClick(self,pos):
-        self.panelJugador.handleClick(pos)
+        self.panelJugador.handleClick((pos[0]-self.x,pos[1]-self.y))
 
     def loseLife(self):
         self.vidas = 5 - self.errores
+        if self.vidas <= 0:
+            self.vidas = 0
+            print(f'PERDISTE')
         print(f'tienes {self.vidas} vidas')
 
     def checkResult(self):
@@ -38,6 +46,8 @@ class Partida(Panel):
             self.loseLife()
 
     def draw(self,dest_surface):
-        self.panelResultado.draw(dest_surface)
-        self.panelJugador.draw(dest_surface)
+        super().draw(dest_surface)
+        self.panelResultado.draw(self.surface)
+        self.panelJugador.draw(self.surface)
+        dest_surface.blit(self.surface, (self.x, self.y))
 
