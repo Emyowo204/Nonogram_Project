@@ -10,16 +10,12 @@ class PanelOpciones(Panel):
         self.slideando = False
 
     def evento(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.slider.collidepoint(event.pos):
-                self.slideando = True
-
+        if event.type == pygame.MOUSEBUTTONDOWN and self.slider.collidepoint(event.pos):
+            self.slideando = True
         elif event.type == pygame.MOUSEBUTTONUP:
             self.slideando = False
-
-        ##elif event.type == pygame.MOUSEMOTION:
-        ##    if self.slideando:
-        ##        self.slider.x = max(self.x+50, min(event.pos[0], self.x+250))
+        elif event.type == pygame.MOUSEMOTION and self.slideando:
+            self.slider.x = max(self.x+50, min(event.pos[0], self.x+250))
         ##        nuevoVolumen = (self.slider.x - (self.x +50)) / 200
         ##        self.juego.getMusica.setVolumen(nuevoVolumen)
 

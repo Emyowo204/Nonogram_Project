@@ -4,6 +4,7 @@ from src.main.classes.models.Partida import Partida
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
+from src.main.classes.visuals.PanelMenu import PanelMenu
 from src.main.classes.visuals.Musica import Musica
 
 
@@ -42,20 +43,17 @@ class Juego:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if botonOpciones.collidepoint(event.pos):  # presiona boton
-
-                        if self.panelActual == self.partida:
-                            self.mostrarPanelOpciones()
-                        elif self.panelActual == self.panelOpciones:
-                            self.mostrarPanelCuadrilla()
-
-                if self.panelActual == self.partida:
-                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                elif self.panelActual == self.partida:
+                    if event.type == pygame.MOUSEBUTTONDOWN and botonOpciones.collidepoint(event.pos):
+                        self.mostrarPanelOpciones()
+                    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         self.partida.handleClick(event.pos)
                         self.partida.checkAssumtion(event.pos)
                 elif self.panelActual == self.panelOpciones:
-                    self.panelActual.evento(event)  # si es panel opciones, usa la funcion evento para administrar los eventos de este
+                    if event.type == pygame.MOUSEBUTTONDOWN and botonOpciones.collidepoint(event.pos):
+                        self.mostrarPanelCuadrilla()
+                    elif self.panelActual == self.panelOpciones:
+                        self.panelActual.evento(event)  # si es panel opciones, usa la funcion evento para administrar los eventos de este
 
             panel = Panel(0,0,25,25)
             image = ImageLoader().getImage()
@@ -70,6 +68,9 @@ class Juego:
 
         pygame.quit()
 
+    def mostrarPanelMenu(self):
+        self.panelActual = self.panelMenu
+        self.musica.cambiarMusica(None)
     def mostrarPanelCuadrilla(self):
         self.panelActual = self.partida
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
@@ -77,5 +78,6 @@ class Juego:
     def mostrarPanelOpciones(self):
         self.panelActual = self.panelOpciones
         self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
+
     def getMusica(self):
         return self.musica
