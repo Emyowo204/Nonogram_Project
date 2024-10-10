@@ -25,4 +25,6 @@ class Musica:
 
     def cambiarMusica(self, nuevoArchivo):
         self.stop()
+        self.archivo = None
         self.archivo = nuevoArchivo
+        self.play()

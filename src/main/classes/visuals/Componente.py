@@ -1,6 +1,3 @@
-
-
-
 class Componente:
     def __init__(self, x, y, width, height):
         self.image = None
@@ -21,4 +18,5 @@ class Componente:
         self.h = height
 
     def draw(self, surface):
-        surface.blit(self.image, (self.x, self.y))
+        if(self.image!=None):
+            surface.blit(self.image, (self.x, self.y))
