@@ -1,10 +1,8 @@
 import pygame
 
-from src.main.classes.models.Cuadrilla import Cuadrilla
 from src.main.classes.models.Partida import Partida
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
-from src.main.classes.visuals.PanelCuadrilla import PanelCuadrilla
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
 from src.main.classes.visuals.Musica import Musica
 
@@ -28,30 +26,35 @@ class Juego:
         window = pygame.display.set_mode((window_size,window_size))
         clock = pygame.time.Clock()
 
-        self.partida = Partida(26,26,300,630,'TEST',0)
+        self.partida = Partida(26,26,400,630,'TEST',0)
 
 
         self.panelOpciones = PanelOpciones( 0, 0, window_size, window_size, self)
 
         self.mostrarPanelCuadrilla()
 
-        botonOpcionesSurface = pygame.Surface((100,50))
+        botonOpcionesSurface = pygame.Surface((100, 50))
         botonOpciones = pygame.Rect(600, 650, 100, 50)
 
         running = True
         while running:
-            deltatime =  clock.tick(60)/1000
+            deltatime = clock.tick(60) / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if botonOpciones.collidepoint(event.pos):  # presiona boton
-                        self.mostrarPanelOpciones()
-                if isinstance(self.panelActual, PanelCuadrilla):
+
+                        if self.panelActual == self.partida:
+                            self.mostrarPanelOpciones()
+                        elif self.panelActual == self.panelOpciones:
+                            self.mostrarPanelCuadrilla()
+
+                if self.panelActual == self.partida:
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         self.partida.handleClick(event.pos)
-                        self.partida.checkResult()
-                elif isinstance(self.panelActual, PanelOpciones):
+                        self.partida.checkAssumtion(event.pos)
+                elif self.panelActual == self.panelOpciones:
                     self.panelActual.evento(event)  # si es panel opciones, usa la funcion evento para administrar los eventos de este
 
             panel = Panel(0,0,25,25)
@@ -60,6 +63,7 @@ class Juego:
 
             window.fill((0,0,0))
             self.panelActual.draw(window)
+
             # panel.draw(window)
             pygame.draw.rect(window, (0, 255, 0), botonOpciones)
             pygame.display.flip()
@@ -73,7 +77,5 @@ class Juego:
     def mostrarPanelOpciones(self):
         self.panelActual = self.panelOpciones
         self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
-
     def getMusica(self):
         return self.musica
-

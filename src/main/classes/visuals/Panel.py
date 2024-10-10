@@ -9,6 +9,7 @@ class Panel(Componente):
         self.green = 0
         self.blue = 0
         self.surface = pygame.Surface((width,height))
+        self.surface.fill((self.red,self.green,self.blue))
         self.container = []
 
     def setPos(self,x,y):
@@ -22,10 +23,11 @@ class Panel(Componente):
         self.red = red
         self.green = green
         self.blue = blue
+        self.surface.fill((self.red, self.green, self.blue))
 
     def draw(self, dest_surface): #desSurface es una superficie a la cual se va a dibujar, ejemplo de uso dibujar a pantalla(surface)
-        self.surface.fill((self.red, self.green, self.blue))
         for component in self.container:
-            component.draw(dest_surface)
-        #super().draw(self.surface)
+            component.draw(self.surface)
         dest_surface.blit(self.surface, (self.x, self.y))
+        if (self.image != None):
+            super().draw(dest_surface)

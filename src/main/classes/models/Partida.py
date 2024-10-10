@@ -4,6 +4,7 @@ from src.main.classes.models.Cuadrilla import Cuadrilla
 from src.main.classes.models.BoardEnum import BoardEnum
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelCuadrilla import PanelCuadrilla
+from src.main.classes.visuals.PanelNumeros import PanelNumeros
 
 
 class Partida(Panel):
@@ -15,39 +16,39 @@ class Partida(Panel):
         self.errores = 0
         self.setColor(0,100,0)
         self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum[game_difficulty].value[game_index])
-        self.panelResultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300, 300)
+        self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, x, y + 330, 300, 300)
+
         self.size = self.cuadrilla_resultado.getSize()
         self.panelResultado.setColor(0,0,0)
         self.cuadrilla_jugador = Cuadrilla(self.size[0],self.size[1],None)
-        self.panelJugador = PanelCuadrilla(self.cuadrilla_jugador, 0, 0, 300, 300)
-        self.panelJugador.setColor(0,0,0)
+        self.panel_jugador = PanelCuadrilla(self.cuadrilla_jugador, x+40, y, 300, 300)
 
+
+        self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'rows',x,y,30,300)
+
+    def getSize(self):
+        return self.size
 
     def handleClick(self,pos):
-        self.panelJugador.handleClick((pos[0]-self.x,pos[1]-self.y))
+        self.panel_jugador.handleClick(pos)
 
     def loseLife(self):
-        self.vidas = 5 - self.errores
-        if self.vidas <= 0:
-            self.vidas = 0
-            print(f'PERDISTE')
+        self.vidas -= 1
+
         print(f'tienes {self.vidas} vidas')
 
-    def checkResult(self):
-        diferencia = self.cuadrilla_resultado.checkDifference(self.cuadrilla_jugador)
-        self.errores = 0
-        for col in range(self.size[0]):
-            for row in range(self.size[1]):
-                if diferencia[col][row] == 1 and self.cuadrilla_jugador.board[col][row] != 0:
-                    self.errores +=1
-
-                    self.cuadrilla_jugador.setCell(col,row,-1)
-        if self.errores>0:
-            self.loseLife()
+    def checkAssumtion(self,pos):
+        col, row = self.panel_jugador.positionClick(pos)
+        jugador_cell = self.cuadrilla_jugador.checkCell(col,row)
+        resultado_cell = self.cuadrilla_resultado.checkCell(col,row)
+        if col != -1 and row != -1:
+            if  jugador_cell!=resultado_cell :
+                if(jugador_cell!=-1):
+                    self.loseLife()
+                self.cuadrilla_jugador.setCell(col, row, -1)
 
     def draw(self,dest_surface):
         super().draw(dest_surface)
-        self.panelResultado.draw(self.surface)
-        self.panelJugador.draw(self.surface)
-        dest_surface.blit(self.surface, (self.x, self.y))
-
+        self.panel_resultado.draw(dest_surface)
+        self.panel_jugador.draw(dest_surface)
+        self.panel_colnums.draw(dest_surface)
