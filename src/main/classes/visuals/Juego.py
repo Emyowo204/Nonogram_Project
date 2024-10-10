@@ -27,12 +27,13 @@ class Juego:
         window = pygame.display.set_mode((window_size,window_size))
         clock = pygame.time.Clock()
 
-        self.partida = Partida(26,26,400,630,'TEST',0)
+        self.panelMenu = PanelMenu(0,0, window_size, window_size)
 
+        self.partida = Partida(26,26,400,630,'TEST',0)
 
         self.panelOpciones = PanelOpciones( 0, 0, window_size, window_size, self)
 
-        self.mostrarPanelCuadrilla()
+        self.mostrarPanelMenu()
 
         botonOpcionesSurface = pygame.Surface((100, 50))
         botonOpciones = pygame.Rect(600, 650, 100, 50)
@@ -71,6 +72,7 @@ class Juego:
     def mostrarPanelMenu(self):
         self.panelActual = self.panelMenu
         self.musica.cambiarMusica(None)
+
     def mostrarPanelCuadrilla(self):
         self.panelActual = self.partida
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
