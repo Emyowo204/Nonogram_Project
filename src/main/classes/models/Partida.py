@@ -1,3 +1,5 @@
+import pygame
+
 from src.main.classes.models.Cuadrilla import Cuadrilla
 from src.main.classes.models.BoardEnum import BoardEnum
 from src.main.classes.visuals.Panel import Panel
@@ -12,11 +14,15 @@ class Partida(Panel):
         super().__init__(x,y,width,height)
         self.vidas = 5
         self.errores = 0
+        self.setColor(0,100,0)
         self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum[game_difficulty].value[game_index])
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, x, y + 330, 300, 300)
+
         self.size = self.cuadrilla_resultado.getSize()
+        self.panelResultado.setColor(0,0,0)
         self.cuadrilla_jugador = Cuadrilla(self.size[0],self.size[1],None)
         self.panel_jugador = PanelCuadrilla(self.cuadrilla_jugador, x+40, y, 300, 300)
+
 
         self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'rows',x,y,30,300)
 
@@ -28,6 +34,7 @@ class Partida(Panel):
 
     def loseLife(self):
         self.vidas -= 1
+
         print(f'tienes {self.vidas} vidas')
 
     def checkAssumtion(self,pos):
@@ -41,7 +48,7 @@ class Partida(Panel):
                 self.cuadrilla_jugador.setCell(col, row, -1)
 
     def draw(self,dest_surface):
+        super().draw(dest_surface)
         self.panel_resultado.draw(dest_surface)
         self.panel_jugador.draw(dest_surface)
         self.panel_colnums.draw(dest_surface)
-

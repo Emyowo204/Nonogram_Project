@@ -44,6 +44,7 @@ class Juego:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if botonOpciones.collidepoint(event.pos):  # presiona boton
+
                         if self.panelActual == self.partida:
                             self.mostrarPanelOpciones()
                         elif self.panelActual == self.panelOpciones:
