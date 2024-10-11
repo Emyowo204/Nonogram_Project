@@ -41,10 +41,9 @@ class Cuadrilla:
         self.c = int (textos.pop(0))
         self.r = int (textos.pop(0))
         self._cleanBoard()
-        for i in range(self.c):
-            for j in range(self.r):
-                index = i*self.r+j
-                self.board[i][j] = int(textos[index])
+        for i in range(self.r):
+            for j in range(self.c):
+                self.board[j][i] = int(textos.pop(0))
 
     def checkDifference(self,cuadrilla):
         matrix = cuadrilla.getBoard()

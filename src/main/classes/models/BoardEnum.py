@@ -4,6 +4,6 @@ class BoardEnum(Enum):
         EASY = ["test.txt"]
         MEDIUM = []
         HARD = []
-        TEST = ["test.txt"]
+        TEST = ["test.txt","test2.txt"]
 
 
