@@ -1,7 +1,6 @@
 import pygame
-from pygame import MOUSEBUTTONDOWN
 
-from src.main.classes.models.Partida import Partida
+from src.main.classes.visuals.Partida import Partida
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
@@ -72,7 +71,6 @@ class Juego:
             window.fill((255,255,255))
             self.panelActual.draw(window)
 
-            # panel.draw(window)
             pygame.draw.rect(window, (0, 255, 0), botonOpciones)
             pygame.display.flip()
 

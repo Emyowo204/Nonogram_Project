@@ -22,7 +22,8 @@ class Partida(Panel):
         self.panel_resultado.setColor(0,0,0)
         self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], None)
         self.panel_jugador = PanelCuadrilla(self.cuadrilla_jugador, 0, 0, 300)
-        self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'rows',x,y,30,300)
+        self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'columns',0,0,300,300)
+        self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 300)
 
     def getSize(self):
         return self.board_size
@@ -70,4 +71,5 @@ class Partida(Panel):
         super().draw(dest_surface)
         self.panel_resultado.draw(self.surface)
         self.panel_jugador.draw(self.surface)
-        #self.panel_colnums.draw(self.surface)
+        self.panel_colnums.draw(self.surface)
+        self.panel_rownums.draw(self.surface)

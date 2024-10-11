@@ -34,7 +34,7 @@ class PanelCuadrilla(Panel):
         self.w = size
         self.h = size
         self.surface = pygame.Surface((self.w,self.h))
-        #self.surface.fill((self.red, self.green, self.blue))
+        self.surface.fill((self.red, self.green, self.blue))
         if self.size[0] > self.size[1]:
             self.cell_size = size / self.size[0]
         else:
