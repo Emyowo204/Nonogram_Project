@@ -14,7 +14,7 @@ class Partida(Panel):
         super().__init__(x,y,width,height)
         self.vidas = 5
         self.errores = 0
-        self.setColor(0,100,0)
+        self.setColor(240,240,240)
         self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum[game_difficulty].value[game_index])
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300)
 
@@ -22,8 +22,8 @@ class Partida(Panel):
         self.panel_resultado.setColor(0,0,0)
         self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], None)
         self.panel_jugador = PanelCuadrilla(self.cuadrilla_jugador, 0, 0, 300)
-        self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'columns',0,0,300,300)
-        self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 300)
+        self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'columns',0,0,700,300)
+        self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 700)
 
     def getSize(self):
         return self.board_size
@@ -36,8 +36,11 @@ class Partida(Panel):
 
     def loseLife(self):
         self.vidas -= 1
-
-        print(f'tienes {self.vidas} vidas')
+        if self.vidas <= 0 :
+            self.vidas = 0
+            print(f'PERDISTE')
+        else :
+            print(f'tienes {self.vidas} vidas')
 
     def checkAssumtion(self,pos):
         col, row = self.panel_jugador.positionClick(self.getBoardPosition(pos))
@@ -63,13 +66,18 @@ class Partida(Panel):
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
 
+        self.panel_colnums.setSize(self.w,self.h/10)
+        self.panel_colnums.setPos(0,0+self.h/7)
+        self.panel_colnums.fitPanel(self.board_size[0],self.panel_jugador.getCellSize())
+
+        self.panel_jugador.setPos(0,self.h/4)
         self.panel_jugador.fitWindow(self.w)
-        self.panel_resultado.setPos(0,self.h/2)
-        self.panel_resultado.fitWindow(self.w)
+        self.panel_resultado.setPos(self.w/2,self.h*3/4)
+        self.panel_resultado.fitWindow(self.w/2)
 
     def draw(self,dest_surface):
         super().draw(dest_surface)
         self.panel_resultado.draw(self.surface)
         self.panel_jugador.draw(self.surface)
         self.panel_colnums.draw(self.surface)
-        self.panel_rownums.draw(self.surface)
+        #self.panel_rownums.draw(self.surface)

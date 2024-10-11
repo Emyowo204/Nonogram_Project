@@ -30,6 +30,9 @@ class PanelCuadrilla(Panel):
     def getSize(self):
         return self.board.getSize()
 
+    def getCellSize(self):
+        return self.cell_size
+
     def fitWindow(self,size):
         self.w = size
         self.h = size
