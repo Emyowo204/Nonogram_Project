@@ -19,7 +19,7 @@ class Partida(Panel):
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, x, y + 330, 300, 300)
 
         self.size = self.cuadrilla_resultado.getSize()
-        self.panelResultado.setColor(0,0,0)
+        self.panel_resultado.setColor(0,0,0)
         self.cuadrilla_jugador = Cuadrilla(self.size[0],self.size[1],None)
         self.panel_jugador = PanelCuadrilla(self.cuadrilla_jugador, x+40, y, 300, 300)
 
