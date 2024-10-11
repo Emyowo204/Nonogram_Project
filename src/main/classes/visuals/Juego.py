@@ -13,6 +13,8 @@ class Juego:
         self.panelActual = None
         self.musica = None
         self.partida = None
+        self.panelOpciones = None
+        self.panelMenu = None
 
     def start(self):
         pygame.init()
@@ -20,20 +22,19 @@ class Juego:
         program_icon = ImageLoader().getIcon()
         pygame.display.set_icon(program_icon)
         self.musica = Musica("../../sounds/opcionesmusica.wav")
-        self.panelActual = None
         grid_size = 10
         cell_size = 30
         window_size = 720
-        window = pygame.display.set_mode((window_size,window_size))
+        self.window = pygame.display.set_mode((window_size,window_size))
         clock = pygame.time.Clock()
 
-        self.panelMenu = PanelMenu(0,0, window_size, window_size)
+        ##self.panelMenu = PanelMenu(0,0, window_size, window_size, self)
 
         self.partida = Partida(26,26,400,630,'TEST',0)
 
         self.panelOpciones = PanelOpciones( 0, 0, window_size, window_size, self)
 
-        self.mostrarPanelMenu()
+        self.mostrarPanelCuadrilla()
 
         botonOpcionesSurface = pygame.Surface((100, 50))
         botonOpciones = pygame.Rect(600, 650, 100, 50)
@@ -44,6 +45,8 @@ class Juego:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                elif self.panelActual == self.panelMenu:
+                    self.panelActual.evento(event)
                 elif self.panelActual == self.partida:
                     if event.type == pygame.MOUSEBUTTONDOWN and botonOpciones.collidepoint(event.pos):
                         self.mostrarPanelOpciones()
@@ -60,11 +63,11 @@ class Juego:
             image = ImageLoader().getImage()
             panel.setImage(image)
 
-            window.fill((0,0,0))
-            self.panelActual.draw(window)
+            self.window.fill((0,0,0))
+            self.panelActual.draw(self.window)
 
             # panel.draw(window)
-            pygame.draw.rect(window, (0, 255, 0), botonOpciones)
+            pygame.draw.rect(self.window, (0, 255, 0), botonOpciones)
             pygame.display.flip()
 
         pygame.quit()
@@ -83,3 +86,6 @@ class Juego:
 
     def getMusica(self):
         return self.musica
+
+    def getWindow(self):
+        return self.window
