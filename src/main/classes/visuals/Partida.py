@@ -15,7 +15,7 @@ class Partida(Panel):
         self.vidas = 5
         self.errores = 0
         self.setColor(240,240,240)
-        self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum[game_difficulty].value[game_index])
+        self.cuadrilla_resultado = Cuadrilla(None, None, "image.txt")
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300)
 
         self.board_size = self.cuadrilla_resultado.getSize()
