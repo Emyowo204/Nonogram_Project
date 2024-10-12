@@ -8,8 +8,7 @@ class PanelNumeros(Panel):
         self.numbers = numbers
         self.font = pygame.font.Font(None,18)
         self.mode = mode
-        self.spacingSameGroup = 150
-        self.spacingDiftGroup = 50
+        self.spacing = [0,0]
         self.halfCell = 0
 
     def drawNumbers(self,mode):
@@ -17,14 +16,20 @@ class PanelNumeros(Panel):
             for j in range(len(self.numbers[i])):
                 text_surface = self.font.render(str(self.numbers[i][j]), False, (255, 255, 255))  # White color
                 if self.mode== 'columns':
-                    self.surface.blit(text_surface, (+self.halfCell+i*2/3 * self.spacingDiftGroup, j/10 * self.spacingSameGroup))
+                    self.surface.blit(text_surface, (self.halfCell+i * self.spacing[0], j/10 * self.spacing[1]))
                 elif mode== 'rows':
-                    self.surface.blit(text_surface, (j/10 * self.spacingSameGroup, i*2/3 * self.spacingDiftGroup))
+                    self.surface.blit(text_surface, (j/10 * self.spacing[1], self.halfCell+i * self.spacing[0]))
 
-    def fitPanel(self,numCells,sizeCell):
+    def fitPanel(self,numCells):
         self.surface = pygame.Surface((self.w,self.h))
-        self.spacingDiftGroup = (self.w*3/2)/numCells
-        self.halfCell = sizeCell*4/10
+        if self.mode == 'columns':
+            self.halfCell = (self.w*4/10) / numCells
+            self.spacing[0] = self.w / numCells
+            self.spacing[1] = self.w*5 / numCells
+        elif self.mode == 'rows':
+            self.halfCell = (self.h*3/10) / numCells
+            self.spacing[0] = self.h / numCells
+            self.spacing[1] = self.h*5 / numCells
         self.font = pygame.font.Font(None, 18)
 
     def draw(self, dest_surface):
