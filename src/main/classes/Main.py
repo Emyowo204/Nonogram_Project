@@ -7,5 +7,5 @@ def main():
 
 
 if __name__ == '__main__':
-    Image2Nonogram.convertImg("../../images_to_convert/benitowb.png",50,50)
+    Image2Nonogram.convertImg("../../images_to_convert/red.png",20,20)
     main()
