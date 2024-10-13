@@ -14,8 +14,10 @@ class Partida(Panel):
         super().__init__(x,y,width,height)
         self.vidas = 5
         self.errores = 0
-        self.setColor(240,240,240)
+
+        self.setColor(255,255,255)
         self.cuadrilla_resultado = Cuadrilla(None, None, "image.txt")
+
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300)
 
         self.board_size = self.cuadrilla_resultado.getSize()
@@ -54,11 +56,11 @@ class Partida(Panel):
 
     def fitWindow(self, w, h):
         if w < h:
-            self.w = w / 2
+            self.w = w * 2/3
             self.h = w
         else:
             self.h = h
-            self.w = h / 2
+            self.w = h * 2/3
 
         self.x = (w - self.w) / 2
         self.y = (h - self.h) / 2
@@ -66,18 +68,22 @@ class Partida(Panel):
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
 
-        self.panel_colnums.setSize(self.w,self.h/10)
-        self.panel_colnums.setPos(0,0+self.h/7)
-        self.panel_colnums.fitPanel(self.board_size[0],self.panel_jugador.getCellSize())
+        self.panel_colnums.setSize(self.w*3/4, self.h/6)
+        self.panel_colnums.fitPanel(self.board_size[0])
+        self.panel_colnums.setPos(self.w*1/4, self.h/12)
+        self.panel_rownums.setSize(self.w*1/4, self.h/2)
+        self.panel_rownums.fitPanel(self.board_size[1])
+        self.panel_rownums.setPos(0, self.h*2/8)
 
-        self.panel_jugador.setPos(0,self.h/4)
-        self.panel_jugador.fitWindow(self.w)
-        self.panel_resultado.setPos(self.w/2,self.h*3/4)
-        self.panel_resultado.fitWindow(self.w/2)
+        self.panel_jugador.fitWindow(self.w*3/4)
+        self.panel_jugador.setPos(self.w/4, self.h/4)
+        self.panel_resultado.fitWindow(self.w/4)
+        self.panel_resultado.setPos(0, self.h/12)
+
 
     def draw(self,dest_surface):
         super().draw(dest_surface)
         self.panel_resultado.draw(self.surface)
         self.panel_jugador.draw(self.surface)
         self.panel_colnums.draw(self.surface)
-        #self.panel_rownums.draw(self.surface)
+        self.panel_rownums.draw(self.surface)
