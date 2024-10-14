@@ -15,10 +15,11 @@ class PanelOpciones(Panel):
         self.sliderMaxX = x + 250
         self.sliderBackWidth = 250 # barra fondo
         self.sliderBackHeight = 20 # barra fondo
-
+        volumenInicial = 0.5
+        self.slider.x = int(self.sliderMinX + (self.sliderMaxX - self.sliderMinX) * volumenInicial)
         self.normalImage = pygame.image.load('../images/botonNormal.png')
         self.shadedImage = pygame.image.load('../images/botonShaded.png')
-        self.botonVolver = BotonRect(300, 300, 40, 40, self.normalImage, self.shadedImage, self.juego.mostrarPanelCuadrilla)
+        self.botonVolver = BotonRect(300, 300, 40, 40, self.normalImage, self.shadedImage, self.juego.mostrarPanelMenu)
 
     def evento(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and self.slider.collidepoint(event.pos):
@@ -31,8 +32,6 @@ class PanelOpciones(Panel):
         nuevoVolumen = (self.slider.x - (self.x +50)) / 200
         self.juego.getMusica().setVolumen(nuevoVolumen)
 
-        self.botonVolver.evento(event)
-
     def draw(self, dest_surface):
         dest_surface.fill((0, 0, 0,)) # panel en negro por mientras
         self.botonVolver.draw(self.juego.getWindow())
@@ -43,8 +42,7 @@ class PanelOpciones(Panel):
 
         pygame.draw.rect(dest_surface, (255, 0, 0), self.slider)  # dibujo thumb
 
+        # texto prueba
         font = pygame.font.Font(None, 24)
-        volumen_texto = font.render(f"Volumen: {int(self.juego.getMusica().getVolumen() * 100)}%", True,
-                                    (255, 255, 255))
-        dest_surface.blit(volumen_texto, (self.sliderMinX, self.y + 100))
-        # añadir texto o indicador de volumen actual
+        volumenTexto = font.render(f"Volumen: {int(self.juego.getMusica().getVolumen() * 100)}%", True, (255, 255, 255))
+        dest_surface.blit(volumenTexto, (self.sliderMinX, self.y + 100))

@@ -28,16 +28,13 @@ class Juego:
         self.window = pygame.display.set_mode((self.window_size, self.window_size))
         clock = pygame.time.Clock()
 
-        ##self.panelMenu = PanelMenu(0,0, window_size, window_size, self)
+        self.panelMenu = PanelMenu(0,0, self.window_size, self.window_size, self)
 
         self.partida = Partida(26,26,400,630,'TEST',0)
 
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size, self.window_size, self)
 
-        self.mostrarPanelCuadrilla()
-
-        botonOpcionesSurface = pygame.Surface((100, 50))
-        botonOpciones = pygame.Rect(600, 650, 100, 50)
+        self.mostrarPanelMenu()
 
         running = True
         while running:
@@ -48,16 +45,11 @@ class Juego:
                 elif self.panelActual == self.panelMenu:
                     self.panelActual.evento(event)
                 elif self.panelActual == self.partida:
-                    if event.type == pygame.MOUSEBUTTONDOWN and botonOpciones.collidepoint(event.pos):
-                        self.mostrarPanelOpciones()
-                    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         self.partida.handleClick(event.pos)
                         self.partida.checkAssumtion(event.pos)
                 elif self.panelActual == self.panelOpciones:
-                    if event.type == pygame.MOUSEBUTTONDOWN and botonOpciones.collidepoint(event.pos):
-                        self.mostrarPanelCuadrilla()
-                    elif self.panelActual == self.panelOpciones:
-                        self.panelActual.evento(event)  # si es panel opciones, usa la funcion evento para administrar los eventos de este
+                    self.panelActual.evento(event)  # si es panel opciones, usa la funcion evento para administrar los eventos de este
 
             panel = Panel(0,0,25,25)
             image = ImageLoader().getImage()
@@ -67,7 +59,6 @@ class Juego:
             self.panelActual.draw(self.window)
 
             # panel.draw(window)
-            pygame.draw.rect(self.window, (0, 255, 0), botonOpciones)
             pygame.display.flip()
 
         pygame.quit()
