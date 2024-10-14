@@ -24,15 +24,15 @@ class Juego:
         self.musica = Musica("../../sounds/opcionesmusica.wav")
         grid_size = 10
         cell_size = 30
-        window_size = 720
-        self.window = pygame.display.set_mode((window_size,window_size))
+        self.window_size = 720
+        self.window = pygame.display.set_mode((self.window_size, self.window_size))
         clock = pygame.time.Clock()
 
         ##self.panelMenu = PanelMenu(0,0, window_size, window_size, self)
 
         self.partida = Partida(26,26,400,630,'TEST',0)
 
-        self.panelOpciones = PanelOpciones( 0, 0, window_size, window_size, self)
+        self.panelOpciones = PanelOpciones( 0, 0, self.window_size, self.window_size, self)
 
         self.mostrarPanelCuadrilla()
 
@@ -89,3 +89,6 @@ class Juego:
 
     def getWindow(self):
         return self.window
+
+    def getWindowSize(self):
+        return self.window_size
