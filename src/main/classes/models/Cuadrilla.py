@@ -1,19 +1,16 @@
 import os
 class Cuadrilla:
 
-    def __init__(self, rows=None, columns=None, name = None):
+    def __init__(self, columns=None, rows=None, name = None):
+        self.col_nums = []
+        self.row_nums = []
+        self.board = []
         if name:
-            self.col_nums = []
-            self.row_nums = []
-            self.board = []
             self.__loadCuadrilla(name)
             self.discoverNums()
         else:
-            self.col_nums = []
-            self.row_nums = []
             self.c = columns
             self.r = rows
-            self.board = []
             self._cleanBoard()
 
 

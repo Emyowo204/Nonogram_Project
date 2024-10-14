@@ -10,6 +10,7 @@ class PanelNumeros(Panel):
         self.mode = mode
         self.spacing = [0,0]
         self.halfCell = 0
+        self.max_lenght = len(max(numbers, key=len))
 
     def drawNumbers(self,mode):
         for i in range(len(self.numbers)):
@@ -23,14 +24,14 @@ class PanelNumeros(Panel):
     def fitPanel(self,numCells):
         self.surface = pygame.Surface((self.w,self.h))
         if self.mode == 'columns':
-            self.halfCell = (self.w*4/10) / numCells
+            self.halfCell = (self.w*3/10) / numCells
             self.spacing[0] = self.w / numCells
-            self.spacing[1] = self.w*5 / numCells
+            self.spacing[1] = self.h*10 / self.max_lenght
         elif self.mode == 'rows':
             self.halfCell = (self.h*3/10) / numCells
             self.spacing[0] = self.h / numCells
-            self.spacing[1] = self.h*5 / numCells
-        self.font = pygame.font.Font(None, 18)
+            self.spacing[1] = self.w*10 / self.max_lenght
+        self.font = pygame.font.Font(None, int(self.halfCell)*3)
 
     def draw(self, dest_surface):
         self.drawNumbers(self.mode)
