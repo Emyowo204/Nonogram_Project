@@ -9,13 +9,13 @@ class Musica:
         self.play()
 
     def play(self):
+        if self.archivo == None:
+            pygame.mixer.music.stop()
+            return
         fulldirectory = os.path.join(os.path.dirname(__file__), self.archivo)
         pygame.mixer.music.load(fulldirectory)
         pygame.mixer.music.set_volume(self.volumen)
         pygame.mixer.music.play(-1)  # -1 = loop
-
-    def stop(self):
-        pygame.mixer.music.stop()
 
     def setVolumen(self, nuevoVolumen):
         self.volumen = nuevoVolumen
@@ -25,7 +25,6 @@ class Musica:
         return self.volumen
 
     def cambiarMusica(self, nuevoArchivo):
-        self.stop()
-        self.archivo = None
+        pygame.mixer.music.stop()
         self.archivo = nuevoArchivo
         self.play()
