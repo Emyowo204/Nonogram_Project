@@ -7,13 +7,10 @@ from src.main.classes.visuals.PanelCuadrilla import PanelCuadrilla
 from src.main.classes.visuals.PanelNumeros import PanelNumeros
 
 
-class Partida(Panel):
-
+class PanelNonograma(Panel):
 
     def __init__(self, x, y, width, height, game_difficulty, game_index):
         super().__init__(x,y,width,height)
-        self.vidas = 5
-        self.errores = 0
 
         self.setColor(0,0,0)
         self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum[game_difficulty].value[game_index])
@@ -36,23 +33,17 @@ class Partida(Panel):
     def handleClick(self,pos):
         self.panel_jugador.handleClick(self.getBoardPosition(pos))
 
-    def loseLife(self):
-        self.vidas -= 1
-        if self.vidas <= 0 :
-            self.vidas = 0
-            print(f'PERDISTE')
-        else :
-            print(f'tienes {self.vidas} vidas')
-
     def checkAssumtion(self,pos):
+        result = 0
         col, row = self.panel_jugador.positionClick(self.getBoardPosition(pos))
         jugador_cell = self.cuadrilla_jugador.checkCell(col,row)
         resultado_cell = self.cuadrilla_resultado.checkCell(col,row)
         if col != -1 and row != -1:
             if  jugador_cell!=resultado_cell :
                 if jugador_cell!=-1:
-                    self.loseLife()
+                    result = 1
                 self.cuadrilla_jugador.setCell(col, row, -1)
+        return result
 
     def fitWindow(self, w, h):
         if w < h:
@@ -87,3 +78,4 @@ class Partida(Panel):
         self.panel_resultado.draw(self.surface)
         self.panel_colnums.draw(self.surface)
         self.panel_rownums.draw(self.surface)
+

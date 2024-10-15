@@ -1,6 +1,6 @@
 import pygame
 
-from src.main.classes.visuals.Partida import Partida
+from src.main.classes.visuals.PanelPartida import PanelPartida
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
@@ -29,7 +29,7 @@ class Juego:
 
         clock = pygame.time.Clock()
         self.panelMenu = PanelMenu(0,0, self.window_size, self.window_size, self)
-        self.partida = Partida(0, 0,600,630,"IMAGE",0)
+        self.partida = PanelPartida(0, 0,self.window_size,self.window_size,"TEST",1)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size, self.window_size, self)
         self.mostrarPanelMenu()
 
@@ -52,13 +52,9 @@ class Juego:
                     if resizing:
                         resizing=False
 
-
-
-
                 if self.panelActual == self.partida:
                   if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         self.partida.handleClick(event.pos)
-                        self.partida.checkAssumtion(event.pos)
                 elif self.panelActual == self.panelMenu:
                     self.panelActual.evento(event)
                 elif self.panelActual == self.panelOpciones:

@@ -15,11 +15,11 @@ class PanelNumeros(Panel):
     def drawNumbers(self,mode):
         for i in range(len(self.numbers)):
             for j in range(len(self.numbers[i])):
-                text_surface = self.font.render(str(self.numbers[i][j]), False, (255, 255, 255))  # White color
+                text_surface = self.font.render(str(self.numbers[i][len(self.numbers[i])-1-j]), False, (255, 255, 255))  # White color
                 if self.mode== 'columns':
-                    self.surface.blit(text_surface, (self.halfCell+i * self.spacing[0], j/10 * self.spacing[1]))
+                    self.surface.blit(text_surface, (self.halfCell+i * self.spacing[0], (self.max_lenght-1-j)/10 * self.spacing[1]))
                 elif mode== 'rows':
-                    self.surface.blit(text_surface, (j/10 * self.spacing[1], self.halfCell+i * self.spacing[0]))
+                    self.surface.blit(text_surface, ((self.max_lenght-1-j)/10 * self.spacing[1], self.halfCell+i * self.spacing[0]))
 
     def fitPanel(self,numCells):
         self.surface = pygame.Surface((self.w,self.h))
