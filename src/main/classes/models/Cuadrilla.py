@@ -1,19 +1,16 @@
 import os
 class Cuadrilla:
 
-    def __init__(self, rows=None, columns=None, name = None):
+    def __init__(self, columns=None, rows=None, name = None):
+        self.col_nums = []
+        self.row_nums = []
+        self.board = []
         if name:
-            self.col_nums = []
-            self.row_nums = []
-            self.board = []
             self.__loadCuadrilla(name)
             self.discoverNums()
         else:
-            self.col_nums = []
-            self.row_nums = []
             self.c = columns
             self.r = rows
-            self.board = []
             self._cleanBoard()
 
 
@@ -41,10 +38,9 @@ class Cuadrilla:
         self.c = int (textos.pop(0))
         self.r = int (textos.pop(0))
         self._cleanBoard()
-        for i in range(self.c):
-            for j in range(self.r):
-                index = i*self.r+j
-                self.board[i][j] = int(textos[index])
+        for i in range(self.r):
+            for j in range(self.c):
+                self.board[j][i] = int(textos.pop(0))
 
     def checkDifference(self,cuadrilla):
         matrix = cuadrilla.getBoard()
@@ -95,8 +91,8 @@ class Cuadrilla:
         return self.board[column][row]
 
     def print(self):
-        for i in range(self.c):
-            for j in range(self.r):
-                print(self.board[i][j], end=" ")
+        for i in range(self.r):
+            for j in range(self.c):
+                print(self.board[j][i], end=" ")
             print()
 

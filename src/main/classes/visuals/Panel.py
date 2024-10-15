@@ -26,8 +26,8 @@ class Panel(Componente):
         self.surface.fill((self.red, self.green, self.blue))
 
     def draw(self, dest_surface): #desSurface es una superficie a la cual se va a dibujar, ejemplo de uso dibujar a pantalla(surface)
+        if (self.image != None):
+            super().draw(dest_surface)
         for component in self.container:
             component.draw(self.surface)
         dest_surface.blit(self.surface, (self.x, self.y))
-        if (self.image != None):
-            super().draw(dest_surface)
