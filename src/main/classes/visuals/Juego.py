@@ -22,7 +22,7 @@ class Juego:
         self.musica = Musica("../../sounds/opcionesmusica.wav")
         self.panelActual = None
         clock = pygame.time.Clock()
-        self.partida = Partida(0, 0,600,630,"TEST",1)
+        self.partida = Partida(0, 0,600,630,"IMAGE",0)
         self.panelOpciones = PanelOpciones( 0, 0, window_size, window_size, self)
 
         self.mostrarPanelCuadrilla()

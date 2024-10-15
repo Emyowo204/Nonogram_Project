@@ -23,7 +23,7 @@ class PanelCuadrilla(Panel):
     def handleClick(self, pos):
         col,row = self.positionClick(pos)
         if col != -1 and row != -1:
-            if 0 <= row < len(self.board) and 0 <= col < len(self.board[row]):
+            if 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
                 if self.board[col][row] != -1 and self.board[col][row] != 1:
                     self.board[col][row] = not self.board[col][row]
 
@@ -47,12 +47,13 @@ class PanelCuadrilla(Panel):
 
         for col in range(self.size[0]):
             for row in range(self.size[1]):
+                cell =self.board[col][row]
                 color = (128, 128, 128)
-                if self.board[col][row] == 0:
+                if cell == 0:
                     color = (30, 30, 30)
-                elif self.board[col][row] == 1:
+                elif cell == 1:
                     color = (255, 255, 255)
-                elif self.board[col][row] == -1:
+                elif cell == -1:
                     color = (255, 0, 0)
                 pygame.draw.rect(self.surface, color, (col * self.cell_size , row * self.cell_size, self.cell_size - 2, self.cell_size - 2))
         super().draw(dest_surface)

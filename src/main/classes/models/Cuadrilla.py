@@ -91,8 +91,8 @@ class Cuadrilla:
         return self.board[column][row]
 
     def print(self):
-        for i in range(self.c):
-            for j in range(self.r):
-                print(self.board[i][j], end=" ")
+        for i in range(self.r):
+            for j in range(self.c):
+                print(self.board[j][i], end=" ")
             print()
 
