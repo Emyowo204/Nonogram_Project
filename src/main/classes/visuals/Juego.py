@@ -4,6 +4,7 @@ from src.main.classes.visuals.Partida import Partida
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
+from src.main.classes.visuals.PanelMenu import PanelMenu
 from src.main.classes.visuals.Musica import Musica
 from src.main.classes.visuals.Ventana import Ventana
 
@@ -13,6 +14,8 @@ class Juego:
         self.panelActual = None
         self.musica = None
         self.partida = None
+        self.panelOpciones = None
+        self.panelMenu = None
 
     def start(self):
         window_size = 720
@@ -20,15 +23,12 @@ class Juego:
         window = ventana.getWindow()
         pygame.mixer.init()
         self.musica = Musica("../../sounds/opcionesmusica.wav")
-        self.panelActual = None
+
         clock = pygame.time.Clock()
         self.partida = Partida(0, 0,600,630,"IMAGE",0)
-        self.panelOpciones = PanelOpciones( 0, 0, window_size, window_size, self)
-
-        self.mostrarPanelCuadrilla()
-
-        botonOpcionesSurface = pygame.Surface((100, 50))
-        botonOpciones = pygame.Rect(600, 650, 100, 50)
+        self.panelMenu = PanelMenu(0,0, window_size, window_size, self)
+        self.panelOpciones = PanelOpciones( 0, 0, self.window_size, self.window_size, self)
+        self.mostrarPanelMenu()
 
         resizing = False
         running = True
@@ -58,23 +58,28 @@ class Juego:
 
 
                 if self.panelActual == self.partida:
+
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         self.partida.handleClick(event.pos)
                         self.partida.checkAssumtion(event.pos)
-                elif self.panelActual == self.panelOpciones:
+                elif self.panelActual == self.panelMenu:
                     self.panelActual.evento(event)  # si es panel opciones, usa la funcion evento para administrar los eventos de este
 
             panel = Panel(0,0,25,25)
             image = ImageLoader().getImage()
             panel.setImage(image)
 
+
             window.fill((255,255,255))
             self.panelActual.draw(window)
 
-            pygame.draw.rect(window, (0, 255, 0), botonOpciones)
             pygame.display.flip()
 
         pygame.quit()
+
+    def mostrarPanelMenu(self):
+        self.panelActual = self.panelMenu
+        self.musica.cambiarMusica(None)
 
     def mostrarPanelCuadrilla(self):
         self.panelActual = self.partida
@@ -83,5 +88,12 @@ class Juego:
     def mostrarPanelOpciones(self):
         self.panelActual = self.panelOpciones
         self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
+
     def getMusica(self):
         return self.musica
+
+    def getWindow(self):
+        return self.window
+
+    def getWindowSize(self):
+        return self.window_size

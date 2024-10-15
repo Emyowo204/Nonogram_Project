@@ -19,7 +19,6 @@ class PanelCuadrilla(Panel):
         else:
             return -1,-1
 
-
     def handleClick(self, pos):
         col,row = self.positionClick(pos)
         if col != -1 and row != -1:
