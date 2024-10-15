@@ -1,11 +1,12 @@
 import pygame
 
-from src.main.classes.models.Partida import Partida
+from src.main.classes.visuals.Partida import Partida
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
 from src.main.classes.visuals.PanelMenu import PanelMenu
 from src.main.classes.visuals.Musica import Musica
+from src.main.classes.visuals.Ventana import Ventana
 
 
 class Juego:
@@ -17,48 +18,64 @@ class Juego:
         self.panelMenu = None
 
     def start(self):
-        pygame.init()
-        pygame.mixer.init()
-        program_icon = ImageLoader().getIcon()
-        pygame.display.set_icon(program_icon)
-        self.musica = Musica("../../sounds/opcionesmusica.wav")
-        grid_size = 10
-        cell_size = 30
         self.window_size = 720
-        self.window = pygame.display.set_mode((self.window_size, self.window_size))
+        ventana = Ventana(self.window_size,self.window_size)
+        self.window = ventana.getWindow()
+        pygame.mixer.init()
+        self.musica = Musica("../../sounds/opcionesmusica.wav")
+
+
         clock = pygame.time.Clock()
-
         self.panelMenu = PanelMenu(0,0, self.window_size, self.window_size, self)
-
-        self.partida = Partida(26,26,400,630,'TEST',0)
-
+        self.partida = Partida(0, 0,600,630,"IMAGE",0)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size, self.window_size, self)
-
         self.mostrarPanelMenu()
 
+        resizing = False
         running = True
+        new_size = (720,720)
+        self.partida.fitWindow(new_size[0],new_size[1])
         while running:
             deltatime = clock.tick(60) / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                elif self.panelActual == self.panelMenu:
-                    self.panelActual.evento(event)
-                elif self.panelActual == self.partida:
-                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+
+                elif event.type == pygame.VIDEORESIZE:
+                        resizing = True
+                        new_size = (event.h,event.w)
+                        self.partida.fitWindow(new_size[1], new_size[0])
+
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if resizing:
+                        resizing=False
+
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if botonOpciones.collidepoint(event.pos):  # presiona boton
+                        if self.panelActual == self.partida:
+                            self.mostrarPanelOpciones()
+                        elif self.panelActual == self.panelOpciones:
+                            self.mostrarPanelCuadrilla()
+
+
+                if self.panelActual == self.partida:
+                  if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         self.partida.handleClick(event.pos)
                         self.partida.checkAssumtion(event.pos)
-                elif self.panelActual == self.panelOpciones:
-                    self.panelActual.evento(event)  # si es panel opciones, usa la funcion evento para administrar los eventos de este
+                elif self.panelActual == self.panelMenu:
+                    self.panelActual.evento(event)
 
             panel = Panel(0,0,25,25)
             image = ImageLoader().getImage()
             panel.setImage(image)
 
-            self.window.fill((0,0,0))
+
+   
             self.panelActual.draw(self.window)
 
-            # panel.draw(window)
+            self.window.fill((255,255,255))
+            self.panelActual.draw(self.window)
+
             pygame.display.flip()
 
         pygame.quit()

@@ -14,3 +14,17 @@ def test_Difference():
     output = cuadrilla1.checkDifference(cuadrilla2)
     assert output == result
 
+def testLoad():
+    try:
+        cuadrilla = Cuadrilla(0,0,"test.txt")
+    except Exception as e:
+        assert False, f"Error al leer cuadrilla: {e}"
+    else:
+        assert True, "Exito en lectura de cuadrilla"
+
+
+def test_DiscoverNums():
+    cuadrilla = Cuadrilla(None,None,"test.txt")
+    cuadrilla.discoverNums()
+    assert (cuadrilla.col_nums == [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]] and
+            cuadrilla.row_nums == [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]])
