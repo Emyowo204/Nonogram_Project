@@ -11,6 +11,8 @@ from src.main.classes.visuals.Ventana import Ventana
 
 class Juego:
     def __init__(self):
+        self.window = None
+        self.window_size = None
         self.panelActual = None
         self.musica = None
         self.partida = None
@@ -50,12 +52,7 @@ class Juego:
                     if resizing:
                         resizing=False
 
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if botonOpciones.collidepoint(event.pos):  # presiona boton
-                        if self.panelActual == self.partida:
-                            self.mostrarPanelOpciones()
-                        elif self.panelActual == self.panelOpciones:
-                            self.mostrarPanelCuadrilla()
+
 
 
                 if self.panelActual == self.partida:
@@ -64,13 +61,13 @@ class Juego:
                         self.partida.checkAssumtion(event.pos)
                 elif self.panelActual == self.panelMenu:
                     self.panelActual.evento(event)
+                elif self.panelActual == self.panelOpciones:
+                    self.panelActual.evento(event)  # si es panel opciones, usa la funcion evento para administrar los eventos de este
 
             panel = Panel(0,0,25,25)
             image = ImageLoader().getImage()
             panel.setImage(image)
 
-
-   
             self.panelActual.draw(self.window)
 
             self.window.fill((255,255,255))
