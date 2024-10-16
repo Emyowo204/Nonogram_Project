@@ -13,6 +13,7 @@ class PanelPartida(Panel):
         self.panel_nonograma = PanelNonograma(x, y, width, height, game_difficulty, game_index)
         self.setColor(200,200,200)
         self.font = pygame.font.Font(None, 40)
+        self.stringInfo = 'Vidas: 5'
 
     def handleClick(self,pos):
         self.panel_nonograma.handleClick(pos)
@@ -23,7 +24,11 @@ class PanelPartida(Panel):
         self.vidas -= 1
         if self.vidas <= 0 :
             self.vidas = 0
+            self.stringInfo = 'Vidas: 0 - Game Over'
+        else :
+            self.stringInfo = f'Vidas: {self.vidas}'
         self.surface.fill((self.red, self.green, self.blue))
+
 
     def fitWindow(self, w, h):
         self.w = w
@@ -31,12 +36,12 @@ class PanelPartida(Panel):
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
         self.panel_nonograma.fitWindow(w, h)
-        self.font = pygame.font.Font(None, int(w/15))
+        self.font = pygame.font.Font(None, int(w/18))
 
     def draw(self,dest_surface):
         super().draw(dest_surface)
         self.panel_nonograma.draw(self.surface)
-        text_surface = self.font.render(f'Vidas: {self.vidas}', False, (0, 0, 0))
+        text_surface = self.font.render(self.stringInfo, False, (0, 0, 0))
         self.surface.blit(text_surface, (10, 10))
 
 

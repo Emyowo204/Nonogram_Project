@@ -7,8 +7,8 @@ class BotonRect:
         self.coord = [x, y]
         self.size = [width, height]
         self.rect = pygame.Rect(x, y, width, height)
-        self.normalImageSize = normalImage
-        self.shadedImageSize = shadedImage
+        self.OgNormalImage = normalImage
+        self.OgShadedImage = shadedImage
         self.normalImage = pygame.transform.scale(normalImage, (width, height))
         self.shadedImage = pygame.transform.scale(shadedImage, (width, height))
         self.currentImage = self.normalImage
@@ -28,13 +28,16 @@ class BotonRect:
 
     def setSize(self,width, height):
         self.rect = pygame.Rect(self.coord[0], self.coord[1],width, height)
-        self.normalImage = pygame.transform.scale(self.normalImageSize, (width, height))
-        self.shadedImage = pygame.transform.scale(self.shadedImageSize, (width, height))
+        self.normalImage = pygame.transform.scale(self.OgNormalImage, (width, height))
+        self.shadedImage = pygame.transform.scale(self.OgShadedImage, (width, height))
         self.size = [width, height]
 
     def setCoord(self,x,y):
         self.rect = pygame.Rect(x, y, self.size[0], self.size[1])
         self.coord = [x, y]
+
+    def getSize(self):
+        return self.size
 
     def draw(self, screen):
         mouse = pygame.mouse.get_pos()
