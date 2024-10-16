@@ -19,7 +19,7 @@ class Juego:
         self.panelOpciones = None
         self.panelMenu = None
 
-    def start(self):
+    def start(self,mode,index):
         self.window_size = 720
         ventana = Ventana(self.window_size,self.window_size)
         self.window = ventana.getWindow()
@@ -29,7 +29,7 @@ class Juego:
 
         clock = pygame.time.Clock()
         self.panelMenu = PanelMenu(0,0, self.window_size, self.window_size, self)
-        self.partida = PanelPartida(0, 0,self.window_size,self.window_size,"TEST",1)
+        self.partida = PanelPartida(0, 0,self.window_size,self.window_size,mode,index)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size, self.window_size, self)
         self.mostrarPanelMenu()
 
