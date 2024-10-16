@@ -47,6 +47,7 @@ class Juego:
                         resizing = True
                         new_size = (event.h,event.w)
                         self.partida.fitWindow(new_size[1], new_size[0])
+                        self.panelMenu.fitWindow(new_size[1], new_size[0])
 
                 elif event.type == pygame.MOUSEBUTTONUP:
                     if resizing:
