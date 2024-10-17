@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 import pygame
 
 from src.main.classes.visuals.Componente import Componente
@@ -24,6 +26,10 @@ class Panel(Componente):
         self.green = green
         self.blue = blue
         self.surface.fill((self.red, self.green, self.blue))
+
+    @abstractmethod
+    def fitWindow(self, w, h):
+        pass
 
     def draw(self, dest_surface): #desSurface es una superficie a la cual se va a dibujar, ejemplo de uso dibujar a pantalla(surface)
         if (self.image != None):
