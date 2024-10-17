@@ -5,7 +5,38 @@ from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 
 class PanelOpciones(Panel):
+    """
+    Una clase que representa el Panel de Opciones que se presenta al cambiar el panelActual en juego.
+
+    Variables:
+        juego (juego): El juego del cual toma referencia.
+        slider (Rect): Representación del thumb para arrastrar en un slider.
+        slideando (boolean): Indica si está siendo arrastrado slider o no.
+        sliderMinX (int): Valor de la posición mínima a la que puede estar el slider.
+        sliderMaxX (int): Valor de la posición másxima a la que puede estar el slider.
+        sliderBackWidth (int): Valor del ancho del fondo del slide.
+        sliderBackHeight (int): Valor del largo del fondo del slide.
+        volumenInicial (int): Valor del volumen inicial al comenzar la aplicación.
+        slider.x (int): Valor de la posición x del slider al inicializar.
+        normalImage (image): Variable que contiene la imagen de un botón al no estar presionado.
+        shadedImage (image): Variable que contiene la imagen de un botón al tener el cursor sobre él.
+        botonVolver (BotonRect): Botón que ejecuta la acción de volver al Panel Menu Principal.
+
+    Métodos:
+        __init__(x, y, width, height, juego): Inicializa el panel con las dimensiones dadas y el juego.
+        evento(event): Administra los eventos cuando el Panel está activo (es el panel actual).
+        fitWindow(w, h): Reajusta los componentes del Panel ante el cambio de tamaño de la ventana.
+        draw(dest_surface): Dibuja el contenido del Panel.
+    """
     def __init__(self, x, y, width, height, juego):
+        """
+        Inicializa el Panel.
+        :param x: Posición x donde iniciará el Panel.
+        :param y: Posición y donde iniciará el Panel.
+        :param width: Ancho del Panel.
+        :param height: Largo del Panel.
+        :param juego: Juego referenciado al Panel.
+        """
         super().__init__(x, y, width, height)
         self.juego = juego
 
@@ -22,6 +53,10 @@ class PanelOpciones(Panel):
         self.botonVolver = BotonRect(300, 300, 40, 40, self.normalImage, self.shadedImage, self.juego.mostrarPanelMenu)
 
     def evento(self, event):
+        """
+        Maneja los eventos mientras el panel está activo.
+        :param event: Objeto de evento que contiene la información relacionada al evento a procesar.
+        """
         if event.type == pygame.MOUSEBUTTONDOWN and self.slider.collidepoint(event.pos):
             self.slideando = True
         elif event.type == pygame.MOUSEBUTTONUP:
@@ -33,6 +68,10 @@ class PanelOpciones(Panel):
         self.juego.getMusica().setVolumen(nuevoVolumen)
 
     def draw(self, dest_surface):
+        """
+        Dibuja los componentes correspondientes en la ventana.
+        :param dest_surface: Superficie en la que se dibujará el Panel.
+        """
         dest_surface.fill((0, 0, 0,)) # panel en negro por mientras
         self.botonVolver.draw(self.juego.getWindow())
 
