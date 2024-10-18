@@ -54,7 +54,7 @@ class Juego:
                         resizing=False
 
                 if self.panelActual == self.partida:
-                  if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                  if pygame.mouse.get_pressed()[0]:
                         self.partida.handleClick(event.pos)
                 elif self.panelActual == self.panelMenu:
                     self.panelActual.evento(event)
