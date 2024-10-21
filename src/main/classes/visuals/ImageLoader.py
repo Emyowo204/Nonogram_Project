@@ -11,12 +11,12 @@ class ImageLoader:
 
     def __init__(self):
         if not self._inicializado:
-            self.image = pygame.image.load('../images/default.png')
+            self.defaultImage = pygame.image.load('../images/default.png')
             self.program_icon = pygame.image.load('../images/icon_temp.png')
             ImageLoader._inicializado = True
 
-    def getImage(self):
-        return self.image
+    def getDefaultImage(self):
+        return self.defaultImage
 
     def getIcon(self):
         return self.program_icon

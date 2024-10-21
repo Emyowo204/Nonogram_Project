@@ -35,12 +35,10 @@ class PanelMenu(Panel):
         self.juego = juego
         self.fondoImageOG = pygame.image.load('../images/fondoMenuTest.png')
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
-        normalImage = pygame.image.load('../images/botonJugar.png')
-        shadedImage = pygame.image.load('../images/botonJugarShaded.png')
-        self.botonJugar = BotonRect(width*1/4, height*2/8, 360, 90, normalImage, shadedImage, self.juego.mostrarPanelCuadrilla)
-        normalImage = pygame.image.load('../images/botonOpciones.png')
-        shadedImage = pygame.image.load('../images/botonOpcionesShaded.png')
-        self.botonOpciones = BotonRect(width*1/4, height*4/8, 360, 90, normalImage, shadedImage, self.juego.mostrarPanelOpciones)
+        self.botonJugar = BotonRect(width*1/4, height*2/8, 360, 90, self.juego.mostrarPanelCuadrilla)
+        self.botonJugar.setImage(pygame.image.load('../images/botonJugar.png'),pygame.image.load('../images/botonJugarShaded.png'))
+        self.botonOpciones = BotonRect(width*1/4, height*4/8, 360, 90, self.juego.mostrarPanelOpciones)
+        self.botonOpciones.setImage(pygame.image.load('../images/botonOpciones.png'),pygame.image.load('../images/botonOpcionesShaded.png'))
 
     def evento(self, event):
         """

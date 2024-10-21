@@ -20,24 +20,25 @@ class BotonRect:
         pressed (boolean): Estado actual del botón, si está presionado o no.
 
     Métodos:
-        __init__(x, y, width, height, normalImage, shadedImage, action): Inicializa el Botón Rectangular.
+        __init__(x, y, width, height, action): Inicializa el Botón Rectangular.
         evento(event): Administra los eventos del botón.
         setSize(): Designa el nuevo tamaño del botón.
         serCoord(): Designa las coordenadas (x, y) de posición del botón.
         getSize(): Retorna el tamaño actual del botón.
         draw(dest_surface): Dibuja el botón.
     """
-    def __init__(self, x, y, width, height, normalImage, shadedImage, action):
+    def __init__(self, x, y, width, height, action):
         self.coord = [x, y]
         self.size = [width, height]
         self.rect = pygame.Rect(x, y, width, height)
-        self.OgNormalImage = normalImage
-        self.OgShadedImage = shadedImage
-        self.normalImage = pygame.transform.scale(normalImage, (width, height))
-        self.shadedImage = pygame.transform.scale(shadedImage, (width, height))
+        self.OgNormalImage = ImageLoader().getDefaultImage()
+        self.OgShadedImage = self.OgNormalImage
+        self.normalImage = pygame.transform.scale(self.OgNormalImage, (width, height))
+        self.shadedImage = pygame.transform.scale(self.OgShadedImage, (width, height))
         self.currentImage = self.normalImage
         self.action = action
         self.pressed = False
+
 
     def evento(self, event):
         """
@@ -53,6 +54,17 @@ class BotonRect:
             self.pressed = False
         elif not self.rect.collidepoint(pygame.mouse.get_pos()):
             self.currentImage = self.normalImage
+
+    def setImage(self, normalImage, shadedImage):
+        """
+        Designa las imagenes del botón cuando el mouse está fuera y adentro del mismo.
+        :param normalImage: Imagen normal nueva del botón.
+        :param shadedImage: Imagen opaca nueva del botón.
+        """
+        self.OgNormalImage = normalImage
+        self.OgShadedImage = shadedImage
+        self.normalImage = pygame.transform.scale(normalImage, (self.size[0], self.size[1]))
+        self.shadedImage = pygame.transform.scale(shadedImage, (self.size[0], self.size[1]))
 
     def setSize(self,width, height):
         """

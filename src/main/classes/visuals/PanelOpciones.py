@@ -48,9 +48,8 @@ class PanelOpciones(Panel):
         self.sliderBackHeight = 20 # barra fondo
         volumenInicial = 0.5
         self.slider.x = int(self.sliderMinX + (self.sliderMaxX - self.sliderMinX) * volumenInicial)
-        self.normalImage = pygame.image.load('../images/botonNormal.png')
-        self.shadedImage = pygame.image.load('../images/botonShaded.png')
-        self.botonVolver = BotonRect(300, 300, 40, 40, self.normalImage, self.shadedImage, self.juego.mostrarPanelMenu)
+        self.botonVolver = BotonRect(width*10/16, height*13/16, 180, 45, self.juego.mostrarPanelMenu)
+        self.botonVolver.setImage(pygame.image.load('../images/botonNormal.png'),pygame.image.load('../images/botonShaded.png'))
 
     def evento(self, event):
         """
@@ -66,6 +65,23 @@ class PanelOpciones(Panel):
         self.botonVolver.evento(event)
         nuevoVolumen = (self.slider.x - (self.x +50)) / 200
         self.juego.getMusica().setVolumen(nuevoVolumen)
+
+    def fitWindow(self, w, h):
+        """
+        Ajusta los componentes del Panel según el tamaño actual de la ventana.
+        :param w: Nuevo ancho de la ventana.
+        :param h: Nuevo largo de la ventana.
+        """
+        if w < h :
+            multi = w / 720
+        else :
+            multi = h / 720
+
+        self.w = w
+        self.h = h
+        self.surface = pygame.Surface((self.w,self.h))
+        self.botonVolver.setSize(180*multi, 45*multi)
+        self.botonVolver.setCoord((self.w-(1.5*self.botonVolver.getSize()[0])), (self.h-(3*self.botonVolver.getSize()[1])))
 
     def draw(self, dest_surface):
         """
