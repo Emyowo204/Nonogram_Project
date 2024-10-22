@@ -48,7 +48,7 @@ class PanelOpciones(Panel):
         self.sliderBackHeight = 20 # barra fondo
         volumenInicial = 0.5
         self.slider.x = int(self.sliderMinX + (self.sliderMaxX - self.sliderMinX) * volumenInicial)
-        self.botonVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, self.juego.mostrarPanelMenu)
+        self.botonVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, self.juego.mostrarPanelMenu,None)
         self.botonVolver.setImage(pygame.image.load('../images/botonNormal.png'),pygame.image.load('../images/botonShaded.png'))
 
     def evento(self, event):

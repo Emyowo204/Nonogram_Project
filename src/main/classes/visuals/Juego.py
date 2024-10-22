@@ -5,6 +5,7 @@ from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
 from src.main.classes.visuals.PanelMenu import PanelMenu
+from src.main.classes.visuals.PanelNiveles import PanelNiveles
 from src.main.classes.visuals.Musica import Musica
 from src.main.classes.visuals.Ventana import Ventana
 
@@ -16,8 +17,11 @@ class Juego:
         self.panelActual = None
         self.musica = None
         self.partida = None
+        self.panelNiveles = None
         self.panelOpciones = None
         self.panelMenu = None
+        self.game_difficulty = "TEST"
+
 
     def start(self):
         self.window_size = [720, 720]
@@ -30,6 +34,7 @@ class Juego:
         self.panelMenu = PanelMenu(0,0, self.window_size[0], self.window_size[1], self)
         self.partida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
+        self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
         self.mostrarPanelMenu()
 
         resizing = False
@@ -76,15 +81,15 @@ class Juego:
         self.panelMenu.fitWindow(self.window_size[0], self.window_size[1])
         self.musica.cambiarMusica(None)
 
-    def mostrarPanelCuadrilla(self):
-        self.panelActual = self.partida
-        self.partida.setNonograma("TEST", 0)
-        self.partida.fitWindow(self.window_size[0], self.window_size[1])
-        self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
+    def mostrarPanelNiveles(self, game_difficulty):
+        self.panelActual = self.panelNiveles
+        self.panelNiveles.fitWindow(self.window_size[0], self.window_size[1])
+        self.game_difficulty = game_difficulty
+        self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
 
-    def mostrarPanelCuadrilla2(self):
+    def mostrarPanelCuadrilla(self, game_index):
         self.panelActual = self.partida
-        self.partida.setNonograma("TEST", 1)
+        self.partida.setNonograma(self.game_difficulty, game_index)
         self.partida.fitWindow(self.window_size[0], self.window_size[1])
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
 

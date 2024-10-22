@@ -14,11 +14,13 @@ class PanelPartida(Panel):
         self.setColor(200,200,200)
         self.font = pygame.font.Font(None, 40)
         self.stringInfo = 'Vidas: 5'
-        self.botonVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35,juego.mostrarPanelMenu)
+        self.botonVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35,juego.mostrarPanelNiveles,None)
         self.botonVolver.setImage(pygame.image.load('../images/botonNormal.png'),pygame.image.load('../images/botonShaded.png'))
+        self.juego = juego
 
     def setNonograma(self, game_difficulty, game_index):
         self.panel_nonograma.setNonograma(game_difficulty, game_index)
+        self.botonVolver.setAction(self.juego.mostrarPanelNiveles, game_difficulty)
         self.vidas = 5
         self.stringInfo = 'Vidas: 5'
 

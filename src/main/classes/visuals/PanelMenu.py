@@ -35,13 +35,14 @@ class PanelMenu(Panel):
         self.juego = juego
         self.fondoImageOG = pygame.image.load('../images/fondoMenuTest.png')
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
-        self.btnJugar = BotonRect(width*1/4, height*2/8, 360, 90, self.toggleMainMenu)
+        self.btnJugar = BotonRect(width*1/4, height*2/8, 360, 90, self.toggleMainMenu,None)
         self.btnJugar.setImage(pygame.image.load('../images/botonJugar.png'),pygame.image.load('../images/botonJugarShaded.png'))
-        self.btnOpciones = BotonRect(width*1/4, height*4/8, 360, 90, self.juego.mostrarPanelOpciones)
+        self.btnOpciones = BotonRect(width*1/4, height*4/8, 360, 90, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(pygame.image.load('../images/botonOpciones.png'),pygame.image.load('../images/botonOpcionesShaded.png'))
-        self.btnNono1 = BotonRect(width * 1 / 4, height * 2 / 8, 90, 90, self.juego.mostrarPanelCuadrilla)
-        self.btnNono2 = BotonRect(width * 1 / 4, height * 4 / 8, 90, 90, self.juego.mostrarPanelCuadrilla2)
-        self.btnVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, self.toggleMainMenu)
+        self.btnNono1 = BotonRect(width * 1 / 7, height * 2 / 8, 90, 90, self.juego.mostrarPanelNiveles,"TEST")
+        self.btnNono2 = BotonRect(width * 3 / 7, height * 2 / 8, 90, 90, self.juego.mostrarPanelNiveles,"TEST2")
+        self.btnNono3 = BotonRect(width * 5 / 7, height * 2 / 8, 90, 90, self.juego.mostrarPanelNiveles,"TEST2")
+        self.btnVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, self.toggleMainMenu,None)
         self.btnVolver.setImage(pygame.image.load('../images/botonNormal.png'), pygame.image.load('../images/botonShaded.png'))
         self.mainMenu = True
 
@@ -54,6 +55,7 @@ class PanelMenu(Panel):
         self.btnOpciones.evento(event)
         self.btnNono1.evento(event)
         self.btnNono2.evento(event)
+        self.btnNono3.evento(event)
         self.btnVolver.evento(event)
 
     def fitWindow(self, w, h):
@@ -75,8 +77,9 @@ class PanelMenu(Panel):
 
         self.btnJugar.setValues((self.w-360*multi)/2, (self.h-90*multi)*2/7, 360*multi, 90*multi)
         self.btnOpciones.setValues((self.w-360*multi)/2, (self.h-90*multi)*4/7, 360*multi, 90*multi)
-        self.btnNono1.setValues((self.w-90*multi)/2, (self.h-90*multi)*2/7, 90*multi, 90*multi)
-        self.btnNono2.setValues((self.w-90*multi)/2, (self.h-90*multi)*4/7, 90*multi, 90*multi)
+        self.btnNono1.setValues((self.w-90*multi)*1/6, (self.h-90*multi)*2/7, 90*multi, 90*multi)
+        self.btnNono2.setValues((self.w-90*multi)*3/6, (self.h-90*multi)*2/7, 90*multi, 90*multi)
+        self.btnNono3.setValues((self.w-90*multi)*5/6, (self.h-90*multi)*2/7, 90*multi, 90*multi)
         self.btnVolver.setValues((self.w-180*multi), (self.h-45*multi), 170*multi, 35*multi)
 
     def toggleMainMenu(self):
@@ -85,7 +88,11 @@ class PanelMenu(Panel):
         self.btnOpciones.setEnable(self.mainMenu)
         self.btnNono1.setEnable(not self.mainMenu)
         self.btnNono2.setEnable(not self.mainMenu)
+        self.btnNono3.setEnable(not self.mainMenu)
         self.btnVolver.setEnable(not self.mainMenu)
+
+    def getMainMenu(self):
+        return self.mainMenu
 
     def draw(self, dest_surface):
         """
@@ -99,4 +106,5 @@ class PanelMenu(Panel):
         else :
             self.btnNono1.draw(self.juego.getWindow())
             self.btnNono2.draw(self.juego.getWindow())
+            self.btnNono3.draw(self.juego.getWindow())
             self.btnVolver.draw(self.juego.getWindow())

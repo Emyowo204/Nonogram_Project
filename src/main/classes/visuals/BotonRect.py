@@ -27,7 +27,7 @@ class BotonRect:
         getSize(): Retorna el tamaño actual del botón.
         draw(dest_surface): Dibuja el botón.
     """
-    def __init__(self, x, y, width, height, action):
+    def __init__(self, x, y, width, height, action, arguments):
         self.coord = [x, y]
         self.size = [width, height]
         self.rect = pygame.Rect(x, y, width, height)
@@ -37,6 +37,7 @@ class BotonRect:
         self.shadedImage = pygame.transform.scale(self.OgShadedImage, (width, height))
         self.currentImage = self.normalImage
         self.action = action
+        self.arguments = arguments
         self.pressed = False
         self.enabled = True
 
@@ -50,7 +51,10 @@ class BotonRect:
             if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos):
                 self.pressed = True
                 if self.action:
-                    self.action()
+                    if self.arguments == None:
+                        self.action()
+                    else:
+                        self.action(self.arguments)
             elif event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(event.pos):
                 self.currentImage = self.shadedImage
                 self.pressed = False
@@ -67,6 +71,10 @@ class BotonRect:
         self.OgShadedImage = shadedImage
         self.normalImage = pygame.transform.scale(normalImage, (self.size[0], self.size[1]))
         self.shadedImage = pygame.transform.scale(shadedImage, (self.size[0], self.size[1]))
+
+    def setAction(self,action, arguments):
+        self.action = action
+        self.arguments = arguments
 
     def setSize(self,width, height):
         """
