@@ -38,6 +38,7 @@ class BotonRect:
         self.currentImage = self.normalImage
         self.action = action
         self.pressed = False
+        self.enabled = True
 
 
     def evento(self, event):
@@ -45,15 +46,16 @@ class BotonRect:
         Maneja los eventos del botón.
         :param event: Objeto de evento que contiene la información relacionada al evento a procesar.
         """
-        if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos):
-            self.pressed = True
-            if self.action:
-                self.action()
-        elif event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(event.pos):
-            self.currentImage = self.shadedImage
-            self.pressed = False
-        elif not self.rect.collidepoint(pygame.mouse.get_pos()):
-            self.currentImage = self.normalImage
+        if self.enabled:
+            if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos):
+                self.pressed = True
+                if self.action:
+                    self.action()
+            elif event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(event.pos):
+                self.currentImage = self.shadedImage
+                self.pressed = False
+            elif not self.rect.collidepoint(pygame.mouse.get_pos()):
+                self.currentImage = self.normalImage
 
     def setImage(self, normalImage, shadedImage):
         """
@@ -86,12 +88,12 @@ class BotonRect:
         self.rect = pygame.Rect(x, y, self.size[0], self.size[1])
         self.coord = [x, y]
 
-    def getSize(self):
-        """
-        Metodo getter del tamaño del Botón.
-        :return: El tamaño del botón.
-        """
-        return self.size
+    def setValues(self,x,y,width,height):
+        self.setSize(width,height)
+        self.setCoord(x,y)
+
+    def setEnable(self, bool):
+        self.enabled = bool
 
     def draw(self, screen):
         """

@@ -9,20 +9,27 @@ from src.main.classes.visuals.PanelNumeros import PanelNumeros
 
 class PanelNonograma(Panel):
 
-    def __init__(self, x, y, width, height, game_difficulty, game_index):
+    def __init__(self, x, y, width, height):
         super().__init__(x,y,width,height)
 
         self.setColor(0,0,0)
-        self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum[game_difficulty].value[game_index])
-
+        self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum["TEST"].value[0])
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300)
-
         self.board_size = self.cuadrilla_resultado.getSize()
         self.panel_resultado.setColor(0,0,0)
         self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], None)
         self.panel_jugador = PanelCuadrilla(self.cuadrilla_jugador, 0, 0, 300)
         self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'columns',0,0,700,300)
         self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 700)
+
+    def setNonograma(self, difficulty, index):
+        self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum[difficulty].value[index])
+        self.board_size = self.cuadrilla_resultado.getSize()
+        self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], None)
+        self.panel_jugador.setNewCuadrilla(self.cuadrilla_jugador)
+        self.panel_resultado.setNewCuadrilla(self.cuadrilla_resultado)
+        self.panel_colnums.setNewNumbers(self.cuadrilla_resultado.getColumnNums(), 'columns')
+        self.panel_rownums.setNewNumbers(self.cuadrilla_resultado.getRowNums(), 'rows')
 
     def getSize(self):
         return self.board_size

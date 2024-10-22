@@ -19,7 +19,7 @@ class Juego:
         self.panelOpciones = None
         self.panelMenu = None
 
-    def start(self,mode,index):
+    def start(self):
         self.window_size = [720, 720]
         ventana = Ventana(self.window_size[0], self.window_size[1])
         self.window = ventana.getWindow()
@@ -28,7 +28,7 @@ class Juego:
 
         clock = pygame.time.Clock()
         self.panelMenu = PanelMenu(0,0, self.window_size[0], self.window_size[1], self)
-        self.partida = PanelPartida(0, 0, self.window_size[0], self.window_size[1],mode,index, self)
+        self.partida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.mostrarPanelMenu()
 
@@ -78,6 +78,13 @@ class Juego:
 
     def mostrarPanelCuadrilla(self):
         self.panelActual = self.partida
+        self.partida.setNonograma("TEST", 0)
+        self.partida.fitWindow(self.window_size[0], self.window_size[1])
+        self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
+
+    def mostrarPanelCuadrilla2(self):
+        self.panelActual = self.partida
+        self.partida.setNonograma("TEST", 1)
         self.partida.fitWindow(self.window_size[0], self.window_size[1])
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
 

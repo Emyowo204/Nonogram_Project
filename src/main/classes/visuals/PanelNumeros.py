@@ -12,6 +12,11 @@ class PanelNumeros(Panel):
         self.halfCell = 0
         self.max_lenght = len(max(numbers, key=len))
 
+    def setNewNumbers(self, numbers, mode):
+        self.numbers = numbers
+        self.mode = mode
+        self.max_lenght = len(max(numbers, key=len))
+
     def drawNumbers(self,mode):
         for i in range(len(self.numbers)):
             for j in range(len(self.numbers[i])):

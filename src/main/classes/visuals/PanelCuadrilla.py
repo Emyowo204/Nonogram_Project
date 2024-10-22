@@ -10,6 +10,9 @@ class PanelCuadrilla(Panel):
         self.board = cuadrilla.getBoard()
         self.fitWindow(size)
 
+    def setNewCuadrilla(self, cuadrilla):
+        self.size = cuadrilla.getSize()
+        self.board = cuadrilla.getBoard()
 
     def positionClick(self,pos):
         row = int((pos[1] - self.y) // self.cell_size)

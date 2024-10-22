@@ -7,16 +7,20 @@ from src.main.classes.visuals.BotonRect import BotonRect
 
 class PanelPartida(Panel):
 
-    def __init__(self, x, y, width, height, game_difficulty, game_index, juego):
+    def __init__(self, x, y, width, height, juego):
         super().__init__(x,y,width,height)
         self.vidas = 5
-        self.errores = 0
-        self.panel_nonograma = PanelNonograma(x, y, width, height, game_difficulty, game_index)
+        self.panel_nonograma = PanelNonograma(self.x, self.y, self.w, self.h)
         self.setColor(200,200,200)
         self.font = pygame.font.Font(None, 40)
         self.stringInfo = 'Vidas: 5'
         self.botonVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35,juego.mostrarPanelMenu)
         self.botonVolver.setImage(pygame.image.load('../images/botonNormal.png'),pygame.image.load('../images/botonShaded.png'))
+
+    def setNonograma(self, game_difficulty, game_index):
+        self.panel_nonograma.setNonograma(game_difficulty, game_index)
+        self.vidas = 5
+        self.stringInfo = 'Vidas: 5'
 
     def handleClick(self,pos):
         self.panel_nonograma.handleClick(pos)
@@ -47,8 +51,7 @@ class PanelPartida(Panel):
             multi = w / 720
         else :
             multi = h / 720
-        self.botonVolver.setSize(170*multi, 35*multi)
-        self.botonVolver.setCoord((self.w-180*multi), (self.h-45*multi))
+        self.botonVolver.setValues((self.w-180*multi), (self.h-45*multi), 170*multi, 35*multi)
 
     def draw(self,dest_surface):
         super().draw(dest_surface)
