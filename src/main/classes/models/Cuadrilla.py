@@ -40,8 +40,13 @@ class Cuadrilla:
         self.__row_nums = []
         self.__board = []
         if name:
-            self.__loadCuadrilla(name)
-            self.__discover_nums()
+            if self.__loadCuadrilla(name) :
+                self.__discover_nums()
+            else:
+                self.__c = 3
+                self.__r = 3
+                self.__board = [[1,0,1],[0,1,0],[1,0,1]]
+                self.__discover_nums()
         else:
             self.__c = columns
             self.__r = rows
@@ -92,7 +97,10 @@ class Cuadrilla:
         """
         current_dir = os.path.dirname(os.path.abspath(__file__))
         fulldirectory = os.path.join(current_dir, '..','..', 'puzzles', name)
-        archivo = open(fulldirectory,'r')
+        try:
+            archivo = open(fulldirectory,'r')
+        except OSError:
+            return False
         contenido = archivo.read()
         textos = contenido.split()
         self.__c = int (textos.pop(0))
@@ -101,6 +109,7 @@ class Cuadrilla:
         for i in range(self.__r):
             for j in range(self.__c):
                 self.__board[j][i] = int(textos.pop(0))
+        return True
 
     def checkDifference(self,cuadrilla):
         """

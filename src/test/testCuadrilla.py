@@ -16,7 +16,7 @@ def test_Difference():
 
 def testLoad():
     try:
-        cuadrilla = Cuadrilla(0,0,"test.txt")
+        cuadrilla = Cuadrilla(0,0,"Hard_Nivel1.txt")
     except Exception as e:
         assert False, f"Error al leer cuadrilla: {e}"
     else:
@@ -24,7 +24,7 @@ def testLoad():
 
 
 def test_DiscoverNums():
-    cuadrilla = Cuadrilla(None,None,"test.txt")
+    cuadrilla = Cuadrilla(None,None,"Hard_Nivel1.txt")
     print()
     print(cuadrilla.__col_nums)
     assert (cuadrilla.getColumnNums() == [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]] and

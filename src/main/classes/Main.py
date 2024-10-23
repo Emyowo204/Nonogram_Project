@@ -1,5 +1,5 @@
 from src.main.classes.models.Image2Nonogram import Image2Nonogram
-from src.main.classes.visuals import Juego
+from src.main.classes.models import Juego
 
 
 def main():

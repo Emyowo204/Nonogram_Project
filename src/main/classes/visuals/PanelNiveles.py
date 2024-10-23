@@ -14,7 +14,7 @@ class PanelNiveles(Panel):
         j=0
         i=0
         for a in range(20) :
-            self.btnNiveles.append(BotonRect(width*(2+2*i)/13, height*(2+2*j)/13, 55, 55, self.juego.mostrarPanelCuadrilla,a))
+            self.btnNiveles.append(BotonRect(width*(2+2*i)/13, height*(2+2*j)/13, 55, 55, self.juego.mostrarPanelCuadrilla,a+1))
             i = i+1
             if i >= 5:
                 j = j+1

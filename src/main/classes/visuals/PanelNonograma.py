@@ -1,7 +1,6 @@
 import pygame
 
 from src.main.classes.models.Cuadrilla import Cuadrilla
-from src.main.classes.models.BoardEnum import BoardEnum
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelCuadrilla import PanelCuadrilla
 from src.main.classes.visuals.PanelNumeros import PanelNumeros
@@ -13,7 +12,7 @@ class PanelNonograma(Panel):
         super().__init__(x,y,width,height)
 
         self.setColor(0,0,0)
-        self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum["TEST"].value[0])
+        self.cuadrilla_resultado = Cuadrilla(None, None, 'Easy/Easy_Nivel1.txt')
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300)
         self.board_size = self.cuadrilla_resultado.getSize()
         self.panel_resultado.setColor(0,0,0)
@@ -23,7 +22,7 @@ class PanelNonograma(Panel):
         self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 700)
 
     def setNonograma(self, difficulty, index):
-        self.cuadrilla_resultado = Cuadrilla(None, None, BoardEnum[difficulty].value[index])
+        self.cuadrilla_resultado = Cuadrilla(None, None, difficulty+'/'+difficulty+'_Nivel'+str(index)+'.txt')
         self.board_size = self.cuadrilla_resultado.getSize()
         self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], None)
         self.panel_jugador.setNewCuadrilla(self.cuadrilla_jugador)

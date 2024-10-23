@@ -1,7 +1,6 @@
 import pygame
 
 from src.main.classes.visuals.BotonRect import BotonRect
-from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 
 class PanelOpciones(Panel):
