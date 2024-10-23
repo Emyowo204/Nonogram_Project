@@ -13,6 +13,9 @@ class ImageLoader:
         if not self._inicializado:
             self.defaultImage = pygame.image.load('../images/default.png')
             self.program_icon = pygame.image.load('../images/icon_temp.png')
+            self.numBotonsImage = []
+
+
             ImageLoader._inicializado = True
 
     def getDefaultImage(self):

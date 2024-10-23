@@ -6,7 +6,7 @@ from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
 from src.main.classes.visuals.PanelMenu import PanelMenu
 from src.main.classes.visuals.PanelNiveles import PanelNiveles
-from src.main.classes.visuals.Musica import Musica
+from src.main.classes.models.Musica import Musica
 from src.main.classes.visuals.Ventana import Ventana
 
 

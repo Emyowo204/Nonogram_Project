@@ -47,7 +47,8 @@ class PanelMenu(Panel):
         self.btnNonoHard.setImage(pygame.image.load('../images/btnHardNormal.png'),pygame.image.load('../images/btnHardShaded.png'))
         self.btnVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, self.toggleMainMenu,None)
         self.btnVolver.setImage(pygame.image.load('../images/botonNormal.png'), pygame.image.load('../images/botonShaded.png'))
-        self.mainMenu = True
+        self.mainMenu = False
+        self.toggleMainMenu()
 
     def evento(self, event):
         """
