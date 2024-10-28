@@ -1,5 +1,7 @@
 import pygame
 
+from src.main.classes.models.FileManager import FileManager
+from src.main.classes.visuals.PanelFileManager import PanelFileManager
 from src.main.classes.visuals.PanelPartida import PanelPartida
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
@@ -35,7 +37,10 @@ class Juego:
         self.partida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
-        self.mostrarPanelMenu()
+        self.panelFileManager = PanelFileManager(0,0,self.window_size[0], self.window_size[1])
+        #self.mostrarPanelMenu()
+        self.mostrarPanelFileManager()
+        self.panelFileManager.updateButtons()
 
         resizing = False
         running = True
@@ -60,7 +65,7 @@ class Juego:
                 if self.panelActual == self.partida:
                     if pygame.mouse.get_pressed()[0]:
                         self.partida.handleClick(event.pos)
-                self.panelActual.evento(event)
+                #self.panelActual.evento(event)
 
             panel = Panel(0,0,25,25)
             image = ImageLoader().getDefaultImage()
@@ -97,6 +102,9 @@ class Juego:
         self.panelActual = self.panelOpciones
         self.panelOpciones.fitWindow(self.window_size[0], self.window_size[1])
         self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
+
+    def mostrarPanelFileManager(self):
+        self.panelActual = self.panelFileManager
 
     def getMusica(self):
         return self.musica
