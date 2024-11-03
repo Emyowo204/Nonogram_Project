@@ -1,3 +1,5 @@
+import os
+
 import pygame
 from pygame.tests.test_utils.png import Image
 
@@ -27,7 +29,7 @@ class PanelFileManager(Panel):
             surface.fill((255, 255, 255))
             text_surface = self.font.render("..", False, (0, 0, 0))
             surface.blit(text_surface, (0, 0))
-            button = BotonRect(0,y*40,400,40,self.filemanager.enterPath,"..")
+            button = BotonRect(0,y*40,400,40,self.changeDir,"..")
             button.setImage(surface,ImageLoader().getDefaultImage())
             self.add(button)
             y += 1
@@ -41,7 +43,7 @@ class PanelFileManager(Panel):
             surface.fill((255,255,255))
             text_surface = self.font.render(folder, False, (0, 0, 0))
             surface.blit(text_surface,(0,0))
-            button = BotonRect(0, y*40, 400, 40, self.filemanager.enterPath, folder)
+            button = BotonRect(0, y*40, 400, 40, self.changeDir, folder)
             button.setImage(surface, ImageLoader().getDefaultImage())
             self.add(button)
             y += 1
@@ -59,7 +61,12 @@ class PanelFileManager(Panel):
     def evento(self, event):
         for button in self.container:
             button.evento(event)
+
+    def changeDir(self, path):
+        new_path = os.path.join(self.filemanager.getCurrentDir(),path)
+        self.filemanager.enterPath(new_path)
         self.updateButtons()
+        print(path)
 
 
     def draw(self, dest_surface):

@@ -46,6 +46,7 @@ class Juego:
         running = True
         new_size = (720,720)
         self.partida.fitWindow(new_size[0],new_size[1])
+        self.panelFileManager.updateButtons()
         while running:
             deltatime = clock.tick(60) / 1000
             for event in pygame.event.get():
@@ -66,7 +67,7 @@ class Juego:
                     if pygame.mouse.get_pressed()[0]:
                         self.partida.handleClick(event.pos)
                 self.panelActual.evento(event)
-            self.panelFileManager.updateButtons()
+
 
             panel = Panel(0,0,25,25)
             image = ImageLoader().getDefaultImage()
