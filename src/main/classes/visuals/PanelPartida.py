@@ -29,6 +29,9 @@ class PanelPartida(Panel):
         if self.panel_nonograma.checkAssumtion(pos) == 1:
             self.loseLife()
 
+    def handleZoom(self,event, pos):
+        self.panel_nonograma.handleZoom(event, pos)
+
     def loseLife(self):
         self.vidas -= 1
         if self.vidas <= 0 :

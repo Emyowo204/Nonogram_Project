@@ -52,6 +52,8 @@ class Juego:
                         new_size = (event.w,event.h)
                         self.panelActual.fitWindow(new_size[0], new_size[1])
                         self.window_size = new_size
+                elif event.type == pygame.MOUSEMOTION:
+                    pos = event.pos
 
                 elif event.type == pygame.MOUSEBUTTONUP:
                     if resizing:
@@ -60,6 +62,10 @@ class Juego:
                 if self.panelActual == self.partida:
                     if pygame.mouse.get_pressed()[0]:
                         self.partida.handleClick(event.pos)
+
+                    if event.type == pygame.MOUSEWHEEL:
+                        print(event)
+                        self.partida.handleZoom(event, pos)
                 self.panelActual.evento(event)
 
             panel = Panel(0,0,25,25)
