@@ -37,7 +37,7 @@ class Juego:
         self.partida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
-        self.panelFileManager = PanelFileManager(0,0,self.window_size[0], self.window_size[1])
+        self.panelFileManager = PanelFileManager(0,0,self.window_size[0], self.window_size[1],self)
         #self.mostrarPanelMenu()
         self.mostrarPanelFileManager()
         self.panelFileManager.updateButtons()
@@ -65,7 +65,8 @@ class Juego:
                 if self.panelActual == self.partida:
                     if pygame.mouse.get_pressed()[0]:
                         self.partida.handleClick(event.pos)
-                #self.panelActual.evento(event)
+                self.panelActual.evento(event)
+            self.panelFileManager.updateButtons()
 
             panel = Panel(0,0,25,25)
             image = ImageLoader().getDefaultImage()
@@ -105,6 +106,9 @@ class Juego:
 
     def mostrarPanelFileManager(self):
         self.panelActual = self.panelFileManager
+
+    def updateFileManager(self):
+        self.panelFileManager.updateButtons()
 
     def getMusica(self):
         return self.musica
