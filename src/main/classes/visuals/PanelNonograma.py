@@ -40,9 +40,19 @@ class PanelNonograma(Panel):
         self.panel_jugador.handleClick(self.getBoardPosition(pos))
 
     def handleZoom(self, event, pos):
-        self.panel_jugador.handleZoom(event, (pos[0]-self.x,pos[1]-self.y))
-        self.panel_rownums.handleZoom(event, (pos[0]-self.x,pos[1]-self.y))
-        self.panel_rownums.handleZoom(event, (pos[0] - self.x, pos[1] - self.y))
+        size = self.panel_resultado.getSize()
+        if size[0] > 5 or  size[1] > 5:
+            self.panel_jugador.handleZoom(event, (pos[0]-self.x,pos[1]-self.y))
+            x_offset = self.panel_jugador.getXOffset()
+            y_offset = self.panel_jugador.getYOffset()
+            zoom = self.panel_jugador.getZoom()
+            self.panel_rownums.handleZoom(zoom, y_offset)
+            self.panel_colnums.handleZoom(zoom, x_offset)
+
+    def defaultZoom(self):
+        self.panel_jugador.defaultZoom()
+        self.panel_rownums.handleZoom(1, 0)
+        self.panel_colnums.handleZoom(1, 0)
 
     def checkAssumtion(self,pos):
         result = 0

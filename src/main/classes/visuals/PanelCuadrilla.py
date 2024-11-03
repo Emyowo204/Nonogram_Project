@@ -18,8 +18,8 @@ class PanelCuadrilla(Panel):
         self.board = cuadrilla.getBoard()
 
     def positionClick(self,pos):
-        row = int((pos[1] - self.y) // self.cell_size)
-        col = int((pos[0] - self.x) // self.cell_size)
+        row = int((pos[1] - self.y - self.draw_yoffset) // self.cell_size)
+        col = int((pos[0] - self.x - self.draw_xoffset) // self.cell_size)
         if 0 <= col < self.size[0] and 0 <= row < self.size[1]:
             return col,row
         else:
@@ -33,7 +33,7 @@ class PanelCuadrilla(Panel):
                     self.board[col][row] = not self.board[col][row]
 
     def getSize(self):
-        return self.board.getSize()
+        return self.size
 
     def getCellSize(self):
         return self.cell_size
@@ -62,10 +62,15 @@ class PanelCuadrilla(Panel):
         else:
             new_cell_size = self.cell_size * (self.zoom_x / old_zoom_x)
 
-            self.draw_xoffset += pos[0] * (1 - (new_cell_size / self.cell_size))
-            self.draw_yoffset += pos[1] * (1 - (new_cell_size / self.cell_size))
+            self.draw_xoffset += (pos[0] - self.x) * (1 - (new_cell_size / self.cell_size))
+            self.draw_yoffset += (pos[1] - self.y) * (1 - (new_cell_size / self.cell_size))
 
             self.cell_size = new_cell_size
+
+    def defaultZoom(self):
+        self.zoom_x = 1
+        self.draw_xoffset = 0
+        self.draw_yoffset = 0
 
     def calculate_cellSize(self,size):
         if self.size[0] > self.size[1]:
@@ -94,3 +99,12 @@ class PanelCuadrilla(Panel):
                     color = (255, 0, 0)
                 pygame.draw.rect(self.surface, color, (col * self.cell_size + self.draw_xoffset, row * self.cell_size + self.draw_yoffset, self.cell_size - 2, self.cell_size - 2))
         super().draw(dest_surface)
+
+    def getXOffset(self):
+        return self.draw_xoffset
+
+    def getYOffset(self):
+        return self.draw_yoffset
+
+    def getZoom(self):
+        return self.zoom_x

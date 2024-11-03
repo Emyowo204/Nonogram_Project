@@ -5,6 +5,8 @@ from src.main.classes.visuals.Panel import Panel
 class PanelNumeros(Panel):
     def __init__(self, numbers,mode, x, y, width, height):
         super().__init__(x, y, width, height)
+        self.zoom = 1
+        self.offset = 0
         self.numbers = numbers
         self.font = pygame.font.Font(None,18)
         self.mode = mode
@@ -22,9 +24,9 @@ class PanelNumeros(Panel):
             for j in range(len(self.numbers[i])):
                 text_surface = self.font.render(str(self.numbers[i][len(self.numbers[i])-1-j]), False, (255, 255, 255))  # White color
                 if self.mode== 'columns':
-                    self.surface.blit(text_surface, (self.halfCell+i * self.spacing[0], (self.max_lenght-1-j)/10 * self.spacing[1]))
+                    self.surface.blit(text_surface, (self.halfCell+i * self.spacing[0] * self.zoom + self.offset, (self.max_lenght-1-j)/10 * self.spacing[1]))
                 elif mode== 'rows':
-                    self.surface.blit(text_surface, ((self.max_lenght-1-j)/10 * self.spacing[1], self.halfCell+i * self.spacing[0]))
+                    self.surface.blit(text_surface, ((self.max_lenght-1-j)/10 * self.spacing[1] , self.halfCell+i * self.spacing[0] * self.zoom + self.offset) )
 
     def fitPanel(self,numCells):
         self.surface = pygame.Surface((self.w,self.h))
@@ -41,4 +43,9 @@ class PanelNumeros(Panel):
     def draw(self, dest_surface):
         self.drawNumbers(self.mode)
         dest_surface.blit(self.surface,(self.x,self.y))
+
+    def handleZoom(self, zoom, y_offset):
+        self.surface = pygame.Surface((self.w,self.h))
+        self.offset = y_offset
+        self.zoom = zoom
 

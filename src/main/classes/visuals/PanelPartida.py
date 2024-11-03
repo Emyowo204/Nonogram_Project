@@ -32,6 +32,9 @@ class PanelPartida(Panel):
     def handleZoom(self,event, pos):
         self.panel_nonograma.handleZoom(event, pos)
 
+    def defaultZoom(self):
+        self.panel_nonograma.defaultZoom()
+
     def loseLife(self):
         self.vidas -= 1
         if self.vidas <= 0 :

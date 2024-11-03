@@ -64,7 +64,6 @@ class Juego:
                         self.partida.handleClick(event.pos)
 
                     if event.type == pygame.MOUSEWHEEL:
-                        print(event)
                         self.partida.handleZoom(event, pos)
                 self.panelActual.evento(event)
 
@@ -96,6 +95,7 @@ class Juego:
     def mostrarPanelCuadrilla(self, game_index):
         self.panelActual = self.partida
         self.partida.setNonograma(self.game_difficulty, game_index)
+        self.partida.defaultZoom()
         self.partida.fitWindow(self.window_size[0], self.window_size[1])
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
 
