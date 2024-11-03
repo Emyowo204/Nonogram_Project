@@ -37,7 +37,7 @@ class Juego:
         self.partida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
-        self.panelFileManager = PanelFileManager(0,0,self.window_size[0], self.window_size[1],self)
+        self.panelFileManager = PanelFileManager(0,0,self.window_size[0], 1080,self)
         #self.mostrarPanelMenu()
         self.mostrarPanelFileManager()
         self.panelFileManager.updateButtons()

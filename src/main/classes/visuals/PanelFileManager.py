@@ -53,7 +53,7 @@ class PanelFileManager(Panel):
             surface.fill((255, 255, 255))
             text_surface = self.font.render(file, False, (0, 0, 0))
             surface.blit(text_surface, (0, 0))
-            button = BotonRect(0, y*40, 400, 40, Image2Nonogram.convertImg2Bin, (file,30,30))
+            button = BotonRect(0, y*40, 400, 40, Image2Nonogram.convertImg2Bin, os.path.join(self.filemanager.getCurrentDir(),file),30,30)
             button.setImage(text_surface, ImageLoader().getDefaultImage())
             self.add(button)
             y += 1

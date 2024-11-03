@@ -11,6 +11,7 @@ class FileManager:
     def enterPath(self, path):
         path = os.path.expanduser(path)
         if os.path.isdir(path):
+            path = os.path.normpath(path)
             self.currentdir = path
 
     def getCurrentDir(self):
