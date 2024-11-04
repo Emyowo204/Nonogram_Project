@@ -59,6 +59,7 @@ class BotonRect:
                         self.action(self.arguments[0])  # Single argument call
                     else:
                         self.action(*self.arguments)
+                    self.pressed = False
             elif event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(event.pos):
                 self.currentImage = self.shadedImage
                 self.pressed = False
