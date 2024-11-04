@@ -17,7 +17,7 @@ class PanelFileManager(Panel):
         self.setColor(50,50,50)
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
-        self.btnVolver = BotonRect(width-220, height-120, 80, 80, juego.mostrarPanelNiveles,3)
+        self.btnVolver = BotonRect(40, height-120, 80, 80, juego.mostrarPanelNiveles,3)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.firstButton = 1
         self.scaleButton = 720/18
@@ -109,7 +109,7 @@ class PanelFileManager(Panel):
         self.surface.fill((self.red,self.green,self.blue))
         self.scaleButton = int(h / 18)
         self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
-        self.btnVolver.setValues(self.w-220*multi, self.h-120*multi, 80*multi, 80*multi)
+        self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnMoveUp.setValues(self.scaleButton*10, 0, 40*multi, 40*multi)
         self.btnMoveDown.setValues(self.scaleButton*10, self.h-40*multi, 40*multi, 40*multi)
         self.updateButtons()

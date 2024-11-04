@@ -40,12 +40,16 @@ class PanelNumeros(Panel):
             self.spacing[1] = self.w*10 / self.max_lenght
         self.font = pygame.font.Font(None, int(self.halfCell)*3)
 
-    def draw(self, dest_surface):
-        self.drawNumbers(self.mode)
-        dest_surface.blit(self.surface,(self.x,self.y))
-
     def handleZoom(self, zoom, y_offset):
         self.surface = pygame.Surface((self.w,self.h))
         self.offset = y_offset
         self.zoom = zoom
+
+    def defaultZoom(self):
+        self.zoom = 1
+        self.offset = 0
+
+    def draw(self, dest_surface):
+        self.drawNumbers(self.mode)
+        dest_surface.blit(self.surface,(self.x,self.y))
 

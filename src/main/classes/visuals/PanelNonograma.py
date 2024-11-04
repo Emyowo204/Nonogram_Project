@@ -91,7 +91,9 @@ class PanelNonograma(Panel):
         self.panel_jugador.setPos(self.w*2/8, self.h*2/8)
         self.panel_resultado.fitWindow(self.w*2/8)
         self.panel_resultado.setPos(0, 0)
-
+        self.panel_jugador.defaultZoom()
+        self.panel_colnums.defaultZoom()
+        self.panel_rownums.defaultZoom()
 
     def draw(self,dest_surface):
         super().draw(dest_surface)
