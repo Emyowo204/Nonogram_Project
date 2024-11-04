@@ -19,6 +19,8 @@ class Juego:
         self.hard_count = 0
         self.medium_count = 0
         self.easy_count = 0
+        self.custom_count = 0
+        self.custom_puzzles = []
         self.window = None
         self.window_size = [None, None]
         self.panelActual = None
@@ -100,6 +102,12 @@ class Juego:
         self.filemanager.updateDir()
         self.hard_count = len(self.filemanager.getPuzzles())
 
+    def readCustom(self):
+        self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/Custom"))
+        self.filemanager.updateDir()
+        self.custom_puzzles = self.filemanager.getPuzzles()
+        self.custom_count = len(self.custom_puzzles)
+
     def mostrarPanelMenu(self):
         self.panelActual = self.panelMenu
         self.panelMenu.fitWindow(self.window_size[0], self.window_size[1])
@@ -113,6 +121,9 @@ class Juego:
             quantity = self.medium_count
         elif game_difficulty == "Hard":
             quantity = self.hard_count
+        elif game_difficulty == "Custom":
+            self.readCustom()
+            quantity = self.custom_count
         self.panelNiveles.setLevelButtons(quantity)
         self.panelActual = self.panelNiveles
         self.panelNiveles.fitWindow(self.window_size[0], self.window_size[1])
@@ -121,8 +132,12 @@ class Juego:
 
     def mostrarPanelCuadrilla(self, game_index):
         self.panelActual = self.partida
-        self.partida.setNonograma(self.game_difficulty, game_index)
+        if self.game_difficulty == "Custom":
+            self.partida.setNonograma(self.game_difficulty + '/' + self.custom_puzzles[game_index-1])
+        else:
+            self.partida.setNonograma(self.game_difficulty+'/'+self.game_difficulty+'_Nivel'+str(game_index)+'.txt')
         self.partida.fitWindow(self.window_size[0], self.window_size[1])
+        self.partida.setVolverBoton(self.game_difficulty)
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
 
     def mostrarPanelOpciones(self):

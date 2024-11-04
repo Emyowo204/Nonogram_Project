@@ -21,8 +21,8 @@ class PanelNonograma(Panel):
         self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'columns',0,0,700,300)
         self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 700)
 
-    def setNonograma(self, difficulty, index):
-        self.cuadrilla_resultado = Cuadrilla(None, None, difficulty+'/'+difficulty+'_Nivel'+str(index)+'.txt')
+    def setNonograma(self, path):
+        self.cuadrilla_resultado = Cuadrilla(None, None, path)
         self.board_size = self.cuadrilla_resultado.getSize()
         self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], None)
         self.panel_jugador.setNewCuadrilla(self.cuadrilla_jugador)

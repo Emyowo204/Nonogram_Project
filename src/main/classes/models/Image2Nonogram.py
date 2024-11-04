@@ -38,8 +38,8 @@ class Image2Nonogram:
         img = cv2.resize(img, (width, height))
 
         img_binary_matrix = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2) // 255
-        dir = os.path.join(os.path.dirname(__file__), '../../puzzles')
-        file_path = os.path.join(dir, os.path.splitext(os.path.basename(img_path))[0] +".txt")
+        dir = os.path.join(os.path.dirname(__file__), '../../puzzles/Custom')
+        file_path = os.path.join(dir, os.path.splitext("Custom"+os.path.basename(img_path))[0] +".txt")
         file = open(file_path,'w')
         file.write(f"{width} {height}\n")
         for r in img_binary_matrix:

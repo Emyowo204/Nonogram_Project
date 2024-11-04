@@ -19,11 +19,13 @@ class PanelPartida(Panel):
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.juego = juego
 
-    def setNonograma(self, game_difficulty, game_index):
-        self.panel_nonograma.setNonograma(game_difficulty, game_index)
-        self.botonVolver.setAction(self.juego.mostrarPanelNiveles, game_difficulty)
+    def setNonograma(self, path):
+        self.panel_nonograma.setNonograma(path)
         self.vidas = 5
         self.stringInfo = 'Vidas: 5'
+
+    def setVolverBoton(self, game_difficulty):
+        self.botonVolver.setAction(self.juego.mostrarPanelNiveles, game_difficulty)
 
     def handleClick(self,pos):
         self.panel_nonograma.handleClick(pos)

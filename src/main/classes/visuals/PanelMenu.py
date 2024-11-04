@@ -49,6 +49,8 @@ class PanelMenu(Panel):
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.btnIm2Nono = BotonRect(width * 4 / 10, height * 4/8, 180, 90, self.juego.mostrarPanelFileManager, None)
         self.btnIm2Nono.setImage(pygame.image.load('../images/btnImg2NonoNormal.png'), pygame.image.load('../images/btnImg2NonoShaded.png'))
+        self.btn_mynono = BotonRect(width * 4 / 10, height * 4 / 8, 180, 90, self.juego.mostrarPanelNiveles, "Custom")
+        self.btn_mynono.setImage(pygame.image.load('../images/btnCustomNormal.png'), pygame.image.load('../images/btnCustomShaded.png'))
         self.mainMenu = False
         self.toggleMainMenu()
 
@@ -61,6 +63,7 @@ class PanelMenu(Panel):
         self.btnOpciones.evento(event)
         self.btnVolver.evento(event)
         self.btnIm2Nono.evento(event)
+        self.btn_mynono.evento(event)
         for i in range(len(self.btnDifficulty)):
             self.btnDifficulty[i].evento(event)
 
@@ -84,6 +87,7 @@ class PanelMenu(Panel):
         self.btnOpciones.setValues((self.w-360*multi)/2, (self.h-90*multi)*4/7, 360*multi, 90*multi)
         self.btnVolver.setValues((self.w-180*multi), (self.h-45*multi), 170*multi, 35*multi)
         self.btnIm2Nono.setValues((self.w-90*multi)*4/9, (self.h-90*multi)*4/7, 180*multi, 90*multi)
+        self.btn_mynono.setValues((self.w - 90 * multi) * 4 / 9, (self.h + 90 * multi) * 4 / 7, 180 * multi, 90 * multi)
         for i in range(len(self.btnDifficulty)):
             self.btnDifficulty[i].setValues((self.w-90*multi)*(1+3*i)/9, (self.h-90*multi)*2/7, 180*multi, 90*multi)
 
@@ -94,6 +98,7 @@ class PanelMenu(Panel):
         self.btnOpciones.setEnable(self.mainMenu)
         self.btnVolver.setEnable(not self.mainMenu)
         self.btnIm2Nono.setEnable(not self.mainMenu)
+        self.btn_mynono.setEnable(not self.mainMenu)
         for i in range(len(self.btnDifficulty)):
             self.btnDifficulty[i].setEnable(not self.mainMenu)
 
@@ -112,5 +117,6 @@ class PanelMenu(Panel):
         else :
             self.btnVolver.draw(self.juego.getWindow())
             self.btnIm2Nono.draw(self.juego.getWindow())
+            self.btn_mynono.draw(self.juego.getWindow())
             for i in range(len(self.btnDifficulty)):
                 self.btnDifficulty[i].draw(self.juego.getWindow())
