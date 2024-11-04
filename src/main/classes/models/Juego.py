@@ -67,6 +67,8 @@ class Juego:
                         new_size = (event.w,event.h)
                         self.panelActual.fitWindow(new_size[0], new_size[1])
                         self.window_size = new_size
+                elif event.type == pygame.MOUSEMOTION:
+                    pos = event.pos
 
                 elif event.type == pygame.MOUSEBUTTONUP:
                     if resizing:
@@ -75,6 +77,9 @@ class Juego:
                 if self.panelActual == self.partida:
                     if pygame.mouse.get_pressed()[0]:
                         self.partida.handleClick(event.pos)
+
+                    if event.type == pygame.MOUSEWHEEL:
+                        self.partida.handleZoom(event, pos)
                 self.panelActual.evento(event)
 
 
@@ -136,6 +141,7 @@ class Juego:
             self.partida.setNonograma(self.game_difficulty + '/' + self.custom_puzzles[game_index-1])
         else:
             self.partida.setNonograma(self.game_difficulty+'/'+self.game_difficulty+'_Nivel'+str(game_index)+'.txt')
+        self.partida.defaultZoom()
         self.partida.fitWindow(self.window_size[0], self.window_size[1])
         self.partida.setVolverBoton(self.game_difficulty)
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
