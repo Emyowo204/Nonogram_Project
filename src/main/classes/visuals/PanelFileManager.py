@@ -15,7 +15,9 @@ class PanelFileManager(Panel):
         self.filemanager = FileManager()
         self.font = pygame.font.Font(None, 20)
         self.setColor(50,50,50)
-        self.btnVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, juego.mostrarPanelMenu,None)
+        self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
+        self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
+        self.btnVolver = BotonRect(width-220, height-120, 80, 80, juego.mostrarPanelNiveles,3)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.firstButton = 1
         self.scaleButton = 720/18
@@ -68,6 +70,7 @@ class PanelFileManager(Panel):
             button.evento(event)
         self.buttonBack.evento(event)
         self.btnVolver.evento(event)
+        self.btnOpciones.evento(event)
         self.btnMoveUp.evento(event)
         self.btnMoveDown.evento(event)
 
@@ -105,7 +108,8 @@ class PanelFileManager(Panel):
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
         self.scaleButton = int(h / 18)
-        self.btnVolver.setValues((self.w-180*multi), (self.h-45*multi), 170*multi, 35*multi)
+        self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
+        self.btnVolver.setValues(self.w-220*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnMoveUp.setValues(self.scaleButton*10, 0, 40*multi, 40*multi)
         self.btnMoveDown.setValues(self.scaleButton*10, self.h-40*multi, 40*multi, 40*multi)
         self.updateButtons()
@@ -118,5 +122,6 @@ class PanelFileManager(Panel):
             button.draw(self.juego.getWindow())
         self.buttonBack.draw(self.juego.getWindow())
         self.btnVolver.draw(self.juego.getWindow())
+        self.btnOpciones.draw(self.juego.getWindow())
         self.btnMoveUp.draw(self.juego.getWindow())
         self.btnMoveDown.draw(self.juego.getWindow())

@@ -24,6 +24,7 @@ class Musica:
         :param volumen: Valor del volumen de la música para ser designado.
         """
         self.archivo = archivo
+        self.archivoPrevio = archivo
         self.volumen = volumen
         self.play()
 
@@ -61,5 +62,13 @@ class Musica:
         :param nuevoArchivo: Ubicación de la nueva canción a reproducir.
         """
         pygame.mixer.music.stop()
+        self.archivoPrevio = self.archivo
         self.archivo = nuevoArchivo
+        self.play()
+
+    def cambiarMusicaPrevia(self):
+        pygame.mixer.music.stop()
+        auxMusica = self.archivo
+        self.archivo = self.archivoPrevio
+        self.archivoPrevio = auxMusica
         self.play()

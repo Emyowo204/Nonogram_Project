@@ -38,19 +38,14 @@ class PanelMenu(Panel):
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
         self.btnJugar = BotonRect(width*1/4, height*2/8, 360, 90, self.toggleMainMenu,None)
         self.btnJugar.setImage(pygame.image.load('../images/botonJugar.png'),pygame.image.load('../images/botonJugarShaded.png'))
-        self.btnOpciones = BotonRect(width*1/4, height*4/8, 360, 90, self.juego.mostrarPanelOpciones,None)
-        self.btnOpciones.setImage(pygame.image.load('../images/botonOpciones.png'),pygame.image.load('../images/botonOpcionesShaded.png'))
         self.btnDifficulty = []
-        textDiff = ["Easy", "Medium", "Hard"]
-        for i in range(len(textDiff)):
-            self.btnDifficulty.append(BotonRect(width*(1+3*i)/10, height*2/8, 180, 90, self.juego.mostrarPanelNiveles,textDiff[i]))
-            self.btnDifficulty[i].setImage(pygame.image.load('../images/btn'+textDiff[i]+'Normal.png'),pygame.image.load('../images/btn'+textDiff[i]+'Shaded.png'))
-        self.btnVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, self.toggleMainMenu,None)
+        for i in range(4):
+            self.btnDifficulty.append(BotonRect(self.w/2-150, self.h*(2+3*i)/16, 300, 100, self.juego.mostrarPanelNiveles,i))
+            self.btnDifficulty[i].setImage(pygame.image.load('../images/btnDiff'+str(i)+'Normal.png'),pygame.image.load('../images/btnDiff'+str(i)+'Shaded.png'))
+        self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
+        self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
+        self.btnVolver = BotonRect(40, height-120, 80, 80, self.toggleMainMenu,None)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
-        self.btnIm2Nono = BotonRect(width * 4 / 10, height * 4/8, 180, 90, self.juego.mostrarPanelFileManager, None)
-        self.btnIm2Nono.setImage(pygame.image.load('../images/btnImg2NonoNormal.png'), pygame.image.load('../images/btnImg2NonoShaded.png'))
-        self.btn_mynono = BotonRect(width * 4 / 10, height * 4 / 8, 180, 90, self.juego.mostrarPanelNiveles, "Custom")
-        self.btn_mynono.setImage(pygame.image.load('../images/btnCustomNormal.png'), pygame.image.load('../images/btnCustomShaded.png'))
         self.mainMenu = False
         self.toggleMainMenu()
 
@@ -62,8 +57,6 @@ class PanelMenu(Panel):
         self.btnJugar.evento(event)
         self.btnOpciones.evento(event)
         self.btnVolver.evento(event)
-        self.btnIm2Nono.evento(event)
-        self.btn_mynono.evento(event)
         for i in range(len(self.btnDifficulty)):
             self.btnDifficulty[i].evento(event)
 
@@ -84,21 +77,16 @@ class PanelMenu(Panel):
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
         self.btnJugar.setValues((self.w-360*multi)/2, (self.h-90*multi)*2/7, 360*multi, 90*multi)
-        self.btnOpciones.setValues((self.w-360*multi)/2, (self.h-90*multi)*4/7, 360*multi, 90*multi)
-        self.btnVolver.setValues((self.w-180*multi), (self.h-45*multi), 170*multi, 35*multi)
-        self.btnIm2Nono.setValues((self.w-90*multi)*4/9, (self.h-90*multi)*4/7, 180*multi, 90*multi)
-        self.btn_mynono.setValues((self.w - 90 * multi) * 4 / 9, (self.h + 90 * multi) * 4 / 7, 180 * multi, 90 * multi)
+        self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
+        self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
         for i in range(len(self.btnDifficulty)):
-            self.btnDifficulty[i].setValues((self.w-90*multi)*(1+3*i)/9, (self.h-90*multi)*2/7, 180*multi, 90*multi)
+            self.btnDifficulty[i].setValues(self.w/2-150*multi, self.h*(2+3*i)/16, 300*multi, 100*multi)
 
 
     def toggleMainMenu(self):
         self.mainMenu = not self.mainMenu
         self.btnJugar.setEnable(self.mainMenu)
-        self.btnOpciones.setEnable(self.mainMenu)
         self.btnVolver.setEnable(not self.mainMenu)
-        self.btnIm2Nono.setEnable(not self.mainMenu)
-        self.btn_mynono.setEnable(not self.mainMenu)
         for i in range(len(self.btnDifficulty)):
             self.btnDifficulty[i].setEnable(not self.mainMenu)
 
@@ -111,12 +99,10 @@ class PanelMenu(Panel):
         :param dest_surface: Superficie en la que se dibujará el Panel.
         """
         dest_surface.blit(self.fondoImage, (0, 0)) # panel en negro por mientras
+        self.btnOpciones.draw(self.juego.getWindow())
         if self.mainMenu :
             self.btnJugar.draw(self.juego.getWindow())
-            self.btnOpciones.draw(self.juego.getWindow())
         else :
             self.btnVolver.draw(self.juego.getWindow())
-            self.btnIm2Nono.draw(self.juego.getWindow())
-            self.btn_mynono.draw(self.juego.getWindow())
             for i in range(len(self.btnDifficulty)):
                 self.btnDifficulty[i].draw(self.juego.getWindow())

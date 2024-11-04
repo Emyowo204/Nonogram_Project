@@ -15,7 +15,9 @@ class PanelPartida(Panel):
         self.setColor(200,200,200)
         self.font = pygame.font.Font(None, 40)
         self.stringInfo = 'Vidas: 5'
-        self.botonVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35,juego.mostrarPanelNiveles,None)
+        self.btnOpciones = BotonRect(width-70, height-70, 60, 60, juego.mostrarPanelOpciones, None)
+        self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
+        self.botonVolver = BotonRect(10, height-70, 60, 60, juego.mostrarPanelNiveles,None)
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.juego = juego
 
@@ -49,6 +51,7 @@ class PanelPartida(Panel):
 
     def evento(self, event):
         self.botonVolver.evento(event)
+        self.btnOpciones.evento(event)
 
     def fitWindow(self, w, h):
         self.w = w
@@ -62,14 +65,13 @@ class PanelPartida(Panel):
             multi = w / 720
         else :
             multi = h / 720
-        self.botonVolver.setValues((self.w-180*multi), (self.h-45*multi), 170*multi, 35*multi)
+        self.btnOpciones.setValues(self.w-70*multi, self.h-70*multi, 60*multi, 60*multi)
+        self.botonVolver.setValues(10*multi, self.h-70*multi, 60*multi, 60*multi)
 
     def draw(self,dest_surface):
         super().draw(dest_surface)
         self.panel_nonograma.draw(self.surface)
         self.botonVolver.draw(self.surface)
+        self.btnOpciones.draw(self.juego.getWindow())
         text_surface = self.font.render(self.stringInfo, False, (0, 0, 0))
         self.surface.blit(text_surface, (10, 10))
-
-
-

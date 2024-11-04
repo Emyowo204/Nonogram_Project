@@ -16,22 +16,20 @@ from src.main.classes.visuals.Ventana import Ventana
 
 class Juego:
     def __init__(self):
-        self.hard_count = 0
-        self.medium_count = 0
-        self.easy_count = 0
-        self.custom_count = 0
-        self.custom_puzzles = []
         self.window = None
         self.window_size = [None, None]
         self.panelActual = None
+        self.panelAnterior = None
         self.musica = None
-        self.partida = None
+        self.panelPartida = None
         self.panelNiveles = None
         self.panelOpciones = None
         self.panelMenu = None
         self.panelFileManager = None
-        self.game_difficulty = "TEST"
-
+        self.custom_puzzles = []
+        self.levelsCount = [0, 0, 0, 0]
+        self.difficultyList = ["Easy", "Medium", "Hard", "Custom"]
+        self.gameDifficulty = 0
 
     def start(self):
         self.filemanager = FileManager()
@@ -44,7 +42,7 @@ class Juego:
 
         clock = pygame.time.Clock()
         self.panelMenu = PanelMenu(0,0, self.window_size[0], self.window_size[1], self)
-        self.partida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
+        self.panelPartida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelFileManager = PanelFileManager(0,0,self.window_size[0], 1080,self)
@@ -54,7 +52,7 @@ class Juego:
         resizing = False
         running = True
         new_size = (720,720)
-        self.partida.fitWindow(new_size[0],new_size[1])
+        self.panelPartida.fitWindow(new_size[0],new_size[1])
         self.panelFileManager.updateButtons()
         while running:
             deltatime = clock.tick(60) / 1000
@@ -74,12 +72,12 @@ class Juego:
                     if resizing:
                         resizing=False
 
-                if self.panelActual == self.partida:
+                if self.panelActual == self.panelPartida:
                     if pygame.mouse.get_pressed()[0]:
-                        self.partida.handleClick(event.pos)
+                        self.panelPartida.handleClick(event.pos)
 
                     if event.type == pygame.MOUSEWHEEL:
-                        self.partida.handleZoom(event, pos)
+                        self.panelPartida.handleZoom(event, pos)
                 self.panelActual.evento(event)
 
 
@@ -97,63 +95,64 @@ class Juego:
         pygame.quit()
 
     def contarPuzzles(self):
-        self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/Easy"))
-        self.filemanager.updateDir()
-        self.easy_count = len(self.filemanager.getPuzzles())
-        self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/Medium"))
-        self.filemanager.updateDir()
-        self.medium_count = len(self.filemanager.getPuzzles())
-        self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/Hard"))
-        self.filemanager.updateDir()
-        self.hard_count = len(self.filemanager.getPuzzles())
-
-    def readCustom(self):
-        self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/Custom"))
-        self.filemanager.updateDir()
-        self.custom_puzzles = self.filemanager.getPuzzles()
-        self.custom_count = len(self.custom_puzzles)
+        for i in range(3):
+            self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/"+self.difficultyList[i]))
+            self.filemanager.updateDir()
+            self.levelsCount[i] = len(self.filemanager.getPuzzles())
 
     def mostrarPanelMenu(self):
+        self.panelAnterior = self.panelActual
         self.panelActual = self.panelMenu
         self.panelMenu.fitWindow(self.window_size[0], self.window_size[1])
         self.musica.cambiarMusica(None)
 
-    def mostrarPanelNiveles(self, game_difficulty):
-        quantity = 0
-        if game_difficulty == "Easy":
-            quantity = self.easy_count
-        elif game_difficulty == "Medium":
-            quantity = self.medium_count
-        elif game_difficulty == "Hard":
-            quantity = self.hard_count
-        elif game_difficulty == "Custom":
-            self.readCustom()
-            quantity = self.custom_count
+    def mostrarPanelNiveles(self, difficulty_index):
+        if difficulty_index == 3:
+            self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/" + self.difficultyList[3]))
+            self.filemanager.updateDir()
+            self.custom_puzzles = self.filemanager.getPuzzles()
+            self.levelsCount[3] = len(self.custom_puzzles)
+            self.panelNiveles.setLoadEnable(True)
+        else:
+            self.panelNiveles.setLoadEnable(False)
+        quantity = self.levelsCount[difficulty_index]
         self.panelNiveles.setLevelButtons(quantity)
+        self.panelAnterior = self.panelActual
         self.panelActual = self.panelNiveles
         self.panelNiveles.fitWindow(self.window_size[0], self.window_size[1])
-        self.game_difficulty = game_difficulty
+        self.gameDifficulty = difficulty_index
         self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
 
     def mostrarPanelCuadrilla(self, game_index):
-        self.panelActual = self.partida
-        if self.game_difficulty == "Custom":
-            self.partida.setNonograma(self.game_difficulty + '/' + self.custom_puzzles[game_index-1])
+        self.panelAnterior = self.panelActual
+        self.panelActual = self.panelPartida
+        diff_name = self.difficultyList[self.gameDifficulty]
+        if self.gameDifficulty == 3:
+            self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1])
         else:
-            self.partida.setNonograma(self.game_difficulty+'/'+self.game_difficulty+'_Nivel'+str(game_index)+'.txt')
-        self.partida.defaultZoom()
-        self.partida.fitWindow(self.window_size[0], self.window_size[1])
-        self.partida.setVolverBoton(self.game_difficulty)
+            self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt')
+        self.panelPartida.defaultZoom()
+        self.panelPartida.fitWindow(self.window_size[0], self.window_size[1])
+        self.panelPartida.setVolverBoton(self.gameDifficulty)
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
 
     def mostrarPanelOpciones(self):
+        self.panelAnterior = self.panelActual
         self.panelActual = self.panelOpciones
         self.panelOpciones.fitWindow(self.window_size[0], self.window_size[1])
         self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
 
     def mostrarPanelFileManager(self):
+        self.panelAnterior = self.panelActual
         self.panelActual = self.panelFileManager
         self.panelFileManager.fitWindow(self.window_size[0], self.window_size[1])
+
+    def mostrarPanelAnterior(self):
+        auxPanel = self.panelActual
+        self.panelActual = self.panelAnterior
+        self.panelAnterior = auxPanel
+        self.panelActual.fitWindow(self.window_size[0], self.window_size[1])
+        self.musica.cambiarMusicaPrevia()
 
     def updateFileManager(self):
         self.panelFileManager.updateButtons()

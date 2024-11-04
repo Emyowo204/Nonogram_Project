@@ -15,8 +15,9 @@ class ImageLoader:
             self.program_icon = pygame.image.load('../images/icon_temp.png')
             self.volverNormal = pygame.image.load('../images/botonVolverNormal.png')
             self.volverShaded = pygame.image.load('../images/botonVolverShaded.png')
+            self.opcionNormal = pygame.image.load('../images/botonOpcionNormal.png')
+            self.opcionShaded = pygame.image.load('../images/botonOpcionShaded.png')
             self.numButtonsImage = []
-
 
             ImageLoader._inicializado = True
 
@@ -31,3 +32,9 @@ class ImageLoader:
 
     def getVolShaded(self):
         return self.volverShaded
+
+    def getOpnNormal(self):
+        return self.opcionNormal
+
+    def getOpnShaded(self):
+        return self.opcionShaded

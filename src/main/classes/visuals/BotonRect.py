@@ -108,6 +108,9 @@ class BotonRect:
     def setEnable(self, bool):
         self.enabled = bool
 
+    def isEnabled(self):
+        return self.enabled
+
     def draw(self, screen):
         """
         Dibuja el botón.

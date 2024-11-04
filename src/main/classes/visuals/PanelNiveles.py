@@ -13,16 +13,15 @@ class PanelNiveles(Panel):
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
         self.btnNiveles = []
         self.cantidad_nivel = 0
-        j=0
-        i=0
-        for a in range(20) :
-            self.btnNiveles.append(BotonRect(width*(1.5+2*i)/12, height*(1.5+2*j)/12, 60, 60, self.juego.mostrarPanelCuadrilla,a+1))
-            i = i+1
-            if i >= 5:
-                j = j+1
-                i = 0
-        self.btnVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, self.juego.mostrarPanelMenu,None)
+        self.btnLoadImg = BotonRect(self.w/2-80, self.h-120, 160, 80, self.juego.mostrarPanelFileManager, None)
+        self.btnLoadImg.setImage(pygame.image.load('../images/btnImg2NonoNormal.png'), pygame.image.load('../images/btnImg2NonoShaded.png'))
+        self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
+        self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
+        self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelMenu,None)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
+
+    def setLoadEnable(self, enabled):
+        self.btnLoadImg.setEnable(enabled)
 
     def setLevelButtons(self, quantity):
         self.cantidad_nivel = quantity
@@ -38,7 +37,9 @@ class PanelNiveles(Panel):
     def evento(self, event):
         for i in range(self.cantidad_nivel):
             self.btnNiveles[i].evento(event)
+        self.btnLoadImg.evento(event)
         self.btnVolver.evento(event)
+        self.btnOpciones.evento(event)
 
     def fitWindow(self, w, h):
         if w < h :
@@ -59,11 +60,17 @@ class PanelNiveles(Panel):
             if i >= 5:
                 j = j + 1
                 i = 0
-        self.btnVolver.setValues((self.w-180*multi), (self.h-45*multi), 170*multi, 35*multi)
+        self.btnLoadImg.setValues(self.w/2-80*multi, self.h-120*multi, 160*multi, 80*multi)
+        self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
+        self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
 
     def draw(self, dest_surface):
         super().draw(dest_surface)
         dest_surface.blit(self.fondoImage, (0, 0))
         for i in range(self.cantidad_nivel):
             self.btnNiveles[i].draw(self.juego.getWindow())
+        if self.btnLoadImg.isEnabled():
+            self.btnLoadImg.draw(self.juego.getWindow())
         self.btnVolver.draw(self.juego.getWindow())
+        self.btnOpciones.draw(self.juego.getWindow())
+
