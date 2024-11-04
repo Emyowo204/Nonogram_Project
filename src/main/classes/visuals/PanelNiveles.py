@@ -19,6 +19,7 @@ class PanelNiveles(Panel):
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
         self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelMenu,None)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
+        self.font = pygame.font.Font(None, 40)
 
     def setLoadEnable(self, enabled):
         self.btnLoadImg.setEnable(enabled)
@@ -28,7 +29,13 @@ class PanelNiveles(Panel):
         j = 0
         i = 0
         for a in range(quantity):
+            lvlSurNormal = pygame.image.load('../images/botonNivelesNormal.png')
+            lvlSurShaded = pygame.image.load('../images/botonNivelesShaded.png')
+            text_surface = self.font.render(str(a+1), False, (0, 0, 0))
+            lvlSurNormal.blit(text_surface, (20,20))
+            lvlSurShaded.blit(text_surface, (20, 20))
             self.btnNiveles.append(BotonRect(self.w * (1.5 + 2 * i) / 12, self.h * (1.5 + 2 * j) / 12, 60, 60, self.juego.mostrarPanelCuadrilla, a + 1))
+            self.btnNiveles[a].setImage(lvlSurNormal, lvlSurShaded)
             i = i + 1
             if i >= 5:
                 j = j + 1
