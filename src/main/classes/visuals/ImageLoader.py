@@ -13,7 +13,9 @@ class ImageLoader:
         if not self._inicializado:
             self.defaultImage = pygame.image.load('../images/default.png')
             self.program_icon = pygame.image.load('../images/icon_temp.png')
-            self.numBotonsImage = []
+            self.volverNormal = pygame.image.load('../images/botonVolverNormal.png')
+            self.volverShaded = pygame.image.load('../images/botonVolverShaded.png')
+            self.numButtonsImage = []
 
 
             ImageLoader._inicializado = True
@@ -23,3 +25,9 @@ class ImageLoader:
 
     def getIcon(self):
         return self.program_icon
+
+    def getVolNormal(self):
+        return self.volverNormal
+
+    def getVolShaded(self):
+        return self.volverShaded
