@@ -11,6 +11,7 @@ class PanelNiveles(Panel):
         self.fondoImageOG = pygame.image.load('../images/fondoMenuTest.png')
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
         self.btnNiveles = []
+        self.cantidad_nivel = 0
         j=0
         i=0
         for a in range(20) :
@@ -23,8 +24,20 @@ class PanelNiveles(Panel):
         self.btnVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, self.juego.mostrarPanelMenu,None)
         self.btnVolver.setImage(pygame.image.load('../images/botonNormal.png'), pygame.image.load('../images/botonShaded.png'))
 
+
+    def setLevelButtons(self, quantity):
+        self.cantidad_nivel = quantity
+        j = 0
+        i = 0
+        for a in range(quantity):
+            self.btnNiveles.append(BotonRect(self.w * (1.5 + 2 * i) / 12, self.h * (1.5 + 2 * j) / 12, 60, 60, self.juego.mostrarPanelCuadrilla, a + 1))
+            i = i + 1
+            if i >= 5:
+                j = j + 1
+                i = 0
+
     def evento(self, event):
-        for i in range(20):
+        for i in range(self.cantidad_nivel):
             self.btnNiveles[i].evento(event)
         self.btnVolver.evento(event)
 
@@ -41,7 +54,7 @@ class PanelNiveles(Panel):
         self.surface.fill((self.red,self.green,self.blue))
         j=0
         i=0
-        for a in range(20):
+        for a in range(self.cantidad_nivel):
             self.btnNiveles[a].setValues(w*(1.5+2*i)/12, h*(1.5+2*j)/12, 60 * multi, 60 * multi)
             i = i + 1
             if i >= 5:
@@ -51,6 +64,6 @@ class PanelNiveles(Panel):
 
     def draw(self, dest_surface):
         dest_surface.blit(self.fondoImage, (0, 0))
-        for i in range(20):
+        for i in range(self.cantidad_nivel):
             self.btnNiveles[i].draw(self.juego.getWindow())
         self.btnVolver.draw(self.juego.getWindow())

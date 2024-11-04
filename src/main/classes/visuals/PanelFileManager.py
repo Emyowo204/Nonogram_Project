@@ -34,7 +34,7 @@ class PanelFileManager(Panel):
             self.add(button)
             y += 1
 
-        self.filemanager.updateFoldersAndImages()
+        self.filemanager.updateDir()
         folders = self.filemanager.getFolders()
         files = self.filemanager.getImages()
 
@@ -64,7 +64,7 @@ class PanelFileManager(Panel):
 
     def changeDir(self, path):
         new_path = os.path.join(self.filemanager.getCurrentDir(),path)
-        self.filemanager.enterPath(new_path)
+        self.filemanager.changeDir(new_path)
         self.updateButtons()
         print(path)
 

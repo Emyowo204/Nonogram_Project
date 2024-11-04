@@ -1,3 +1,5 @@
+import os.path
+
 import pygame
 
 from src.main.classes.models.FileManager import FileManager
@@ -14,6 +16,9 @@ from src.main.classes.visuals.Ventana import Ventana
 
 class Juego:
     def __init__(self):
+        self.hard_count = 0
+        self.medium_count = 0
+        self.easy_count = 0
         self.window = None
         self.window_size = [None, None]
         self.panelActual = None
@@ -26,6 +31,8 @@ class Juego:
 
 
     def start(self):
+        self.filemanager = FileManager()
+        self.contarPuzzles()
         self.window_size = [720, 720]
         ventana = Ventana(self.window_size[0], self.window_size[1])
         self.window = ventana.getWindow()
@@ -38,8 +45,8 @@ class Juego:
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelFileManager = PanelFileManager(0,0,self.window_size[0], 1080,self)
-        #self.mostrarPanelMenu()
-        self.mostrarPanelFileManager()
+        self.mostrarPanelMenu()
+        #self.mostrarPanelFileManager()
         self.panelFileManager.updateButtons()
 
         resizing = False
@@ -82,6 +89,16 @@ class Juego:
 
         pygame.quit()
 
+    def contarPuzzles(self):
+        self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/Easy"))
+        self.filemanager.updateDir()
+        self.easy_count = len(self.filemanager.getPuzzles())
+        self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/Medium"))
+        self.filemanager.updateDir()
+        self.medium_count = len(self.filemanager.getPuzzles())
+        self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/Hard"))
+        self.filemanager.updateDir()
+        self.hard_count = len(self.filemanager.getPuzzles())
 
     def mostrarPanelMenu(self):
         self.panelActual = self.panelMenu
@@ -89,6 +106,14 @@ class Juego:
         self.musica.cambiarMusica(None)
 
     def mostrarPanelNiveles(self, game_difficulty):
+        quantity = 0
+        if game_difficulty == "Easy":
+            quantity = self.easy_count
+        elif game_difficulty == "Medium":
+            quantity = self.medium_count
+        elif game_difficulty == "Hard":
+            quantity = self.hard_count
+        self.panelNiveles.setLevelButtons(quantity)
         self.panelActual = self.panelNiveles
         self.panelNiveles.fitWindow(self.window_size[0], self.window_size[1])
         self.game_difficulty = game_difficulty
