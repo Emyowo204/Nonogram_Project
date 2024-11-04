@@ -1,6 +1,7 @@
 import os
 
 import pygame
+from pygame import MOUSEBUTTONDOWN
 
 from src.main.classes.models.FileManager import FileManager
 from src.main.classes.visuals.PanelFileManager import PanelFileManager
@@ -30,6 +31,7 @@ class Juego:
         self.levelsCount = [0, 0, 0, 0]
         self.difficultyList = ["Easy", "Medium", "Hard", "Custom"]
         self.gameDifficulty = 0
+        last_pos = (0,0)
 
     def start(self):
         self.filemanager = FileManager()
@@ -49,6 +51,8 @@ class Juego:
         self.mostrarPanelMenu()
         self.panelFileManager.updateButtons()
 
+        pos = (0,0)
+        is_pressed = False
         resizing = False
         running = True
         new_size = (720,720)
@@ -73,8 +77,15 @@ class Juego:
                         resizing=False
 
                 if self.panelActual == self.panelPartida:
-                    if pygame.mouse.get_pressed()[0]:
-                        self.panelPartida.handleClick(event.pos)
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button == 1:
+                            is_pressed = True
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        if event.button == 1:
+                            is_pressed = False
+
+                    if is_pressed:
+                        self.panelPartida.handleClick(pos)
 
                     if event.type == pygame.MOUSEWHEEL:
                         self.panelPartida.handleZoom(event, pos)
