@@ -52,7 +52,6 @@ class BotonRect:
                 self.pressed = True
             elif event.type == pygame.MOUSEBUTTONUP and self.pressed:
                 if self.action:
-                    print(self.arguments)
                     if self.arguments[0] is None:
                         self.action()
                     elif len(self.arguments) == 1:

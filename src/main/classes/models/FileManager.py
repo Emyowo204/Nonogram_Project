@@ -19,7 +19,10 @@ class FileManager:
         return self.currentdir
 
     def updateDir(self):
-        self.file_list = os.listdir(self.currentdir)
+        try:
+            self.file_list = os.listdir(self.currentdir)
+        except OSError:
+            print("Error")
         valid_files = []
         valid_folders = []
         valid_puzzles = []

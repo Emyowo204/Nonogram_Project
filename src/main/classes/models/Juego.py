@@ -1,4 +1,4 @@
-import os.path
+import os
 
 import pygame
 
@@ -27,6 +27,7 @@ class Juego:
         self.panelNiveles = None
         self.panelOpciones = None
         self.panelMenu = None
+        self.panelFileManager = None
         self.game_difficulty = "TEST"
 
 
@@ -46,7 +47,6 @@ class Juego:
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelFileManager = PanelFileManager(0,0,self.window_size[0], 1080,self)
         self.mostrarPanelMenu()
-        #self.mostrarPanelFileManager()
         self.panelFileManager.updateButtons()
 
         resizing = False
@@ -132,6 +132,7 @@ class Juego:
 
     def mostrarPanelFileManager(self):
         self.panelActual = self.panelFileManager
+        self.panelFileManager.fitWindow(self.window_size[0], self.window_size[1])
 
     def updateFileManager(self):
         self.panelFileManager.updateButtons()
@@ -144,3 +145,4 @@ class Juego:
 
     def getWindowSize(self):
         return self.window_size
+

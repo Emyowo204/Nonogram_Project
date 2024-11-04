@@ -1,6 +1,7 @@
 import pygame
 
 from src.main.classes.visuals.BotonRect import BotonRect
+from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 
 class PanelOpciones(Panel):
@@ -48,7 +49,7 @@ class PanelOpciones(Panel):
         volumenInicial = 0.5
         self.slider.x = int(self.sliderMinX + (self.sliderMaxX - self.sliderMinX) * volumenInicial)
         self.botonVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, self.juego.mostrarPanelMenu,None)
-        self.botonVolver.setImage(pygame.image.load('../images/botonNormal.png'),pygame.image.load('../images/botonShaded.png'))
+        self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
 
     def evento(self, event):
         """

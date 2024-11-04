@@ -1,5 +1,6 @@
 import pygame
 
+from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.BotonRect import BotonRect
 
@@ -20,10 +21,8 @@ class PanelNiveles(Panel):
             if i >= 5:
                 j = j+1
                 i = 0
-
         self.btnVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35, self.juego.mostrarPanelMenu,None)
-        self.btnVolver.setImage(pygame.image.load('../images/botonNormal.png'), pygame.image.load('../images/botonShaded.png'))
-
+        self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
 
     def setLevelButtons(self, quantity):
         self.cantidad_nivel = quantity
@@ -63,6 +62,7 @@ class PanelNiveles(Panel):
         self.btnVolver.setValues((self.w-180*multi), (self.h-45*multi), 170*multi, 35*multi)
 
     def draw(self, dest_surface):
+        super().draw(dest_surface)
         dest_surface.blit(self.fondoImage, (0, 0))
         for i in range(self.cantidad_nivel):
             self.btnNiveles[i].draw(self.juego.getWindow())

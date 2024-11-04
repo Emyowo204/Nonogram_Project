@@ -1,5 +1,6 @@
 import pygame
 
+from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.PanelNonograma import PanelNonograma
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.BotonRect import BotonRect
@@ -15,7 +16,7 @@ class PanelPartida(Panel):
         self.font = pygame.font.Font(None, 40)
         self.stringInfo = 'Vidas: 5'
         self.botonVolver = BotonRect(width * 12 / 16, height * 15 / 16, 170, 35,juego.mostrarPanelNiveles,None)
-        self.botonVolver.setImage(pygame.image.load('../images/botonNormal.png'),pygame.image.load('../images/botonShaded.png'))
+        self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.juego = juego
 
     def setNonograma(self, game_difficulty, game_index):
