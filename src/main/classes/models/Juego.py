@@ -31,7 +31,6 @@ class Juego:
         self.levelsCount = [0, 0, 0, 0]
         self.difficultyList = ["Easy", "Medium", "Hard", "Custom"]
         self.gameDifficulty = 0
-        last_pos = (0,0)
 
     def start(self):
         self.filemanager = FileManager()
@@ -53,7 +52,6 @@ class Juego:
 
         pos = (0,0)
         is_pressed = False
-        resizing = False
         running = True
         new_size = (720,720)
         self.panelPartida.fitWindow(new_size[0],new_size[1])
@@ -65,16 +63,11 @@ class Juego:
                     running = False
 
                 elif event.type == pygame.VIDEORESIZE:
-                        resizing = True
                         new_size = (event.w,event.h)
                         self.panelActual.fitWindow(new_size[0], new_size[1])
                         self.window_size = new_size
                 elif event.type == pygame.MOUSEMOTION:
                     pos = event.pos
-
-                elif event.type == pygame.MOUSEBUTTONUP:
-                    if resizing:
-                        resizing=False
 
                 if self.panelActual == self.panelPartida:
                     if event.type == pygame.MOUSEBUTTONDOWN:

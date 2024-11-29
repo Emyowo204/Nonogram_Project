@@ -62,8 +62,18 @@ class PanelCuadrilla(Panel):
         else:
             new_cell_size = self.cell_size * (self.zoom_x / old_zoom_x)
 
-            self.draw_xoffset += (pos[0] - self.x) * (1 - (new_cell_size / self.cell_size))
-            self.draw_yoffset += (pos[1] - self.y) * (1 - (new_cell_size / self.cell_size))
+            self.draw_xoffset += (pos[0] - self.x - self.draw_xoffset) * (1 - (new_cell_size / self.cell_size))
+            self.draw_yoffset += (pos[1] - self.y - self.draw_yoffset) * (1 - (new_cell_size / self.cell_size))
+
+            if self.draw_xoffset > 0 and self.w > (self.size[0] * new_cell_size)/self.w * new_cell_size - self.draw_xoffset:
+                self.draw_xoffset = 0
+            elif self.draw_xoffset < 0 and self.draw_xoffset + (self.size[0] * new_cell_size) < self.w:
+                self.draw_xoffset = -(self.size[0] * new_cell_size - self.w)
+
+            if self.draw_yoffset > 0 and self.h > (self.size[1] * new_cell_size)/self.h * new_cell_size - self.draw_yoffset:
+                self.draw_yoffset = 0
+            elif self.draw_yoffset < 0 and self.draw_yoffset + (self.size[1] * new_cell_size) < self.h:
+                self.draw_yoffset = -(self.size[1] * new_cell_size - self.h)
 
             self.cell_size = new_cell_size
 
