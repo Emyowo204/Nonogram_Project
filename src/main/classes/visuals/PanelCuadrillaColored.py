@@ -2,9 +2,9 @@ import pygame
 
 from src.main.classes.visuals.Panel import Panel
 
-class PanelCuadrilla(Panel):
+class PanelCuadrillaColored(Panel):
     """
-        Clase que representa un panel para mostrar el tablero del nonograma en blanco y negro (default).
+        Clase que representa un panel para mostrar el tablero del nonograma colorido.
         Esta clase permite interactuar con el nonograma, realizando clicks y zoom.
         Hereda de la clase Panel para gestionar el panel gráfico y su métodos.
 
@@ -12,6 +12,7 @@ class PanelCuadrilla(Panel):
             cell_size (float): Tamaño de las celdas del tablero.
             size (tuple): Dimensiones del tablero (número de filas y columnas).
             board (list): El estado actual del tablero en formato de matriz.
+            colors (list): Lista de los colores del nonograma.
             zoom_x (float): Zoom aplicado al tablero.
             draw_xoffset (float): Desplazamiento horizontal para el dibujado.
             draw_yoffset (float): Desplazamiento vertical para el dibujado.
@@ -30,7 +31,7 @@ class PanelCuadrilla(Panel):
             getYOffset(): Getter del desplazamiento vertical del tablero.
             getZoom(): Getter  del nivel de zoom actual del tablero.
         """
-    def __init__(self,cuadrilla,x,y,size):
+    def __init__(self,cuadrilla_colored,x,y,size):
         """
             Inicializa un panel con una cuadrilla dada y la posición y tamaño especificados.
 
@@ -42,22 +43,25 @@ class PanelCuadrilla(Panel):
         """
         super().__init__(x, y, size, size)
         self.cell_size = 0
-        self.size = cuadrilla.getSize()
-        self.board = cuadrilla.getBoard()
+        self.size = cuadrilla_colored.getSize()
+        self.board = cuadrilla_colored.getBoard()
+        self.colors = cuadrilla_colored.getColors()
+        self.selected_color = 1
         self.fitWindow(size)
         self.zoom_x = 1
         self.draw_xoffset = 0
         self.draw_yoffset = 0
 
-    def setNewCuadrilla(self, cuadrilla):
+    def setNewCuadrilla(self, cuadrilla_colored):
         """
             Actualiza el panel con una nueva cuadrilla.
 
             Args:
                 cuadrilla (Cuadrilla): Nueva cuadrilla para actualizar el panel.
         """
-        self.size = cuadrilla.getSize()
-        self.board = cuadrilla.getBoard()
+        self.size = cuadrilla_colored.getSize()
+        self.board = cuadrilla_colored.getBoard()
+        self.colors = cuadrilla_colored.getColors()
 
     def positionClick(self,pos):
         """
@@ -86,8 +90,26 @@ class PanelCuadrilla(Panel):
         col,row = self.positionClick(pos)
         if col != -1 and row != -1:
             if 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
-                if self.board[col][row] != -1 and self.board[col][row] != 1:
-                    self.board[col][row] = not self.board[col][row]
+                current_value = self.board[col][row]
+                if current_value != 0:
+                    self.board[col][row] = self.selected_color
+
+    def handleKey(self, event):
+        """
+            Maneja los eventos de presionar teclas del teclado.
+
+            Args:
+                event (event): Evento a manejar.
+        """
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_0:
+                self.selected_color = 0
+            elif event.key == pygame.K_1:
+                self.selected_color = 1
+            elif event.key == pygame.K_2:
+                self.selected_color = 1
+            elif event.key == pygame.K_3:
+                self.selected_color = 3
 
     def getSize(self):
         """
@@ -187,23 +209,15 @@ class PanelCuadrilla(Panel):
 
     def draw(self, dest_surface):
         """
-            Dibuja el tablero, utilizando colores específicos para los
-            tipos de celda, ya sea vacía, llena, etc.
+            Dibuja el tablero, utilizando los colores del nonograma.
 
         Args:
             dest_surface (pygame.Surface): Superficie sobre la que dibujar el tablero.
         """
-
         for col in range(self.size[0]):
             for row in range(self.size[1]):
-                cell =self.board[col][row]
-                color = (128, 128, 128)
-                if cell == 0:
-                    color = (30, 30, 30)
-                elif cell == 1:
-                    color = (255, 255, 255)
-                elif cell == -1:
-                    color = (255, 0, 0)
+                cell = self.board[col][row]
+                color = self.colors[cell]
                 pygame.draw.rect(self.surface, color, (col * self.cell_size + self.draw_xoffset, row * self.cell_size + self.draw_yoffset, self.cell_size - 2, self.cell_size - 2))
         super().draw(dest_surface)
 
@@ -233,3 +247,4 @@ class PanelCuadrilla(Panel):
                 float: Nivel de zoom actual en la cuadrilla..
         """
         return self.zoom_x
+

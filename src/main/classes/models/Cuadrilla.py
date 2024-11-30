@@ -1,4 +1,5 @@
 import os
+
 class Cuadrilla:
     """
     Una clase que representa a una cuadrilla, que es una estructura de datos
