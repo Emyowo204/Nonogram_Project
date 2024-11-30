@@ -149,9 +149,9 @@ class Juego:
             self.panelPartidaColor.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1])
         else:
             self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt')
-        self.panelPartida.defaultZoom()
-        self.panelPartida.fitWindow(self.window_size[0], self.window_size[1])
-        self.panelPartida.setVolverBoton(self.gameDifficulty)
+        self.panelActual.defaultZoom()
+        self.panelActual.fitWindow(self.window_size[0], self.window_size[1])
+        self.panelActual.setVolverBoton(self.gameDifficulty)
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
 
     def mostrarPanelOpciones(self):

@@ -2,7 +2,7 @@ import cv2
 import os
 
 import numpy as np
-from markdown.extensions.toc import unique
+
 
 
 class Image2Nonogram:
@@ -78,7 +78,7 @@ class Image2Nonogram:
         file.write("\n")
         for r in segmented_image:
             for pixel in r:
-                index = np.where((unique_colors == pixel).all(axis=1))[0][0]
+                index = np.where((unique_colors == pixel).all(axis=1))[0][0]+1
                 file.write(f"{index} ")
             file.write("\n")
 

@@ -33,7 +33,7 @@ class CuadrillaColored(Cuadrilla):
             else:
                 self.__c = 3
                 self.__r = 3
-                self.__colors = [[0,0,0],[200,200,200]]
+                self.__colors = [[0,0,0], [200,200,200], [0,0,0]]
                 self.__board = [[1, 0, 1], [0, 1, 0], [1, 0, 1]]
                 self.__discover_nums()
         else:
@@ -91,7 +91,7 @@ class CuadrillaColored(Cuadrilla):
         self.__c = int(dimensions[0])
         self.__r = int(dimensions[1])
 
-        self.__colors = []
+        self._cleanBoard()
         color_line = archivo.readline().strip()
         while color_line:
             colors = color_line.split(']')
@@ -101,7 +101,6 @@ class CuadrillaColored(Cuadrilla):
                     rgb = list(map(int, color[1:].split()))
                     self.__colors.append(rgb)
             color_line = archivo.readline().strip()
-        self._cleanBoard()
         for i in range(self.__r):
             valores = list(map(int, archivo.readline().strip().split()))
             for j, value in enumerate(valores):
