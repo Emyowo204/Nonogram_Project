@@ -66,7 +66,6 @@ class Image2Nonogram:
         centers = np.uint8(centers)
         unique_colors = np.array(centers.tolist())
         segmented_image = centers[labels.flatten()].reshape(img.shape)
-        color_matrix = segmented_image.reshape(-1, 3)
 
         dir = os.path.join(os.path.dirname(__file__), '../../puzzles/Colored')
         file_path = os.path.join(dir, os.path.splitext(os.path.basename(img_path))[0] + ".txt")

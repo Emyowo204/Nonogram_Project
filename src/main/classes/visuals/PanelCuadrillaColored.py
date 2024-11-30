@@ -52,12 +52,18 @@ class PanelCuadrillaColored(Panel):
         self.draw_xoffset = 0
         self.draw_yoffset = 0
 
+    def setBoardColors(self,colors):
+        self.colors =  colors
+
+    def getBoardColors(self):
+        return self.colors
+
     def setNewCuadrilla(self, cuadrilla_colored):
         """
             Actualiza el panel con una nueva cuadrilla.
 
             Args:
-                cuadrilla (Cuadrilla): Nueva cuadrilla para actualizar el panel.
+                cuadrilla_colored (Cuadrilla): Nueva cuadrilla para actualizar el panel.
         """
         self.size = cuadrilla_colored.getSize()
         self.board = cuadrilla_colored.getBoard()
@@ -217,8 +223,9 @@ class PanelCuadrillaColored(Panel):
         for col in range(self.size[0]):
             for row in range(self.size[1]):
                 cell = self.board[col][row]
-                color = self.colors[cell]
-                pygame.draw.rect(self.surface, color, (col * self.cell_size + self.draw_xoffset, row * self.cell_size + self.draw_yoffset, self.cell_size - 2, self.cell_size - 2))
+                if cell+1 <= len(self.colors):
+                    color = self.colors[cell]
+                    pygame.draw.rect(self.surface, color, (col * self.cell_size + self.draw_xoffset, row * self.cell_size + self.draw_yoffset, self.cell_size - 2, self.cell_size - 2))
         super().draw(dest_surface)
 
     def getXOffset(self):

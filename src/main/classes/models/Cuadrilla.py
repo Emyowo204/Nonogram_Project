@@ -51,10 +51,10 @@ class Cuadrilla:
         else:
             self.__c = columns
             self.__r = rows
-            self.__cleanBoard()
+            self._cleanBoard()
 
 
-    def __cleanBoard(self):
+    def _cleanBoard(self):
         """Limpia el tablero y lo inicializa a cero."""
         for i in range(self.__c):
             self.__board.append([])
@@ -106,7 +106,7 @@ class Cuadrilla:
         textos = contenido.split()
         self.__c = int (textos.pop(0))
         self.__r = int (textos.pop(0))
-        self.__cleanBoard()
+        self._cleanBoard()
         for i in range(self.__r):
             for j in range(self.__c):
                 self.__board[j][i] = int(textos.pop(0))
