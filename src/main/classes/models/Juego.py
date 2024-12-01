@@ -14,6 +14,7 @@ from src.main.classes.visuals.PanelMenu import PanelMenu
 from src.main.classes.visuals.PanelNiveles import PanelNiveles
 from src.main.classes.models.Musica import Musica
 from src.main.classes.visuals.Ventana import Ventana
+import time
 
 
 class Juego:
@@ -61,6 +62,9 @@ class Juego:
 
         pos = (0,0)
         is_pressed = False
+        is_click = True
+        press_time = 0
+        press_delay = 0.4
         running = True
         new_size = (720,720)
         self.panelPartida.fitWindow(new_size[0],new_size[1])
@@ -78,16 +82,29 @@ class Juego:
                 elif event.type == pygame.MOUSEMOTION:
                     pos = event.pos
 
-                if self.panelActual == self.panelPartida or self.panelActual == self.panelPartidaColor:
+                if self.panelActual == self.panelPartida:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if event.button == 1:
                             is_pressed = True
+                            press_time += 1
+
                     elif event.type == pygame.MOUSEBUTTONUP:
                         if event.button == 1:
+                            is_click = True
                             is_pressed = False
+                            press_time = 0
 
                     if is_pressed:
-                        self.panelActual.handleClick(pos)
+                        press_duration = press_time*deltatime
+                        if press_duration >= press_delay:
+                            self.panelActual.handleClick(pos)
+
+                        elif press_duration < press_delay and is_click == True:
+                            self.panelActual.handleClick(pos)
+                            is_click = False
+                        press_time += 1
+
+
 
                     if event.type == pygame.MOUSEWHEEL:
                         self.panelActual.handleZoom(event, pos)

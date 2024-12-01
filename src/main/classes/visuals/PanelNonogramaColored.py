@@ -29,8 +29,8 @@ class PanelNonogramaColored(Panel):
         self.cuadrilla_jugador = CuadrillaColored(self.board_size[0], self.board_size[1], None)
         self.panel_jugador.setNewCuadrilla(self.cuadrilla_jugador)
 
-        self.panel_jugador.setBoardColors(self.panel_resultado.getBoardColors())
         self.panel_resultado.setNewCuadrilla(self.cuadrilla_resultado)
+        self.panel_jugador.setBoardColors(self.panel_resultado.getBoardColors())
         #self.panel_colnums.setNewNumbers(self.cuadrilla_resultado.getColumnNums(), 'columns')
         #self.panel_rownums.setNewNumbers(self.cuadrilla_resultado.getRowNums(), 'rows')
 
