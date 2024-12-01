@@ -37,6 +37,7 @@ class Juego:
         self.levelsCount = [0, 0, 0, 0, 0]
         self.difficultyList = ["Easy", "Medium", "Hard", "Custom", "Colored"]
         self.gameDifficulty = 0
+        self.gameMode = 0
 
     def start(self):
         self.filemanager = FileManager()
@@ -165,12 +166,12 @@ class Juego:
         self.panelActual = self.panelPartida
         diff_name = self.difficultyList[self.gameDifficulty]
         if self.gameDifficulty == 3:
-            self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1])
+            self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1], self.gameMode)
         elif self.gameDifficulty == 4:
             self.panelActual = self.panelPartidaColor
-            self.panelPartidaColor.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1])
+            self.panelPartidaColor.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1], self.gameMode)
         else:
-            self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt')
+            self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt', self.gameMode)
         self.panelActual.defaultZoom()
         self.panelActual.fitWindow(self.window_size[0], self.window_size[1])
         self.panelActual.setVolverBoton(self.gameDifficulty)
@@ -201,6 +202,9 @@ class Juego:
 
     def updateFileManager(self):
         self.panelFileManager.updateButtons()
+
+    def setMode(self, mode):
+        self.gameMode = mode
 
     def getMusica(self):
         return self.musica

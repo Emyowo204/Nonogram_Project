@@ -49,6 +49,16 @@ class Image2Nonogram:
         file.write(f"{width} {height}\n")
         for r in img_binary_matrix:
             file.write(" ".join(map(str,r))+"\n")
+        file.close()
+        dir = os.path.join(os.path.dirname(__file__), '../../saves/Custom')
+        file_path = os.path.join(dir, os.path.splitext(os.path.basename(img_path))[0] +".txt")
+        file = open(file_path,'w')
+        file.write(f"{width} {height}\n")
+        for i in range(height):
+            for j in range(width):
+                file.write("0 ")
+            file.write("\n")
+        file.close()
 
     @staticmethod
     def convertImg2Color(img_path, width, height, color_quantity):
@@ -82,5 +92,14 @@ class Image2Nonogram:
                 index = np.where((unique_colors == pixel).all(axis=1))[0][0]+1
                 file.write(f"{index} ")
             file.write("\n")
-
+        file.close()
+        dir = os.path.join(os.path.dirname(__file__), '../../saves/Custom')
+        file_path = os.path.join(dir, os.path.splitext(os.path.basename(img_path))[0] + ".txt")
+        file = open(file_path, 'w')
+        file.write(f"{width} {height}\n")
+        for i in range(height):
+            for j in range(width):
+                file.write("0 ")
+            file.write("\n")
+        file.close()
         pass

@@ -40,26 +40,33 @@ class Cuadrilla:
         self.__col_nums = []
         self.__row_nums = []
         self.__board = []
+        self.__c = columns
+        self.__r = rows
+        self.__info = [0, 0]
         if name:
             if self.__loadCuadrilla(name) :
                 self.__discover_nums()
             else:
-                self.__c = 3
-                self.__r = 3
-                self.__board = [[1,0,1],[0,1,0],[1,0,1]]
+                self._cleanBoard()
                 self.__discover_nums()
         else:
-            self.__c = columns
-            self.__r = rows
             self._cleanBoard()
 
 
     def _cleanBoard(self):
         """Limpia el tablero y lo inicializa a cero."""
+        self.__info = [0, 0]
         for i in range(self.__c):
             self.__board.append([])
             for j in range (self.__r):
                 self.__board[i].append(0)
+
+    def emptyBoard(self):
+        """Limpia el tablero y lo inicializa a cero."""
+        self.__info = [0, 0]
+        for i in range(self.__c):
+            for j in range (self.__r):
+                self.__board[i][j]=0
 
     def getBoard(self):
         """
@@ -97,12 +104,13 @@ class Cuadrilla:
                 name (str): Nombre del archivo desde el que cargar la cuadrilla.
         """
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        fulldirectory = os.path.join(current_dir, '..','..', 'puzzles', name)
+        fulldirectory = os.path.join(current_dir, '..','..', name)
         try:
             archivo = open(fulldirectory,'r')
         except OSError:
             return False
         contenido = archivo.read()
+        archivo.close()
         textos = contenido.split()
         self.__c = int (textos.pop(0))
         self.__r = int (textos.pop(0))
@@ -110,6 +118,45 @@ class Cuadrilla:
         for i in range(self.__r):
             for j in range(self.__c):
                 self.__board[j][i] = int(textos.pop(0))
+                if self.__board[j][i] == 1:
+                    self.__info[0]+=1
+                elif self.__board[j][i] == -1:
+                    self.__info[1]+=1
+        return True
+
+    def saveCuadrilla(self, name):
+        """
+            Carga una cuadrilla desde un archivo dado su nombre. Se espera que el
+            archivo contenga las dimensiones de la cuadrilla seguidas de los valores.
+        """
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        fulldirectory = os.path.join(current_dir, '..','..', 'saves', str(name))
+        try:
+            archivo = open(fulldirectory,'w')
+        except OSError:
+            return False
+        archivo.write(f"{self.__c} {self.__r}\n")
+        for i in range(self.__r):
+            for j in range(self.__c):
+                archivo.write(f"{self.__board[j][i]} ")
+            archivo.write(f"\n")
+        archivo.close()
+        return True
+
+    def resetSave(self, name):
+        self.__info[1] = 0
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        fulldirectory = os.path.join(current_dir, '..','..', 'saves', str(name))
+        try:
+            archivo = open(fulldirectory,'w')
+        except OSError:
+            return False
+        archivo.write(f"{self.__c} {self.__r}\n")
+        for i in range(self.__r):
+            for j in range(self.__c):
+                archivo.write(f"{0} ")
+            archivo.write(f"\n")
+        archivo.close()
         return True
 
     def checkDifference(self,cuadrilla):
@@ -171,6 +218,12 @@ class Cuadrilla:
 
     def getRowNums(self):
         return self.__row_nums
+
+    def getInfo(self):
+        return self.__info
+
+    def setInfo(self, index, value):
+        self.__info[index] = value
 
     def checkCell(self,column,row):
         """

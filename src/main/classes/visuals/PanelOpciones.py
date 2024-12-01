@@ -32,7 +32,7 @@ class PanelOpciones(Panel):
         """
         super().__init__(x, y, width, height)
         self.juego = juego
-
+        
         self.rect = pygame.Rect(x, y, width, height)
         self.manager = pygame_gui.UIManager((width, height))
 
@@ -60,7 +60,6 @@ class PanelOpciones(Panel):
             text="Volumen Sonido: 50%",
             manager=self.manager,
         )
-
         self.botonVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelAnterior,None)
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
 
@@ -120,6 +119,7 @@ class PanelOpciones(Panel):
         dest_surface.fill((0, 0, 0,)) # panel en negro por mientras
         self.botonVolver.draw(self.juego.getWindow())
         self.manager.draw_ui(dest_surface)
+
 
     def actualizar(self, tiempo_delta):
         """
