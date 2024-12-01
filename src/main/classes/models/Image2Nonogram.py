@@ -51,15 +51,16 @@ class Image2Nonogram:
             file.write(" ".join(map(str,r))+"\n")
 
     @staticmethod
-    def convertImg2Color(img_path, width, height):
+    def convertImg2Color(img_path, width, height, color_quantity):
 
         fulldirectory = os.path.join(os.path.dirname(__file__), img_path)
-        img = cv2.imread(fulldirectory, cv2.COLOR_BGR2RGB)
+        img = cv2.imread(fulldirectory)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (width, height))
         pixels = img.reshape((-1,3))
         pixels = np.float32(pixels)
 
-        k=4
+        k=color_quantity
         criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.2)
         _, labels, centers = cv2.kmeans(pixels, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
 
