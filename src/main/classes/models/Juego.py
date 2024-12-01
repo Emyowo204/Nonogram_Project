@@ -52,7 +52,7 @@ class Juego:
         self.panelPartida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelPartidaColor = PanelPartidaColored(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
-        #self.panelLogros = PanelLogros(0, 0, self.window_size[0], self.window_size[1], self)
+        self.panelLogros = PanelLogros(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelFileManager = PanelFileManager(0,0,self.window_size[0], 1080,self)
         self.mostrarPanelMenu()
@@ -182,10 +182,10 @@ class Juego:
         self.panelOpciones.fitWindow(self.window_size[0], self.window_size[1])
         self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
 
-    #def mostrarPanelLogros(self):
-    #    self.panelAnterior = self.panelActual
-    #    self.panelActual = self.panelLogros
-    #    self.panelLogros.fitWindow(self.window_size[0], self.window_size[1])
+    def mostrarPanelLogros(self):
+        self.panelAnterior = self.panelActual
+        self.panelActual = self.panelLogros
+        self.panelLogros.fitWindow(self.window_size[0], self.window_size[1])
 
     def mostrarPanelFileManager(self):
         self.panelAnterior = self.panelActual

@@ -47,7 +47,7 @@ class PanelMenu(Panel):
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
         self.btnVolver = BotonRect(40, height-120, 80, 80, self.toggleMainMenu,None)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
-        self.btnLogro = BotonRect(40, height-120, 80, 80, self.toggleMainMenu,None)
+        self.btnLogro = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelLogros,None)
         self.btnLogro.setImage(pygame.image.load('../images/botonLogroNormal.png'), pygame.image.load('../images/botonLogroShaded.png'))
         self.mainMenu = False
         self.toggleMainMenu()
