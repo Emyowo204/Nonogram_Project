@@ -10,6 +10,6 @@ def main():
 
 
 if __name__ == '__main__':
-    Image2Nonogram.convertImg2Color("../../images_to_convert/benito.jpg", 30, 30)
+    #Image2Nonogram.convertImg2Color("../../images_to_convert/benito.jpg", 30, 30)
     main()
 
