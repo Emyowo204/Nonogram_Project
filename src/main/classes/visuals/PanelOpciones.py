@@ -1,4 +1,5 @@
 import pygame
+import pygame_gui
 
 from src.main.classes.visuals.BotonRect import BotonRect
 from src.main.classes.visuals.ImageLoader import ImageLoader
@@ -10,16 +11,6 @@ class PanelOpciones(Panel):
 
     Variables:
         juego (juego): El juego del cual toma referencia.
-        sliderMusic (Rect): Representación del thumb para arrastrar en el slider de música.
-        sliderSounds (Rect): Representación del thumb para arrastrar en el slider de sonidos.
-        slideando_music (boolean): Indica si está siendo arrastrado slider de música o no.
-        slideando_sound (boolean): Indica si está siendo arrastrado slider de sonido o no.
-        sliderMinX (int): Valor de la posición mínima a la que puede estar el slider.
-        sliderMaxX (int): Valor de la posición másxima a la que puede estar el slider.
-        sliderBackWidth (int): Valor del ancho del fondo del slide.
-        sliderBackHeight (int): Valor del largo del fondo del slide.
-        volumenInicial (int): Valor del volumen inicial al comenzar la aplicación.
-        slider.x (int): Valor de la posición x del slider al inicializar.
         normalImage (image): Variable que contiene la imagen de un botón al no estar presionado.
         shadedImage (image): Variable que contiene la imagen de un botón al tener el cursor sobre él.
         botonVolver (BotonRect): Botón que ejecuta la acción de volver al Panel Menu Principal.
@@ -41,19 +32,35 @@ class PanelOpciones(Panel):
         """
         super().__init__(x, y, width, height)
         self.juego = juego
-        volumenInicial = 0.5
-        self.slider_w = 20
-        self.slider_h = 50
-        self.sliderMinX = width / 2 - 100
-        self.sliderMaxX = width / 2 + 100 - self.slider_w
-        self.slider_music_x = self.sliderMinX + (self.sliderMaxX - self.sliderMinX) * volumenInicial
-        self.slider_sound_x = self.sliderMinX + (self.sliderMaxX - self.sliderMinX) * volumenInicial
-        self.slider_music= pygame.Rect(self.slider_music_x, height/2 - 30, self.slider_w, self.slider_h)
-        self.slider_sound = pygame.Rect(self.slider_sound_x, height/2 + 75, self.slider_w, self.slider_h)
-        self.slideando_music = False
-        self.slideando_sound =  False
-        self.sliderBackWidth = self.sliderMaxX-self.sliderMinX
-        self.sliderBackHeight = 20
+
+        self.rect = pygame.Rect(x, y, width, height)
+        self.manager = pygame_gui.UIManager((width, height))
+
+        self.slider_music = pygame_gui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((width/2 - 200, height/2 - 50), (400, 50)),
+            start_value=50,
+            value_range=(0, 100),
+            manager=self.manager,
+        )
+        self.slider_sound = pygame_gui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((width/2 - 200, height/2 + 50), (400, 50)),
+            start_value=50,
+            value_range=(0, 100),
+            manager=self.manager,
+        )
+
+        self.label_music = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((width/2 - 200, height/2 - 75), (400, 30)),
+            text="Volumen Música: 50%",
+            manager=self.manager,
+        )
+
+        self.label_sound = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((width/2 - 200, height/2 - 25), (400, 30)),
+            text="Volumen Sonido: 50%",
+            manager=self.manager,
+        )
+
         self.botonVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelAnterior,None)
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
 
@@ -62,23 +69,19 @@ class PanelOpciones(Panel):
         Maneja los eventos mientras el panel está activo.
         :param event: Objeto de evento que contiene la información relacionada al evento a procesar.
         """
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.slider_music.collidepoint(event.pos):
-                self.slideando_music = True
-            elif self.slider_sound.collidepoint(event.pos):
-                self.slideando_sound = True
-        elif event.type == pygame.MOUSEBUTTONUP:
-            self.slideando_music = False
-            self.slideando_sound = False
-        elif event.type == pygame.MOUSEMOTION:
-            if self.slideando_music == True:
-                self.slider_music.x = max(self.sliderMinX, min(event.pos[0], self.sliderMaxX))
-            elif self.slideando_sound == True:
-                self.slider_sound.x = max(self.sliderMinX, min(event.pos[0], self.sliderMaxX))
-
         self.botonVolver.evento(event)
-        nuevoVolumenMusic = (self.sliderMaxX - self.slider_music.x - (self.x +50)) / 200
-        self.juego.getMusica().setVolumen(nuevoVolumenMusic)
+
+        if event.type == pygame.USEREVENT:
+            if event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED:
+                if event.ui_element == self.slider_music:
+                    valor_musica = event.value
+                    self.label_music.set_text(f"Volumen Música: {int(valor_musica)}%")
+                    self.juego.musica.setVolumen(valor_musica / 100)
+                elif event.ui_element == self.slider_sound:
+                    valor_sonido = event.value
+                    self.label_sound.set_text(f"Volumen Sonido: {int(valor_sonido)}%")
+
+        self.manager.process_events(event)
 
     def fitWindow(self, w, h):
         """
@@ -96,16 +99,18 @@ class PanelOpciones(Panel):
         self.surface = pygame.Surface((self.w,self.h))
         self.botonVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
 
-        self.slider_w = 20 * multi
-        self.slider_h = 50 * multi
-        self.slider_music.x = (w/2) - 100 * multi
-        self.slider_sound.x = (w/2) - 100 * multi
-        self.slider_music.y = h/2 - 75 * multi
-        self.slider_sound.y = h/2 + 75 * multi
-        self.sliderMinX = (w/2) - 100 * multi + self.slider_w
-        self.sliderMaxX = (w/2) + 100 * multi
-        self.sliderBackWidth = self.sliderMaxX-self.sliderMinX
-        self.sliderBackHeight = 20 * multi
+        self.rect.size = (self.w, self.h)
+        self.manager.set_window_resolution((self.w, self.h))
+
+        self.slider_music.set_position((self.w/2 - 200*multi, self.h/2 - 50*multi))
+        self.slider_music.set_dimensions((400*multi, 50*multi))
+        self.slider_sound.set_position((self.w / 2 - 200*multi, self.h / 2 + 50*multi))
+        self.slider_sound.set_dimensions((400*multi, 50*multi))
+
+        self.label_music.set_position((self.w / 2 - 200*multi, self.h / 2 - 90*multi))
+        self.label_music.set_dimensions((400 * multi, 50*multi))
+        self.label_sound.set_position((self.w / 2 - 200*multi, self.h / 2 + 10*multi))
+        self.label_sound.set_dimensions((400*multi, 50*multi))
 
     def draw(self, dest_surface):
         """
@@ -114,28 +119,11 @@ class PanelOpciones(Panel):
         """
         dest_surface.fill((0, 0, 0,)) # panel en negro por mientras
         self.botonVolver.draw(self.juego.getWindow())
+        self.manager.draw_ui(dest_surface)
 
-        # Dibuja el fondo de los sliders
-        pygame.draw.rect(dest_surface, (0, 255, 0),
-                         (self.sliderMinX, self.slider_music.y, self.sliderBackWidth, self.sliderBackHeight))
-        pygame.draw.rect(dest_surface, (0, 255, 0),
-                         (self.sliderMinX, self.slider_sound.y, self.sliderBackWidth, self.sliderBackHeight))
-
-        # Dibuja las partes restantes de los sliders
-        pygame.draw.rect(dest_surface, (100, 100, 100), (
-        self.slider_music.x, self.slider_music.y, self.sliderMaxX - self.slider_music.x, self.sliderBackHeight))
-        pygame.draw.rect(dest_surface, (100, 100, 100), (
-        self.slider_sound.x, self.slider_sound.y, self.sliderMaxX - self.slider_sound.x, self.sliderBackHeight))
-
-        # Dibuja los thumbs
-        pygame.draw.rect(dest_surface, (255, 0, 0), (self.slider_music.x, self.slider_music.y, self.slider_w, self.slider_h))  # dibujo thumb slider1
-        pygame.draw.rect(dest_surface, (255, 0, 0), (self.slider_sound.x, self.slider_sound.y, self.slider_w, self.slider_h))  # dibujo thumb slider2
-
-        # texto de prueba para mostrar el volumen
-        font = pygame.font.Font(None, 24)
-        volumenTexto1 = font.render(f"Volumen Música: {int(self.juego.getMusica().getVolumen() * 100)}%", True,
-                                    (255, 255, 255))
-        volumenTexto2 = font.render(f"Volumen Sonido: {int(self.juego.getMusica().getVolumen() * 100)}%", True,
-                                    (255, 255, 255))
-        dest_surface.blit(volumenTexto1, (self.sliderMinX, self.slider_music.y + 10))
-        dest_surface.blit(volumenTexto2, (self.sliderMinX, self.slider_sound.y + 10))
+    def actualizar(self, tiempo_delta):
+        """
+        Actualiza el estado del gestor de UI.
+        :param tiempo_delta: Delta de tiempo entre frames.
+        """
+        self.manager.update(tiempo_delta)
