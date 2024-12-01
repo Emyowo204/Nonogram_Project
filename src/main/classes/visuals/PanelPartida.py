@@ -4,6 +4,7 @@ from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.PanelNonograma import PanelNonograma
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.BotonRect import BotonRect
+from src.main.classes.visuals.PanelNonogramaColored import PanelNonogramaColored
 
 
 class PanelPartida(Panel):
@@ -12,8 +13,9 @@ class PanelPartida(Panel):
         super().__init__(x,y,width,height)
         self.vidas = 5
         self.isSolved = 0
-        self.panel_nonograma = PanelNonograma(self.x, self.y, self.w, self.h)
-        self.setColor(200,200,200)
+        self.type_nonograma = [PanelNonograma(self.x, self.y, self.w, self.h), PanelNonogramaColored(self.x, self.y, self.w, self.h)]
+        self.panel_nonograma = self.type_nonograma[0]
+        self.setColor(150,250,220)
         self.font = pygame.font.Font(None, 40)
         self.stringInfo = 'Vidas: 5'
         self.btnOpciones = BotonRect(width-70, height-70, 60, 60, juego.mostrarPanelOpciones, None)
@@ -21,12 +23,13 @@ class PanelPartida(Panel):
         self.botonVolver = BotonRect(10, height-70, 60, 60, self.volverPanelNiveles,None)
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.botonReset = BotonRect(width-70, 10, 60, 60, self.resetNonograma,None)
-        self.botonReset.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
+        self.botonReset.setImage(ImageLoader().getResNormal(), ImageLoader().getResShaded())
         self.juego = juego
         self.game_difficulty = 0
         self.game_mode = 0
 
     def setNonograma(self, path, mode):
+        self.panel_nonograma = self.type_nonograma[mode%2]
         self.panel_nonograma.setNonograma(path, mode)
         self.isSolved = 0
         self.vidas = 5-self.panel_nonograma.getInfoCuadrilla(0)[1]
@@ -68,6 +71,10 @@ class PanelPartida(Panel):
                 if self.vidas == 0:
                     self.isSolved = -1
             self.checkSolve()
+
+    def handleKey(self, event):
+        if self.game_mode%2==1:
+            self.panel_nonograma.handleKey(event)
 
     def checkSolve(self):
         if self.panel_nonograma.getInfoCuadrilla(0)[0] == self.panel_nonograma.getInfoCuadrilla(1)[0]:

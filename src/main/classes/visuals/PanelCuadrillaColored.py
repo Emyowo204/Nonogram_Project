@@ -1,6 +1,7 @@
 import pygame
 
 from src.main.classes.visuals.Panel import Panel
+from src.main.classes.visuals.PanelCuadrilla import PanelCuadrilla
 
 class PanelCuadrillaColored(Panel):
     """
@@ -51,12 +52,16 @@ class PanelCuadrillaColored(Panel):
         self.zoom_x = 1
         self.draw_xoffset = 0
         self.draw_yoffset = 0
+        self.check_result = False
 
     def setBoardColors(self,colors):
         self.colors =  colors
 
     def getBoardColors(self):
         return self.colors
+
+    def getSelectedColor(self):
+        return self.selected_color
 
     def setNewCuadrilla(self, cuadrilla_colored):
         """
@@ -68,23 +73,6 @@ class PanelCuadrillaColored(Panel):
         self.size = cuadrilla_colored.getSize()
         self.board = cuadrilla_colored.getBoard()
         self.colors = cuadrilla_colored.getColors()
-
-    def positionClick(self,pos):
-        """
-            Convierte una posición en la pantalla (pos) a una posición de fila y columna en el tablero.
-
-            Args:
-                pos (tuple): Coordenadas (x, y) del clic en la pantalla.
-
-            Returns:
-                tuple: (col, row) de la celda seleccionada en el tablero, o (-1, -1) si el clic está fuera del tablero.
-        """
-        row = int((pos[1] - self.y - self.draw_yoffset) // self.cell_size)
-        col = int((pos[0] - self.x - self.draw_xoffset) // self.cell_size)
-        if 0 <= col < self.size[0] and 0 <= row < self.size[1]:
-            return col,row
-        else:
-            return -1,-1
 
     def handleClick(self, pos):
         """
@@ -99,6 +87,8 @@ class PanelCuadrillaColored(Panel):
                 current_value = self.board[col][row]
                 if current_value == 0:
                     self.board[col][row] = self.selected_color
+                elif current_value > 0:
+                    self.board[col][row] = -self.board[col][row]
 
     def handleKey(self, event):
         """
@@ -116,6 +106,62 @@ class PanelCuadrillaColored(Panel):
                 self.selected_color = 3
             elif event.key == pygame.K_4:
                 self.selected_color = 4
+            elif event.key == pygame.K_5:
+                self.selected_color = 5
+            elif event.key == pygame.K_6:
+                self.selected_color = 6
+            elif event.key == pygame.K_7:
+                self.selected_color = 7
+            elif event.key == pygame.K_8:
+                self.selected_color = 8
+            elif event.key == pygame.K_9:
+                self.selected_color = 9
+            if self.selected_color > len(self.colors):
+                self.selected_color = len(self.colors)
+
+    def getXOffset(self):
+        """
+            Getter del desplazamiento horizontal de la cuadrilla en la ventana.
+
+            Returns:
+                float: El desplazamiento horizontal de la cuadrilla.
+        """
+        return self.draw_xoffset
+
+    def getYOffset(self):
+        """
+            Getter del desplazamiento vertical de la cuadrilla en la ventana.
+
+            Returns:
+                float: El desplazamiento vertical de la cuadrilla.
+        """
+        return self.draw_yoffset
+
+    def getZoom(self):
+        """
+            Getter del nivel de zooom actual.
+
+            Returns:
+                float: Nivel de zoom actual en la cuadrilla..
+        """
+        return self.zoom_x
+
+    def positionClick(self,pos):
+        """
+            Convierte una posición en la pantalla (pos) a una posición de fila y columna en el tablero.
+
+            Args:
+                pos (tuple): Coordenadas (x, y) del clic en la pantalla.
+
+            Returns:
+                tuple: (col, row) de la celda seleccionada en el tablero, o (-1, -1) si el clic está fuera del tablero.
+        """
+        row = int((pos[1] - self.y - self.draw_yoffset) // self.cell_size)
+        col = int((pos[0] - self.x - self.draw_xoffset) // self.cell_size)
+        if 0 <= col < self.size[0] and 0 <= row < self.size[1]:
+            return col,row
+        else:
+            return -1,-1
 
     def getSize(self):
         """
@@ -213,6 +259,11 @@ class PanelCuadrillaColored(Panel):
         self.surface.fill((self.red, self.green, self.blue))
         self.calculate_cellSize(size)
 
+
+    def setCheckResult(self, check):
+        self.check_result = check
+
+
     def draw(self, dest_surface):
         """
             Dibuja el tablero, utilizando los colores del nonograma.
@@ -223,41 +274,16 @@ class PanelCuadrillaColored(Panel):
         for col in range(self.size[0]):
             for row in range(self.size[1]):
                 cell = self.board[col][row]
-
                 if cell == 0:
-                    color = [30,30,30]
-                elif cell == -1:
-                    color = [255,0,0]
+                    color = (30,30,30)
+                elif cell < 0:
+                    if self.check_result:
+                        color = (255, 0, 0)
+                    else:
+                        color = self.colors[(-cell)-1]
                 else:
-                    color = self.colors[cell - 1]
+                    color = self.colors[cell-1]
 
                 pygame.draw.rect(self.surface, color, (col * self.cell_size + self.draw_xoffset, row * self.cell_size + self.draw_yoffset, self.cell_size - 2, self.cell_size - 2))
         super().draw(dest_surface)
-
-    def getXOffset(self):
-        """
-            Getter del desplazamiento horizontal de la cuadrilla en la ventana.
-
-            Returns:
-                float: El desplazamiento horizontal de la cuadrilla.
-        """
-        return self.draw_xoffset
-
-    def getYOffset(self):
-        """
-            Getter del desplazamiento vertical de la cuadrilla en la ventana.
-
-            Returns:
-                float: El desplazamiento vertical de la cuadrilla.
-        """
-        return self.draw_yoffset
-
-    def getZoom(self):
-        """
-            Getter del nivel de zooom actual.
-
-            Returns:
-                float: Nivel de zoom actual en la cuadrilla..
-        """
-        return self.zoom_x
 
