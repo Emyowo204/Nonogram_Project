@@ -134,8 +134,9 @@ class Juego:
 
             self.panelActual.draw(self.window)
 
-            if self.panelActual == self.panelOpciones:
+            if self.panelActual == self.panelOpciones or self.panelActual == self.panelFileManager:
                 self.panelActual.actualizar(deltatime)
+
             self.window.fill((255,255,255))
             self.panelActual.draw(self.window)
 
@@ -186,7 +187,7 @@ class Juego:
             self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1], self.gameMode)
         elif self.gameDifficulty == 4:
             self.panelActual = self.panelPartidaColor
-            self.panelPartidaColor.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1], self.gameMode)
+            self.panelPartidaColor.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1])
         else:
             self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt', self.gameMode)
         self.panelActual.defaultZoom()

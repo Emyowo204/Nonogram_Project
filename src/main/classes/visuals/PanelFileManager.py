@@ -1,6 +1,8 @@
 import os
 
 import pygame
+import pygame_gui
+
 from src.main.classes.models.FileManager import FileManager
 from src.main.classes.models.Image2Nonogram import Image2Nonogram
 from src.main.classes.visuals.BotonRect import BotonRect
@@ -15,48 +17,57 @@ class PanelFileManager(Panel):
         self.filemanager = FileManager()
         self.font = pygame.font.Font(None, 20)
         self.setColor(50,50,50)
+
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
         self.btnVolver = BotonRect(40, height-120, 80, 80, juego.mostrarPanelNiveles,3)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
+
         self.firstButton = 1
         self.scaleButton = 720/18
-        self.btnMoveUp = BotonRect(400,0, 40, 40, self.moveButtons,4)
-        self.btnMoveUp.setImage(pygame.image.load('../images/btnUpNormal.png'), pygame.image.load('../images/btnUpShaded.png'))
-        self.btnMoveDown = BotonRect(400, 680, 40, 40, self.moveButtons, -4)
-        self.btnMoveDown.setImage(pygame.image.load('../images/btnDownNormal.png'), pygame.image.load('../images/btnDownShaded.png'))
         self.buttonsDir = []
+        self.buttonsFiles = []
         self.buttonBack = None
         self.backRect = pygame.Rect(0, 0, 400, 720)
 
+        self.manager = pygame_gui.UIManager((width, height))
+        self.scrolling_container = pygame_gui.elements.UIScrollingContainer(
+            relative_rect=pygame.Rect(20, 50, 450, 450), manager=self.manager
+        )
+
     def updateButtons(self):
-        self.surface.fill((50,50,50))
         self.buttonsDir = []
+        self.buttonsFiles = []
+
         currentdir = self.filemanager.getCurrentDir()
-        y=self.firstButton
-        surfNormal = pygame.Surface((self.scaleButton*10, self.scaleButton))
-        surfShaded = pygame.Surface((self.scaleButton*10, self.scaleButton))
-        self.font = pygame.font.Font(None, int(self.scaleButton/2))
-        self.backRect.update(0, 0, self.scaleButton*10, self.w)
+        y=0
 
         if currentdir != "/":
-            self.buttonBack = BotonRect(0, 0, self.scaleButton * 10, self.scaleButton, self.changeDir, "..")
-            self.buttonBack.setImage(self.setSurface(surfNormal,"<< Back",225), self.setSurface(surfShaded,"<< Back",180))
-
+            button = pygame_gui.elements.UIButton(
+                relative_rect=pygame.Rect(0, y * self.scaleButton, self.scaleButton * 10, self.scaleButton),
+                text="<< Back", container=self.scrolling_container, manager=self.manager
+            )
+            self.buttonBack = button
+        y+=1
         self.filemanager.updateDir()
         folders = self.filemanager.getFolders()
         files = self.filemanager.getImages()
 
         for folder in folders:
-            button = BotonRect(0, y*self.scaleButton, self.scaleButton*10, self.scaleButton, self.changeDir, folder)
-            button.setImage(self.setSurface(surfNormal,folder,255), self.setSurface(surfShaded,folder,200))
-            self.buttonsDir.append(button)
+            button = pygame_gui.elements.UIButton(
+                relative_rect=pygame.Rect(0, y * self.scaleButton, self.scaleButton * 10, self.scaleButton),
+                text=folder, container=self.scrolling_container, manager=self.manager
+            )
+
+            self.buttonsDir.append((button, folder))
             y += 1
 
         for file in files:
-            button = BotonRect(0, y*self.scaleButton, self.scaleButton*10, self.scaleButton, Image2Nonogram.convertImg2Bin, os.path.join(self.filemanager.getCurrentDir(),file),30,30)
-            button.setImage(self.setSurface(surfNormal,file,255), self.setSurface(surfShaded,file,200))
-            self.buttonsDir.append(button)
+            button = pygame_gui.elements.UIButton(
+                relative_rect=pygame.Rect(0, y * self.scaleButton, self.scaleButton * 10, self.scaleButton),
+                text=file, container=self.scrolling_container, manager=self.manager
+            )
+            self.buttonsFiles.append((button, file))
             y += 1
 
     def setSurface(self, surface, text, color):
@@ -66,37 +77,26 @@ class PanelFileManager(Panel):
         return surface
 
     def evento(self, event):
-        for button in self.buttonsDir:
-            button.evento(event)
-        self.buttonBack.evento(event)
+        if event.type == pygame_gui.UI_BUTTON_PRESSED:
+            for button, data in self.buttonsDir:
+                if event.ui_element == button:
+                    self.changeDir(data)
+            for button, data in self.buttonsFiles:
+                if event.ui_element == button:
+                    Image2Nonogram.convertImg2Bin(data,30,30)
+            if event.ui_element == self.buttonBack:
+                    self.changeDir("..")
+
+        self.manager.process_events(event)
         self.btnVolver.evento(event)
         self.btnOpciones.evento(event)
-        self.btnMoveUp.evento(event)
-        self.btnMoveDown.evento(event)
+
 
     def changeDir(self, path):
         new_path = os.path.join(self.filemanager.getCurrentDir(),path)
         self.filemanager.changeDir(new_path)
-        self.firstButton = 1
         self.updateButtons()
 
-    def moveButtons(self,start):
-        self.surface = pygame.Surface((self.w,self.h))
-        self.surface.fill((self.red,self.green,self.blue))
-        if self.firstButton+start>1 or len(self.buttonsDir)<18:
-            self.firstButton = 1
-        elif self.firstButton+start<-len(self.buttonsDir)+18:
-            self.firstButton = -len(self.buttonsDir)+18
-        else:
-            self.firstButton+=start
-        y = self.firstButton
-        for button in self.buttonsDir:
-            button.setCoord(0,y*self.scaleButton)
-            y+=1
-            if y*self.scaleButton <= self.scaleButton:
-                button.setEnable(False)
-            else:
-                button.setEnable(True)
 
     def fitWindow(self, w, h):
         if w < h :
@@ -110,18 +110,18 @@ class PanelFileManager(Panel):
         self.scaleButton = int(h / 18)
         self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
-        self.btnMoveUp.setValues(self.scaleButton*10, 0, 40*multi, 40*multi)
-        self.btnMoveDown.setValues(self.scaleButton*10, self.h-40*multi, 40*multi, 40*multi)
         self.updateButtons()
+
+    def actualizar(self, tiempo_delta):
+        """
+        Actualiza el estado del gestor de UI.
+        :param tiempo_delta: Delta de tiempo entre frames.
+        """
+        self.manager.update(tiempo_delta)
 
     def draw(self, dest_surface):
         super().draw(dest_surface)
         dest_surface.blit(self.surface,(0,0))
-        pygame.draw.rect(dest_surface, (250, 250, 250), self.backRect)
-        for button in self.buttonsDir:
-            button.draw(self.juego.getWindow())
-        self.buttonBack.draw(self.juego.getWindow())
+        self.manager.draw_ui(dest_surface)
         self.btnVolver.draw(self.juego.getWindow())
         self.btnOpciones.draw(self.juego.getWindow())
-        self.btnMoveUp.draw(self.juego.getWindow())
-        self.btnMoveDown.draw(self.juego.getWindow())
