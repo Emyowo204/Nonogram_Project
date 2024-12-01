@@ -9,6 +9,7 @@ from src.main.classes.visuals.PanelPartidaColored import PanelPartidaColored
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
+from src.main.classes.visuals.PanelLogros import PanelLogros
 from src.main.classes.visuals.PanelMenu import PanelMenu
 from src.main.classes.visuals.PanelNiveles import PanelNiveles
 from src.main.classes.models.Musica import Musica
@@ -28,6 +29,7 @@ class Juego:
         self.panelPartida = None
         self.panelNiveles = None
         self.panelOpciones = None
+        self.panelLogros = None
         self.panelMenu = None
         self.panelFileManager = None
         self.custom_puzzles = []
@@ -51,6 +53,7 @@ class Juego:
         self.panelPartida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelPartidaColor = PanelPartidaColored(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
+        self.panelLogros = PanelLogros(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelFileManager = PanelFileManager(0,0,self.window_size[0], 1080,self)
         self.mostrarPanelMenu()
@@ -75,7 +78,7 @@ class Juego:
                 elif event.type == pygame.MOUSEMOTION:
                     pos = event.pos
 
-                if self.panelActual == self.panelPartida:
+                if self.panelActual == self.panelPartida or self.panelActual == self.panelPartidaColor:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if event.button == 1:
                             is_pressed = True
@@ -84,10 +87,27 @@ class Juego:
                             is_pressed = False
 
                     if is_pressed:
-                        self.panelPartida.handleClick(pos)
+                        self.panelActual.handleClick(pos)
 
                     if event.type == pygame.MOUSEWHEEL:
-                        self.panelPartida.handleZoom(event, pos)
+                        self.panelActual.handleZoom(event, pos)
+
+                if self.panelActual == self.panelPartidaColor:
+
+                    self.panelPartidaColor.handleKey(event)
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button == 1:
+                            is_pressed = True
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        if event.button == 1:
+                            is_pressed = False
+
+                    if is_pressed:
+                        self.panelPartidaColor.handleClick(pos)
+
+                    if event.type == pygame.MOUSEWHEEL:
+                        self.panelPartidaColor.handleZoom(event, pos)
+
                 self.panelActual.evento(event)
 
 
@@ -97,6 +117,8 @@ class Juego:
 
             self.panelActual.draw(self.window)
 
+            if self.panelActual == self.panelOpciones:
+                self.panelActual.actualizar(deltatime)
             self.window.fill((255,255,255))
             self.panelActual.draw(self.window)
 
@@ -160,6 +182,11 @@ class Juego:
         self.panelActual = self.panelOpciones
         self.panelOpciones.fitWindow(self.window_size[0], self.window_size[1])
         self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
+
+    def mostrarPanelLogros(self):
+        self.panelAnterior = self.panelActual
+        self.panelActual = self.panelLogros
+        self.panelLogros.fitWindow(self.window_size[0], self.window_size[1])
 
     def mostrarPanelFileManager(self):
         self.panelAnterior = self.panelActual
