@@ -53,7 +53,7 @@ class Juego:
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelLogros = PanelLogros(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
-        self.panelFileManager = PanelFileManager(0,0,self.window_size[0], 1080,self)
+        self.panelFileManager = PanelFileManager(0,0,self.window_size[0], self.window_size[1],self)
         self.mostrarPanelMenu()
         self.panelFileManager.updateButtons()
 
@@ -112,8 +112,9 @@ class Juego:
 
             self.panelActual.draw(self.window)
 
-            if self.panelActual == self.panelOpciones:
+            if self.panelActual == self.panelOpciones or self.panelActual == self.panelFileManager:
                 self.panelActual.actualizar(deltatime)
+
             self.window.fill((255,255,255))
             self.panelActual.draw(self.window)
 
