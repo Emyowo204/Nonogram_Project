@@ -140,8 +140,12 @@ class CuadrillaColored:
         except OSError:
             return False
         archivo.write(f"{self.__c} {self.__r}\n")
-        for color in self.__colors:
-            archivo.write(f"{color} \n")
+        for colors in self.__colors:
+            archivo.write(f"[")
+            for color in colors:
+                archivo.write(f"{color} ")
+            archivo.write(f"]")
+        archivo.write(f"\n")
         for i in range(self.__r):
             for j in range(self.__c):
                 archivo.write(f"{self.__board[j][i]} ")
