@@ -5,7 +5,6 @@ import pygame
 from src.main.classes.models.FileManager import FileManager
 from src.main.classes.visuals.PanelFileManager import PanelFileManager
 from src.main.classes.visuals.PanelPartida import PanelPartida
-from src.main.classes.visuals.PanelPartidaColored import PanelPartidaColored
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
@@ -19,8 +18,7 @@ import time
 
 class Juego:
     def __init__(self):
-        
-        self.panelPartidaColor = None
+
         self.filemanager = None
         self.window = None
         self.window_size = [None, None]
@@ -52,7 +50,6 @@ class Juego:
         clock = pygame.time.Clock()
         self.panelMenu = PanelMenu(0,0, self.window_size[0], self.window_size[1], self)
         self.panelPartida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
-        self.panelPartidaColor = PanelPartidaColored(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelLogros = PanelLogros(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
@@ -108,22 +105,6 @@ class Juego:
 
                     if event.type == pygame.MOUSEWHEEL:
                         self.panelActual.handleZoom(event, pos)
-
-                if self.panelActual == self.panelPartidaColor:
-
-                    self.panelPartidaColor.handleKey(event)
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        if event.button == 1:
-                            is_pressed = True
-                    elif event.type == pygame.MOUSEBUTTONUP:
-                        if event.button == 1:
-                            is_pressed = False
-
-                    if is_pressed:
-                        self.panelPartidaColor.handleClick(pos)
-
-                    if event.type == pygame.MOUSEWHEEL:
-                        self.panelPartidaColor.handleZoom(event, pos)
 
                 self.panelActual.evento(event)
 
@@ -185,8 +166,7 @@ class Juego:
         if self.gameDifficulty == 3:
             self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1], self.gameMode)
         elif self.gameDifficulty == 4:
-            self.panelActual = self.panelPartidaColor
-            self.panelPartidaColor.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1], self.gameMode)
+            self.panelPartida.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1], self.gameMode)
         else:
             self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt', self.gameMode)
         self.panelActual.defaultZoom()

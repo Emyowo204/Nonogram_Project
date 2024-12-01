@@ -11,7 +11,7 @@ class PanelNonograma(Panel):
     def __init__(self, x, y, width, height):
         super().__init__(x,y,width,height)
         self.setColor(0,0,0)
-        self.path = ['Easy/Easy_Nivel1.txt','Easy/0Hard_Nivel1.txt']
+        self.path = ['Easy/Easy_Nivel1.txt','Easy/M0_Hard_Nivel1.txt']
         self.mode = 0
         self.cuadrilla_resultado = Cuadrilla(None, None, 'puzzles/'+str(self.path[0]))
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300)

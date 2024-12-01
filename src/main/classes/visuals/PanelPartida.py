@@ -4,6 +4,7 @@ from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.PanelNonograma import PanelNonograma
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.BotonRect import BotonRect
+from src.main.classes.visuals.PanelNonogramaColored import PanelNonogramaColored
 
 
 class PanelPartida(Panel):
@@ -12,7 +13,8 @@ class PanelPartida(Panel):
         super().__init__(x,y,width,height)
         self.vidas = 5
         self.isSolved = 0
-        self.panel_nonograma = PanelNonograma(self.x, self.y, self.w, self.h)
+        self.type_nonograma = [PanelNonograma(self.x, self.y, self.w, self.h), PanelNonogramaColored(self.x, self.y, self.w, self.h)]
+        self.panel_nonograma = self.type_nonograma[0]
         self.setColor(200,200,200)
         self.font = pygame.font.Font(None, 40)
         self.stringInfo = 'Vidas: 5'
@@ -27,6 +29,7 @@ class PanelPartida(Panel):
         self.game_mode = 0
 
     def setNonograma(self, path, mode):
+        self.panel_nonograma = self.type_nonograma[mode%2]
         self.panel_nonograma.setNonograma(path, mode)
         self.isSolved = 0
         self.vidas = 5-self.panel_nonograma.getInfoCuadrilla(0)[1]
