@@ -34,10 +34,20 @@ class PanelFileManager(Panel):
         self.scrolling_container = pygame_gui.elements.UIScrollingContainer(
             relative_rect=pygame.Rect(20, 50, 450, 450), manager=self.manager
         )
+        self.scrolling_container.set_scrollable_area_dimensions((450, y * self.scaleButton))
 
     def updateButtons(self):
+
+        for button, _ in self.buttonsFiles:
+            button.kill()
+        for button, _ in self.buttonsDir:
+            button.kill()
+        if self.buttonBack:
+            self.buttonBack.kill()
+
         self.buttonsDir = []
         self.buttonsFiles = []
+        self.buttonBack = None
 
         currentdir = self.filemanager.getCurrentDir()
         y=0
@@ -67,7 +77,7 @@ class PanelFileManager(Panel):
                 relative_rect=pygame.Rect(0, y * self.scaleButton, self.scaleButton * 10, self.scaleButton),
                 text=file, container=self.scrolling_container, manager=self.manager
             )
-            self.buttonsFiles.append((button, file))
+            self.buttonsFiles.append((button, os.path.join(self.filemanager.getCurrentDir(),file)))
             y += 1
 
     def setSurface(self, surface, text, color):
@@ -110,6 +120,7 @@ class PanelFileManager(Panel):
         self.scaleButton = int(h / 18)
         self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
+        self.manager.set_window_resolution((w,h))
         self.updateButtons()
 
     def actualizar(self, tiempo_delta):
@@ -122,6 +133,6 @@ class PanelFileManager(Panel):
     def draw(self, dest_surface):
         super().draw(dest_surface)
         dest_surface.blit(self.surface,(0,0))
-        self.manager.draw_ui(dest_surface)
         self.btnVolver.draw(self.juego.getWindow())
         self.btnOpciones.draw(self.juego.getWindow())
+        self.manager.draw_ui(dest_surface)

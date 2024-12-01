@@ -56,7 +56,7 @@ class Juego:
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelLogros = PanelLogros(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
-        self.panelFileManager = PanelFileManager(0,0,self.window_size[0], 1080,self)
+        self.panelFileManager = PanelFileManager(0,0,self.window_size[0], self.window_size[1],self)
         self.mostrarPanelMenu()
         self.panelFileManager.updateButtons()
 
