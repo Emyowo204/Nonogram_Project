@@ -33,8 +33,8 @@ class Juego:
         self.panelFileManager = None
         self.custom_puzzles = []
         self.color_puzzles = []
-        self.levelsCount = [0, 0, 0, 0, 0]
-        self.difficultyList = ["Easy", "Medium", "Hard", "Custom", "Colored"]
+        self.levelsCount = [0, 0, 0, 0]
+        self.difficultyList = ["Easy", "Medium", "Hard", "Custom"]
         self.gameDifficulty = 0
         self.gameMode = 0
 
@@ -143,12 +143,6 @@ class Juego:
             self.custom_puzzles = self.filemanager.getPuzzles()
             self.levelsCount[3] = len(self.custom_puzzles)
             self.panelNiveles.setLoadEnable(True)
-        elif difficulty_index == 4:
-            self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/" + self.difficultyList[4]))
-            self.filemanager.updateDir()
-            self.color_puzzles = self.filemanager.getPuzzles()
-            self.levelsCount[4] = len(self.color_puzzles)
-            self.panelNiveles.setLoadEnable(True)
         else:
             self.panelNiveles.setLoadEnable(False)
         quantity = self.levelsCount[difficulty_index]
@@ -165,8 +159,6 @@ class Juego:
         diff_name = self.difficultyList[self.gameDifficulty]
         if self.gameDifficulty == 3:
             self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1], self.gameMode)
-        elif self.gameDifficulty == 4:
-            self.panelPartida.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1], self.gameMode)
         else:
             self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt', self.gameMode)
         self.panelActual.defaultZoom()
