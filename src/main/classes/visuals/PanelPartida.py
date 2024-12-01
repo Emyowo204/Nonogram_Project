@@ -15,7 +15,7 @@ class PanelPartida(Panel):
         self.isSolved = 0
         self.type_nonograma = [PanelNonograma(self.x, self.y, self.w, self.h), PanelNonogramaColored(self.x, self.y, self.w, self.h)]
         self.panel_nonograma = self.type_nonograma[0]
-        self.setColor(200,200,200)
+        self.setColor(150,250,220)
         self.font = pygame.font.Font(None, 40)
         self.stringInfo = 'Vidas: 5'
         self.btnOpciones = BotonRect(width-70, height-70, 60, 60, juego.mostrarPanelOpciones, None)
@@ -23,7 +23,7 @@ class PanelPartida(Panel):
         self.botonVolver = BotonRect(10, height-70, 60, 60, self.volverPanelNiveles,None)
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.botonReset = BotonRect(width-70, 10, 60, 60, self.resetNonograma,None)
-        self.botonReset.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
+        self.botonReset.setImage(ImageLoader().getResNormal(), ImageLoader().getResShaded())
         self.juego = juego
         self.game_difficulty = 0
         self.game_mode = 0

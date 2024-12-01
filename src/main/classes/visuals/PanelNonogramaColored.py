@@ -147,8 +147,8 @@ class PanelNonogramaColored(Panel):
     def draw(self,dest_surface):
         super().draw(dest_surface)
         self.panel_jugador.draw(self.surface)
-        self.panel_resultado.draw(self.surface)
+        #self.panel_resultado.draw(self.surface)
         self.panel_colnums.draw(self.surface)
         self.panel_rownums.draw(self.surface)
         pygame.draw.rect(self.surface, self.selectedColor[0] ,self.colorRect)
-        self.surface.blit(self.text_surface, (self.w*3/32, self.h*3/32))
+        self.surface.blit(self.text_surface, (self.w*5/49, self.h*3/36))
