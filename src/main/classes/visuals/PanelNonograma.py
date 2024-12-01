@@ -10,9 +10,9 @@ class PanelNonograma(Panel):
 
     def __init__(self, x, y, width, height):
         super().__init__(x,y,width,height)
-
         self.setColor(0,0,0)
-        self.cuadrilla_resultado = Cuadrilla(None, None, 'Easy/Easy_Nivel1.txt')
+        self.path = 'Easy/Easy_Nivel1.txt'
+        self.cuadrilla_resultado = Cuadrilla(None, None, 'puzzles/'+str(self.path))
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300)
         self.board_size = self.cuadrilla_resultado.getSize()
         self.panel_resultado.setColor(0,0,0)
@@ -22,13 +22,21 @@ class PanelNonograma(Panel):
         self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 700)
 
     def setNonograma(self, path):
-        self.cuadrilla_resultado = Cuadrilla(None, None, path)
+        self.path = path
+        self.cuadrilla_resultado = Cuadrilla(None, None, 'puzzles/'+path)
         self.board_size = self.cuadrilla_resultado.getSize()
-        self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], None)
+        self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], 'saves/' + path)
         self.panel_jugador.setNewCuadrilla(self.cuadrilla_jugador)
         self.panel_resultado.setNewCuadrilla(self.cuadrilla_resultado)
         self.panel_colnums.setNewNumbers(self.cuadrilla_resultado.getColumnNums(), 'columns')
         self.panel_rownums.setNewNumbers(self.cuadrilla_resultado.getRowNums(), 'rows')
+
+    def saveNonograma(self):
+        self.cuadrilla_jugador.saveCuadrilla(self.path)
+
+    def resetNonograma(self):
+        self.cuadrilla_jugador.resetSave(self.path)
+        self.cuadrilla_jugador.emptyBoard()
 
     def getSize(self):
         return self.board_size
@@ -60,10 +68,12 @@ class PanelNonograma(Panel):
         jugador_cell = self.cuadrilla_jugador.checkCell(col,row)
         resultado_cell = self.cuadrilla_resultado.checkCell(col,row)
         if col != -1 and row != -1:
-            if  jugador_cell!=resultado_cell :
+            if jugador_cell!=resultado_cell:
                 if jugador_cell!=-1:
                     result = 1
                 self.cuadrilla_jugador.setCell(col, row, -1)
+            else:
+                self.cuadrilla_jugador.setCell(col, row, 1)
         return result
 
     def fitWindow(self, w, h):

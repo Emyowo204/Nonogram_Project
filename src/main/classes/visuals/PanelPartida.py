@@ -17,17 +17,33 @@ class PanelPartida(Panel):
         self.stringInfo = 'Vidas: 5'
         self.btnOpciones = BotonRect(width-70, height-70, 60, 60, juego.mostrarPanelOpciones, None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
-        self.botonVolver = BotonRect(10, height-70, 60, 60, juego.mostrarPanelNiveles,None)
+        self.botonVolver = BotonRect(10, height-70, 60, 60, self.volverPanelNiveles,None)
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
+        self.botonReset = BotonRect(width-70, 10, 60, 60, self.resetNonograma,None)
+        self.botonReset.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.juego = juego
+        self.game_difficulty = 0
 
     def setNonograma(self, path):
         self.panel_nonograma.setNonograma(path)
         self.vidas = 5
         self.stringInfo = 'Vidas: 5'
 
+    def saveNonograma(self):
+        self.panel_nonograma.saveNonograma()
+
+    def volverPanelNiveles(self):
+        self.saveNonograma()
+        self.juego.mostrarPanelNiveles(self.game_difficulty)
+
+    def resetNonograma(self):
+        self.panel_nonograma.resetNonograma()
+        self.vidas = 5
+        self.stringInfo = 'Vidas: 5'
+        self.surface.fill((self.red, self.green, self.blue))
+
     def setVolverBoton(self, game_difficulty):
-        self.botonVolver.setAction(self.juego.mostrarPanelNiveles, game_difficulty)
+        self.game_difficulty = game_difficulty
 
     def handleClick(self,pos):
         self.panel_nonograma.handleClick(pos)
@@ -52,6 +68,7 @@ class PanelPartida(Panel):
     def evento(self, event):
         self.botonVolver.evento(event)
         self.btnOpciones.evento(event)
+        self.botonReset.evento(event)
 
     def fitWindow(self, w, h):
         self.w = w
@@ -67,11 +84,13 @@ class PanelPartida(Panel):
             multi = h / 720
         self.btnOpciones.setValues(self.w-70*multi, self.h-70*multi, 60*multi, 60*multi)
         self.botonVolver.setValues(10*multi, self.h-70*multi, 60*multi, 60*multi)
+        self.botonReset.setValues(self.w-70*multi, 10*multi, 60*multi, 60*multi)
 
     def draw(self,dest_surface):
         super().draw(dest_surface)
         self.panel_nonograma.draw(self.surface)
         self.botonVolver.draw(self.surface)
         self.btnOpciones.draw(self.juego.getWindow())
+        self.botonReset.draw(self.surface)
         text_surface = self.font.render(self.stringInfo, False, (0, 0, 0))
         self.surface.blit(text_surface, (10, 10))
