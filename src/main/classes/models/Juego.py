@@ -33,7 +33,7 @@ class Juego:
         self.panelFileManager = None
         self.custom_puzzles = []
         self.color_puzzles = []
-        self.levelsCount = [0, 0, 0, 0]
+        self.levelsCount = [0, 0, 0, 0, 0]
         self.difficultyList = ["Easy", "Medium", "Hard", "Custom"]
         self.gameDifficulty = 0
         self.gameMode = 0
@@ -140,10 +140,19 @@ class Juego:
             self.filemanager.updateDir()
             self.custom_puzzles = self.filemanager.getPuzzles()
             self.levelsCount[3] = len(self.custom_puzzles)
+
+            self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles_color/" + self.difficultyList[3]))
+            self.filemanager.updateDir()
+            self.color_puzzles = self.filemanager.getPuzzles()
+            self.levelsCount[4] = len(self.color_puzzles)
+
             self.panelNiveles.setLoadEnable(True)
         else:
             self.panelNiveles.setLoadEnable(False)
-        quantity = self.levelsCount[difficulty_index]
+        if self.gameMode == 1 or self.gameMode == 3 and difficulty_index == 3:
+            quantity = self.levelsCount[4]
+        else:
+            quantity = self.levelsCount[difficulty_index]
         self.panelNiveles.setLevelButtons(quantity)
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelNiveles
@@ -156,7 +165,11 @@ class Juego:
         self.panelActual = self.panelPartida
         diff_name = self.difficultyList[self.gameDifficulty]
         if self.gameDifficulty == 3:
-            self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1], self.gameMode)
+            if self.gameMode == 0 or self.gameMode == 2:
+                self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1], self.gameMode)
+            elif self.gameMode == 1 or self.gameMode == 3:
+                self.panelPartida.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1], self.gameMode)
+
         else:
             self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt', self.gameMode)
         self.panelActual.defaultZoom()
@@ -178,6 +191,10 @@ class Juego:
     def mostrarPanelFileManager(self):
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelFileManager
+        if self.gameMode == 0 or self.gameMode == 2:
+            self.panelFileManager.setBinMode()
+        elif self.gameMode == 1 or self.gameMode == 3:
+            self.panelFileManager.setColorMode()
         self.panelFileManager.fitWindow(self.window_size[0], self.window_size[1])
 
     def mostrarPanelAnterior(self):

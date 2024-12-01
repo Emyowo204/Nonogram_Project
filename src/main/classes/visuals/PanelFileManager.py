@@ -13,6 +13,7 @@ from src.main.classes.visuals.Panel import Panel
 class PanelFileManager(Panel):
     def __init__(self,x,y,width,height,juego):
         super().__init__(x,y,width,height)
+        self.mode = None
         self.juego = juego
         self.filemanager = FileManager()
         self.font = pygame.font.Font(None, 20)
@@ -86,6 +87,12 @@ class PanelFileManager(Panel):
         surface.blit(text_surface, (int(self.scaleButton/5), int(self.scaleButton*1/4)))
         return surface
 
+    def setColorMode(self):
+        self.mode = 'color'
+
+    def setBinMode(self):
+        self.mode = 'bin'
+
     def evento(self, event):
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             for button, data in self.buttonsDir:
@@ -93,7 +100,10 @@ class PanelFileManager(Panel):
                     self.changeDir(data)
             for button, data in self.buttonsFiles:
                 if event.ui_element == button:
-                    Image2Nonogram.convertImg2Bin(data,30,30)
+                    if self.mode == 'bin':
+                        Image2Nonogram.convertImg2Bin(data,30,30)
+                    elif self.mode == 'color':
+                        Image2Nonogram.convertImg2Color(data, 30, 30,4)
             if event.ui_element == self.buttonBack:
                     self.changeDir("..")
 
