@@ -23,10 +23,9 @@ class PanelNonogramaColored(Panel):
         self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(), 'columns', 0, 0, 700, 300)
         self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 300, 700)
         self.colorRect = pygame.Rect(5, 5, 20, 20)
-        self.selectedColor = [(0,0,0), 1]
-        self.selectedColor[0] = self.cuadrilla_jugador.getColor(0)
+        self.selectedColor = [[0,0,0], 0]
         self.font = pygame.font.Font(None, 18)
-        self.text_surface = self.font.render(str(1), False, (0, 0, 0))
+        self.text_surface = self.font.render(str(1), False, (0, 10, 0))
 
     def setNonograma(self, path, mode):
         self.path[0] = path
@@ -95,6 +94,8 @@ class PanelNonogramaColored(Panel):
 
     def handleClick(self,pos):
         self.panel_jugador.handleClick(self.getBoardPosition(pos))
+        if self.selectedColor[0] == [0,0,0]:
+            self.selectedColor[0] = self.cuadrilla_jugador.getColor(self.panel_jugador.getSelectedColor() - 1)
 
     def handleZoom(self, event, pos):
         size = self.panel_resultado.getSize()
