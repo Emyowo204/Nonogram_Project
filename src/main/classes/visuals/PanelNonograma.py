@@ -11,8 +11,9 @@ class PanelNonograma(Panel):
     def __init__(self, x, y, width, height):
         super().__init__(x,y,width,height)
         self.setColor(0,0,0)
-        self.path = 'Easy/Easy_Nivel1.txt'
-        self.cuadrilla_resultado = Cuadrilla(None, None, 'puzzles/'+str(self.path))
+        self.path = ['Easy/Easy_Nivel1.txt','Easy/0Hard_Nivel1.txt']
+        self.mode = 0
+        self.cuadrilla_resultado = Cuadrilla(None, None, 'puzzles/'+str(self.path[0]))
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300)
         self.board_size = self.cuadrilla_resultado.getSize()
         self.panel_resultado.setColor(0,0,0)
@@ -21,22 +22,35 @@ class PanelNonograma(Panel):
         self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'columns',0,0,700,300)
         self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 700)
 
-    def setNonograma(self, path):
-        self.path = path
+    def setNonograma(self, path, mode):
+        self.path[0] = path
+        self.path[1] = path.split('/')
+        self.path[1] = self.path[1][0]+'/M'+str(mode)+'_'+self.path[1][1]
+        self.mode = mode
         self.cuadrilla_resultado = Cuadrilla(None, None, 'puzzles/'+path)
         self.board_size = self.cuadrilla_resultado.getSize()
-        self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], 'saves/' + path)
+        self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], 'saves/' + self.path[1])
         self.panel_jugador.setNewCuadrilla(self.cuadrilla_jugador)
+        if mode >= 2:
+            self.panel_jugador.setCheckResult(True)
+        else:
+            self.panel_jugador.setCheckResult(False)
         self.panel_resultado.setNewCuadrilla(self.cuadrilla_resultado)
         self.panel_colnums.setNewNumbers(self.cuadrilla_resultado.getColumnNums(), 'columns')
         self.panel_rownums.setNewNumbers(self.cuadrilla_resultado.getRowNums(), 'rows')
 
     def saveNonograma(self):
-        self.cuadrilla_jugador.saveCuadrilla(self.path)
+        self.cuadrilla_jugador.saveCuadrilla(str(self.path[1]))
 
     def resetNonograma(self):
-        self.cuadrilla_jugador.resetSave(self.path)
+        self.cuadrilla_jugador.resetSave(str(self.path[1]))
         self.cuadrilla_jugador.emptyBoard()
+
+    def getInfoCuadrilla(self, choice):
+        if choice == 0:
+            return self.cuadrilla_jugador.getInfo()
+        else:
+            return self.cuadrilla_resultado.getInfo()
 
     def getSize(self):
         return self.board_size
@@ -68,12 +82,20 @@ class PanelNonograma(Panel):
         jugador_cell = self.cuadrilla_jugador.checkCell(col,row)
         resultado_cell = self.cuadrilla_resultado.checkCell(col,row)
         if col != -1 and row != -1:
-            if jugador_cell!=resultado_cell:
-                if jugador_cell!=-1:
+            if jugador_cell == 'clk':
+                if resultado_cell==0:
                     result = 1
-                self.cuadrilla_jugador.setCell(col, row, -1)
-            else:
-                self.cuadrilla_jugador.setCell(col, row, 1)
+                    self.cuadrilla_jugador.setCell(col, row, -1)
+                    self.cuadrilla_jugador.setInfo(1, self.cuadrilla_jugador.getInfo()[1]+1)
+                else:
+                    self.cuadrilla_jugador.setCell(col, row, 1)
+                    self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0]+1)
+            elif self.mode < 2:
+                self.cuadrilla_jugador.setCell(col, row, 0)
+                if jugador_cell==-1:
+                    self.cuadrilla_jugador.setInfo(1, self.cuadrilla_jugador.getInfo()[1]-1)
+                else:
+                    self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0]-1)
         return result
 
     def fitWindow(self, w, h):
@@ -111,7 +133,4 @@ class PanelNonograma(Panel):
         self.panel_resultado.draw(self.surface)
         self.panel_colnums.draw(self.surface)
         self.panel_rownums.draw(self.surface)
-
-    def checkSolved(self):
-        return self.cuadrilla_resultado.checkSolved(self.cuadrilla_jugador)
 

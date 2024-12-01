@@ -48,6 +48,7 @@ class PanelCuadrilla(Panel):
         self.zoom_x = 1
         self.draw_xoffset = 0
         self.draw_yoffset = 0
+        self.check_result = False
 
     def setNewCuadrilla(self, cuadrilla):
         """
@@ -86,8 +87,8 @@ class PanelCuadrilla(Panel):
         col,row = self.positionClick(pos)
         if col != -1 and row != -1:
             if 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
-                if self.board[col][row] != -1 and self.board[col][row] != 1:
-                    self.board[col][row] = not self.board[col][row]
+                if self.board[col][row] == 0:
+                    self.board[col][row] = 'clk'
 
     def getSize(self):
         """
@@ -203,7 +204,10 @@ class PanelCuadrilla(Panel):
                 elif cell == 1:
                     color = (255, 255, 255)
                 elif cell == -1:
-                    color = (255, 0, 0)
+                    if self.check_result:
+                        color = (255, 0, 0)
+                    else:
+                        color = (255, 255, 255)
                 pygame.draw.rect(self.surface, color, (col * self.cell_size + self.draw_xoffset, row * self.cell_size + self.draw_yoffset, self.cell_size - 2, self.cell_size - 2))
         super().draw(dest_surface)
 
@@ -233,3 +237,6 @@ class PanelCuadrilla(Panel):
                 float: Nivel de zoom actual en la cuadrilla..
         """
         return self.zoom_x
+
+    def setCheckResult(self, check):
+        self.check_result = check

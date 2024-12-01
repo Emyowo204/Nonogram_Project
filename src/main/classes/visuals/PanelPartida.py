@@ -11,7 +11,7 @@ class PanelPartida(Panel):
     def __init__(self, x, y, width, height, juego):
         super().__init__(x,y,width,height)
         self.vidas = 5
-        self.issolved = 0
+        self.isSolved = 0
         self.panel_nonograma = PanelNonograma(self.x, self.y, self.w, self.h)
         self.setColor(200,200,200)
         self.font = pygame.font.Font(None, 40)
@@ -24,12 +24,21 @@ class PanelPartida(Panel):
         self.botonReset.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.juego = juego
         self.game_difficulty = 0
+        self.game_mode = 0
 
-    def setNonograma(self, path):
-        self.panel_nonograma.setNonograma(path)
-        self.issolved = 0
-        self.vidas = 5
-        self.stringInfo = 'Vidas: 5'
+    def setNonograma(self, path, mode):
+        self.panel_nonograma.setNonograma(path, mode)
+        self.isSolved = 0
+        self.vidas = 5-self.panel_nonograma.getInfoCuadrilla(0)[1]
+        self.game_mode = mode
+        if mode < 2:
+            self.stringInfo = ''
+        else:
+            self.stringInfo = f'Vidas: {self.vidas}'
+            if self.vidas <= 0:
+                self.isSolved = -1
+                self.stringInfo = f'Vidas: 0 - PERDISTE'
+        self.checkSolve()
 
     def saveNonograma(self):
         self.panel_nonograma.saveNonograma()
@@ -40,25 +49,36 @@ class PanelPartida(Panel):
 
     def resetNonograma(self):
         self.panel_nonograma.resetNonograma()
+        self.isSolved = 0
         self.vidas = 5
-        self.stringInfo = 'Vidas: 5'
+        if self.game_mode >= 2:
+            self.stringInfo = 'Vidas: 5'
+        else:
+            self.stringInfo = ''
         self.surface.fill((self.red, self.green, self.blue))
 
     def setVolverBoton(self, game_difficulty):
         self.game_difficulty = game_difficulty
 
     def handleClick(self,pos):
-        if self.issolved == 0:
+        if self.isSolved == 0:
             self.panel_nonograma.handleClick(pos)
-            if self.panel_nonograma.checkAssumtion(pos) == 1:
+            if self.panel_nonograma.checkAssumtion(pos) == 1 and self.game_mode >= 2:
                 self.loseLife()
                 if self.vidas == 0:
-                    self.issolved = -1
-            if self.panel_nonograma.checkSolved():
-                self.issolved = 1
+                    self.isSolved = -1
+            self.checkSolve()
+
+    def checkSolve(self):
+        if self.panel_nonograma.getInfoCuadrilla(0)[0] == self.panel_nonograma.getInfoCuadrilla(1)[0]:
+            if self.game_mode < 2 and self.panel_nonograma.getInfoCuadrilla(0)[1] == 0:
+                self.isSolved = 1
+                self.stringInfo = 'GANASTE!'
+                self.surface.fill((self.red, self.green, self.blue))
+            elif self.game_mode >= 2:
+                self.isSolved = 1
                 self.stringInfo = f'Vidas: {self.vidas} - GANASTE!'
                 self.surface.fill((self.red, self.green, self.blue))
-
 
     def handleZoom(self,event, pos):
         self.panel_nonograma.handleZoom(event, pos)
@@ -70,7 +90,7 @@ class PanelPartida(Panel):
         self.vidas -= 1
         if self.vidas <= 0 :
             self.vidas = 0
-            self.stringInfo = 'Vidas: 0 - Game Over'
+            self.stringInfo = 'Vidas: 0 - PERDISTE'
         else :
             self.stringInfo = f'Vidas: {self.vidas}'
         self.surface.fill((self.red, self.green, self.blue))

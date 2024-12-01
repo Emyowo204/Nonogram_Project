@@ -42,6 +42,7 @@ class Cuadrilla:
         self.__board = []
         self.__c = columns
         self.__r = rows
+        self.__info = [0, 0]
         if name:
             if self.__loadCuadrilla(name) :
                 self.__discover_nums()
@@ -54,6 +55,7 @@ class Cuadrilla:
 
     def _cleanBoard(self):
         """Limpia el tablero y lo inicializa a cero."""
+        self.__info = [0, 0]
         for i in range(self.__c):
             self.__board.append([])
             for j in range (self.__r):
@@ -61,6 +63,7 @@ class Cuadrilla:
 
     def emptyBoard(self):
         """Limpia el tablero y lo inicializa a cero."""
+        self.__info = [0, 0]
         for i in range(self.__c):
             for j in range (self.__r):
                 self.__board[i][j]=0
@@ -115,6 +118,10 @@ class Cuadrilla:
         for i in range(self.__r):
             for j in range(self.__c):
                 self.__board[j][i] = int(textos.pop(0))
+                if self.__board[j][i] == 1:
+                    self.__info[0]+=1
+                elif self.__board[j][i] == -1:
+                    self.__info[1]+=1
         return True
 
     def saveCuadrilla(self, name):
@@ -137,6 +144,7 @@ class Cuadrilla:
         return True
 
     def resetSave(self, name):
+        self.__info[1] = 0
         current_dir = os.path.dirname(os.path.abspath(__file__))
         fulldirectory = os.path.join(current_dir, '..','..', 'saves', str(name))
         try:
@@ -172,19 +180,6 @@ class Cuadrilla:
                 for r in range(self.__r):
                     output[c].append(1 if(self.__board[c][r] != matrix[c][r]) else 0)
             return output
-
-    def checkSolved(self, cuadrilla):
-        matrix = cuadrilla.getBoard()
-        m_size = cuadrilla.getSize()
-        if self.__c != m_size[0] or self.__r != m_size[1]:
-            print("Size missmatch")
-            return 0
-        else:
-            for c in range(self.__c):
-                for r in range(self.__r):
-                    if matrix[c][r] != self.__board[c][r] and matrix[c][r] != -1:
-                        return 0
-            return 1
 
     def __discover_nums(self):
         """Descubre y almacena los números de filas y columnas basados en el contenido de la cuadrilla."""
@@ -223,6 +218,12 @@ class Cuadrilla:
 
     def getRowNums(self):
         return self.__row_nums
+
+    def getInfo(self):
+        return self.__info
+
+    def setInfo(self, index, value):
+        self.__info[index] = value
 
     def checkCell(self,column,row):
         """

@@ -20,6 +20,7 @@ class PanelPartidaColored(Panel):
         self.botonVolver = BotonRect(10, height-70, 60, 60, juego.mostrarPanelNiveles,None)
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.juego = juego
+        self.game_mode = 0
 
     def setNonograma(self, path):
         self.panel_nonograma.setNonograma(path)
@@ -39,6 +40,9 @@ class PanelPartidaColored(Panel):
 
     def defaultZoom(self):
         self.panel_nonograma.defaultZoom()
+
+    def setMode(self, mode):
+        self.game_mode = mode
 
     def loseLife(self):
         self.vidas -= 1
