@@ -102,3 +102,6 @@ class PanelNonograma(Panel):
         self.panel_colnums.draw(self.surface)
         self.panel_rownums.draw(self.surface)
 
+    def checkSolved(self):
+        return self.cuadrilla_resultado.checkSolved(self.cuadrilla_jugador)
+

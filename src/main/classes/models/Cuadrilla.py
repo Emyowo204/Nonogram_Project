@@ -134,6 +134,19 @@ class Cuadrilla:
                     output[c].append(1 if(self.__board[c][r] != matrix[c][r]) else 0)
             return output
 
+    def checkSolved(self, cuadrilla):
+        matrix = cuadrilla.getBoard()
+        m_size = cuadrilla.getSize()
+        if self.__c != m_size[0] or self.__r != m_size[1]:
+            print("Size missmatch")
+            return 0
+        else:
+            for c in range(self.__c):
+                for r in range(self.__r):
+                    if matrix[c][r] != self.__board[c][r] and matrix[c][r] != -1:
+                        return 0
+            return 1
+
     def __discover_nums(self):
         """Descubre y almacena los números de filas y columnas basados en el contenido de la cuadrilla."""
         last_in_column = [0] * self.__c

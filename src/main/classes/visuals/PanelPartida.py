@@ -11,6 +11,7 @@ class PanelPartida(Panel):
     def __init__(self, x, y, width, height, juego):
         super().__init__(x,y,width,height)
         self.vidas = 5
+        self.issolved = 0
         self.panel_nonograma = PanelNonograma(self.x, self.y, self.w, self.h)
         self.setColor(200,200,200)
         self.font = pygame.font.Font(None, 40)
@@ -23,6 +24,7 @@ class PanelPartida(Panel):
 
     def setNonograma(self, path):
         self.panel_nonograma.setNonograma(path)
+        self.issolved = 0
         self.vidas = 5
         self.stringInfo = 'Vidas: 5'
 
@@ -30,9 +32,17 @@ class PanelPartida(Panel):
         self.botonVolver.setAction(self.juego.mostrarPanelNiveles, game_difficulty)
 
     def handleClick(self,pos):
-        self.panel_nonograma.handleClick(pos)
-        if self.panel_nonograma.checkAssumtion(pos) == 1:
-            self.loseLife()
+        if self.issolved == 0:
+            self.panel_nonograma.handleClick(pos)
+            if self.panel_nonograma.checkAssumtion(pos) == 1:
+                self.loseLife()
+                if self.vidas == 0:
+                    self.issolved = -1
+            if self.panel_nonograma.checkSolved():
+                self.issolved = 1
+                self.stringInfo = f'Vidas: {self.vidas} - GANASTE!'
+                self.surface.fill((self.red, self.green, self.blue))
+
 
     def handleZoom(self,event, pos):
         self.panel_nonograma.handleZoom(event, pos)
