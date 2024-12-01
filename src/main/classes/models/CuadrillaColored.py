@@ -35,7 +35,7 @@ class CuadrillaColored(Cuadrilla):
                 self.__r = 3
                 self.__colors = [[0,0,0], [200,200,200], [0,0,0]]
                 self.__board = [[1, 0, 1], [0, 1, 0], [1, 0, 1]]
-                self.__discover_nums()
+                #self.__discover_nums()
         else:
             self.__c = columns
             self.__r = rows
@@ -93,19 +93,32 @@ class CuadrillaColored(Cuadrilla):
 
         self._cleanBoard()
         color_line = archivo.readline().strip()
+
+        colors = color_line.split(']')
+        for color in colors:
+            color = color.strip()
+            if color.startswith('['):
+                rgb = list(map(int, color[1:].split()))
+                self.__colors.append(rgb)
+
+        color_line = archivo.readline().strip()
         while color_line:
-            colors = color_line.split(']')
-            for color in colors:
-                color = color.strip()
-                if color.startswith('['):
-                    rgb = list(map(int, color[1:].split()))
-                    self.__colors.append(rgb)
+            for i in range(self.__r):
+                valores = list(map(int, archivo.readline().strip().split()))
+                for j, value in enumerate(valores):
+                    self.setCell(j, i, value)
             color_line = archivo.readline().strip()
-        for i in range(self.__r):
-            valores = list(map(int, archivo.readline().strip().split()))
-            for j, value in enumerate(valores):
-                self.setCell(j, i, value)
         return True
+
+    def setCell(self, c, r, value):
+        """
+            Establece el valor de una celda específica en el tablero.
+            Args:
+                c (int): Índice de la columna de la celda.
+                r (int): Índice de la fila de la celda.
+                value (int): Valor a establecer en la celda.
+        """
+        self.__board[c][r]=value
 
     def getColor(self, index):
         """

@@ -223,9 +223,12 @@ class PanelCuadrillaColored(Panel):
         for col in range(self.size[0]):
             for row in range(self.size[1]):
                 cell = self.board[col][row]
-                color = self.colors[cell]
+
                 if cell == 0:
                     color = [30,30,30]
+                else:
+                    color = self.colors[cell - 1]
+
                 pygame.draw.rect(self.surface, color, (col * self.cell_size + self.draw_xoffset, row * self.cell_size + self.draw_yoffset, self.cell_size - 2, self.cell_size - 2))
         super().draw(dest_surface)
 
