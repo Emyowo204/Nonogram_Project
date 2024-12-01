@@ -1,7 +1,7 @@
 import os
 from src.main.classes.models.Cuadrilla import Cuadrilla
 
-class CuadrillaColored(Cuadrilla):
+class CuadrillaColored:
     """
         Clase que extiende Cuadrilla para manejar nonogramas de colores.
         En lugar de trabajar con valores binarios (0s y 1s), esta clase trabaja
@@ -140,4 +140,15 @@ class CuadrillaColored(Cuadrilla):
         """
         return self.__colors
 
+    def checkCell(self,column,row):
+        """
+            Devuelve el valor de una celda específica en la cuadrilla.
 
+            Args:
+                column (int): Índice de la columna de la celda.
+                row (int): Índice de la fila de la celda.
+
+            Returns:
+                int: Valor de la celda especificada.
+            """
+        return self.__board[column][row]

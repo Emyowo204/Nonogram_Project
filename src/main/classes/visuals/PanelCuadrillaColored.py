@@ -97,7 +97,7 @@ class PanelCuadrillaColored(Panel):
         if col != -1 and row != -1:
             if 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
                 current_value = self.board[col][row]
-                if current_value != 0:
+                if current_value == 0:
                     self.board[col][row] = self.selected_color
 
     def handleKey(self, event):
@@ -108,14 +108,14 @@ class PanelCuadrillaColored(Panel):
                 event (event): Evento a manejar.
         """
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_0:
-                self.selected_color = 0
-            elif event.key == pygame.K_1:
+            if event.key == pygame.K_1:
                 self.selected_color = 1
             elif event.key == pygame.K_2:
-                self.selected_color = 1
+                self.selected_color = 2
             elif event.key == pygame.K_3:
                 self.selected_color = 3
+            elif event.key == pygame.K_4:
+                self.selected_color = 4
 
     def getSize(self):
         """
@@ -226,6 +226,8 @@ class PanelCuadrillaColored(Panel):
 
                 if cell == 0:
                     color = [30,30,30]
+                elif cell == -1:
+                    color = [255,0,0]
                 else:
                     color = self.colors[cell - 1]
 

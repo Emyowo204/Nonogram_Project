@@ -34,6 +34,9 @@ class PanelPartidaColored(Panel):
         if self.panel_nonograma.checkAssumtion(pos) == 1:
             self.loseLife()
 
+    def handleKey(self, event):
+        self.panel_nonograma.handleKey(event)
+
     def handleZoom(self,event, pos):
         self.panel_nonograma.handleZoom(event, pos)
 

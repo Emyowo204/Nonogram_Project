@@ -53,6 +53,9 @@ class PanelNonogramaColored(Panel):
             #self.panel_rownums.handleZoom(zoom, y_offset)
             #self.panel_colnums.handleZoom(zoom, x_offset)
 
+    def handleKey(self, event):
+        self.panel_jugador.handleKey(event)
+
     def defaultZoom(self):
         self.panel_jugador.defaultZoom()
         #self.panel_rownums.handleZoom(1, 0)

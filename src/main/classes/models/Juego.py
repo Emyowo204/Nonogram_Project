@@ -74,7 +74,7 @@ class Juego:
                 elif event.type == pygame.MOUSEMOTION:
                     pos = event.pos
 
-                if self.panelActual == self.panelPartida:
+                if self.panelActual == self.panelPartida or self.panelActual == self.panelPartidaColor:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if event.button == 1:
                             is_pressed = True
@@ -83,10 +83,27 @@ class Juego:
                             is_pressed = False
 
                     if is_pressed:
-                        self.panelPartida.handleClick(pos)
+                        self.panelActual.handleClick(pos)
 
                     if event.type == pygame.MOUSEWHEEL:
-                        self.panelPartida.handleZoom(event, pos)
+                        self.panelActual.handleZoom(event, pos)
+
+                if self.panelActual == self.panelPartidaColor:
+
+                    self.panelPartidaColor.handleKey(event)
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button == 1:
+                            is_pressed = True
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        if event.button == 1:
+                            is_pressed = False
+
+                    if is_pressed:
+                        self.panelPartidaColor.handleClick(pos)
+
+                    if event.type == pygame.MOUSEWHEEL:
+                        self.panelPartidaColor.handleZoom(event, pos)
+
                 self.panelActual.evento(event)
 
 
