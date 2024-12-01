@@ -22,17 +22,54 @@ class CuadrillaColored(Cuadrilla):
                 rows (int): Número de filas.
                 name (str): Nombre del archivo desde donde cargar la cuadrilla (opcional).
         """
-        super().__init__(columns, rows, name)
+        self.__col_nums = []
+        self.__row_nums = []
         self.__colors = []
+        self.__board = []
         if name:
-            self.__loadCuadrilla(name)
+            if self.__loadCuadrilla(name):
+                pass
+                #self.__discover_nums()
+            else:
+                self.__c = 3
+                self.__r = 3
+                self.__colors = [[0,0,0], [200,200,200], [0,0,0]]
+                self.__board = [[1, 0, 1], [0, 1, 0], [1, 0, 1]]
+                #self.__discover_nums()
+        else:
+            self.__c = columns
+            self.__r = rows
+            self._cleanBoard()
 
-    def __cleanBoard(self):
+
+    def _cleanBoard(self):
         """
             Limpia el tablero, lo inicializa a cero y reinicia la lista de colores.
         """
-        super()._Cuadrilla__cleanBoard()
+        """Limpia el tablero y lo inicializa a cero."""
+        for i in range(self.__c):
+            self.__board.append([])
+            for j in range(self.__r):
+                self.__board[i].append(0)
         self.__colors = []
+
+    def getBoard(self):
+        """
+            Devuelve el tablero actual.
+
+            Returns:
+                list: Representación bidimensional del tablero.
+        """
+        return self.__board
+
+    def getSize(self):
+        """
+            Devuelve el tamaño de la cuadrilla.
+
+            Returns:
+                list: Lista con el número de columnas y filas [columnas, filas].
+        """
+        return [self.__c, self.__r]
 
     def __loadCuadrilla(self,name):
         """
@@ -54,22 +91,34 @@ class CuadrillaColored(Cuadrilla):
         self.__c = int(dimensions[0])
         self.__r = int(dimensions[1])
 
-        self.__colors = []
+        self._cleanBoard()
+        color_line = archivo.readline().strip()
+
+        colors = color_line.split(']')
+        for color in colors:
+            color = color.strip()
+            if color.startswith('['):
+                rgb = list(map(int, color[1:].split()))
+                self.__colors.append(rgb)
+
         color_line = archivo.readline().strip()
         while color_line:
-            colors = color_line.split(']')
-            for color in colors:
-                color = color.strip()
-                if color.startswith('['):
-                    rgb = list(map(int, color[1:].split()))
-                    self.__colors.append(rgb)
+            for i in range(self.__r):
+                valores = list(map(int, archivo.readline().strip().split()))
+                for j, value in enumerate(valores):
+                    self.setCell(j, i, value)
             color_line = archivo.readline().strip()
-        self.__cleanBoard()
-        for i in range(self.__r):
-            valores = list(map(int, archivo.readline().strip().split()))
-            for j, value in enumerate(valores):
-                self.setCell(j, i, value)
         return True
+
+    def setCell(self, c, r, value):
+        """
+            Establece el valor de una celda específica en el tablero.
+            Args:
+                c (int): Índice de la columna de la celda.
+                r (int): Índice de la fila de la celda.
+                value (int): Valor a establecer en la celda.
+        """
+        self.__board[c][r]=value
 
     def getColor(self, index):
         """
@@ -90,4 +139,5 @@ class CuadrillaColored(Cuadrilla):
                 list: Lista de colores en formato [R,G,B].
         """
         return self.__colors
+
 

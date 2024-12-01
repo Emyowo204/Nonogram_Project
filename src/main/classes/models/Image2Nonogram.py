@@ -2,7 +2,7 @@ import cv2
 import os
 
 import numpy as np
-from markdown.extensions.toc import unique
+
 
 
 class Image2Nonogram:
@@ -51,22 +51,22 @@ class Image2Nonogram:
             file.write(" ".join(map(str,r))+"\n")
 
     @staticmethod
-    def convertImg2Color(img_path, width, height):
+    def convertImg2Color(img_path, width, height, color_quantity):
 
         fulldirectory = os.path.join(os.path.dirname(__file__), img_path)
-        img = cv2.imread(fulldirectory, cv2.COLOR_BGR2RGB)
+        img = cv2.imread(fulldirectory)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (width, height))
         pixels = img.reshape((-1,3))
         pixels = np.float32(pixels)
 
-        k=4
+        k=color_quantity
         criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.2)
         _, labels, centers = cv2.kmeans(pixels, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
 
         centers = np.uint8(centers)
         unique_colors = np.array(centers.tolist())
         segmented_image = centers[labels.flatten()].reshape(img.shape)
-        color_matrix = segmented_image.reshape(-1, 3)
 
         dir = os.path.join(os.path.dirname(__file__), '../../puzzles/Colored')
         file_path = os.path.join(dir, os.path.splitext(os.path.basename(img_path))[0] + ".txt")
@@ -79,7 +79,7 @@ class Image2Nonogram:
         file.write("\n")
         for r in segmented_image:
             for pixel in r:
-                index = np.where((unique_colors == pixel).all(axis=1))[0][0]
+                index = np.where((unique_colors == pixel).all(axis=1))[0][0]+1
                 file.write(f"{index} ")
             file.write("\n")
 

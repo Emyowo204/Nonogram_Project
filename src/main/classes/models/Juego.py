@@ -1,11 +1,11 @@
 import os
 
 import pygame
-from pygame import MOUSEBUTTONDOWN
 
 from src.main.classes.models.FileManager import FileManager
 from src.main.classes.visuals.PanelFileManager import PanelFileManager
 from src.main.classes.visuals.PanelPartida import PanelPartida
+from src.main.classes.visuals.PanelPartidaColored import PanelPartidaColored
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
@@ -17,6 +17,9 @@ from src.main.classes.visuals.Ventana import Ventana
 
 class Juego:
     def __init__(self):
+        
+        self.panelPartidaColor = None
+        self.filemanager = None
         self.window = None
         self.window_size = [None, None]
         self.panelActual = None
@@ -28,8 +31,9 @@ class Juego:
         self.panelMenu = None
         self.panelFileManager = None
         self.custom_puzzles = []
-        self.levelsCount = [0, 0, 0, 0]
-        self.difficultyList = ["Easy", "Medium", "Hard", "Custom"]
+        self.color_puzzles = []
+        self.levelsCount = [0, 0, 0, 0, 0]
+        self.difficultyList = ["Easy", "Medium", "Hard", "Custom", "Colored"]
         self.gameDifficulty = 0
 
     def start(self):
@@ -44,6 +48,7 @@ class Juego:
         clock = pygame.time.Clock()
         self.panelMenu = PanelMenu(0,0, self.window_size[0], self.window_size[1], self)
         self.panelPartida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
+        self.panelPartidaColor = PanelPartidaColored(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelFileManager = PanelFileManager(0,0,self.window_size[0], 1080,self)
@@ -119,6 +124,12 @@ class Juego:
             self.custom_puzzles = self.filemanager.getPuzzles()
             self.levelsCount[3] = len(self.custom_puzzles)
             self.panelNiveles.setLoadEnable(True)
+        elif difficulty_index == 4:
+            self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/" + self.difficultyList[4]))
+            self.filemanager.updateDir()
+            self.color_puzzles = self.filemanager.getPuzzles()
+            self.levelsCount[4] = len(self.color_puzzles)
+            self.panelNiveles.setLoadEnable(True)
         else:
             self.panelNiveles.setLoadEnable(False)
         quantity = self.levelsCount[difficulty_index]
@@ -135,11 +146,14 @@ class Juego:
         diff_name = self.difficultyList[self.gameDifficulty]
         if self.gameDifficulty == 3:
             self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1])
+        elif self.gameDifficulty == 4:
+            self.panelActual = self.panelPartidaColor
+            self.panelPartidaColor.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1])
         else:
             self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt')
-        self.panelPartida.defaultZoom()
-        self.panelPartida.fitWindow(self.window_size[0], self.window_size[1])
-        self.panelPartida.setVolverBoton(self.gameDifficulty)
+        self.panelActual.defaultZoom()
+        self.panelActual.fitWindow(self.window_size[0], self.window_size[1])
+        self.panelActual.setVolverBoton(self.gameDifficulty)
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
 
     def mostrarPanelOpciones(self):

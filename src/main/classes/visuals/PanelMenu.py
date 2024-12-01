@@ -38,7 +38,7 @@ class PanelMenu(Panel):
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
         self.btnModoList = []
         self.btnDifficulty = []
-        for i in range(4):
+        for i in range(5):
             self.btnModoList.append(BotonRect(width*1/4, height*(2+i)/8, 400, 90, self.toggleMainMenu,None))
             self.btnModoList[i].setImage(pygame.image.load('../images/btnModo'+str(i)+'Normal.png'),pygame.image.load('../images/btnModo'+str(i)+'Shaded.png'))
             self.btnDifficulty.append(BotonRect(self.w/2-150, self.h*(2+3*i)/16, 300, 100, self.juego.mostrarPanelNiveles,i))
@@ -59,7 +59,7 @@ class PanelMenu(Panel):
         """
         self.btnOpciones.evento(event)
         self.btnVolver.evento(event)
-        for i in range(4):
+        for i in range(5):
             self.btnModoList[i].evento(event)
             self.btnDifficulty[i].evento(event)
 
@@ -79,7 +79,7 @@ class PanelMenu(Panel):
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (self.w, self.h))
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
-        for i in range(4):
+        for i in range(5):
             self.btnModoList[i].setValues(self.w/2-200*multi, self.h*(3+3*i)/20, 400*multi, 90*multi)
             self.btnDifficulty[i].setValues(self.w/2-150*multi, self.h*(2+3*i)/16, 300*multi, 100*multi)
         self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
