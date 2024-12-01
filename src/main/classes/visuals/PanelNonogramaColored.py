@@ -21,7 +21,12 @@ class PanelNonogramaColored(Panel):
         self.cuadrilla_jugador.setColors(self.cuadrilla_resultado.getColors())
         self.panel_jugador = PanelCuadrillaColored(self.cuadrilla_jugador, 0, 0, 300)
         self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(), 'columns', 0, 0, 700, 300)
-        self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 700)
+        self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 300, 700)
+        self.colorRect = pygame.Rect(5, 5, 20, 20)
+        self.selectedColor = [(0,0,0), 1]
+        self.selectedColor[0] = self.cuadrilla_jugador.getColor(0)
+        self.font = pygame.font.Font(None, 18)
+        self.text_surface = self.font.render(str(1), False, (0, 0, 0))
 
     def setNonograma(self, path, mode):
         self.path[0] = path
@@ -43,6 +48,9 @@ class PanelNonogramaColored(Panel):
 
     def handleKey(self, event):
         self.panel_jugador.handleKey(event)
+        self.selectedColor[1] = self.panel_jugador.getSelectedColor()
+        self.selectedColor[0] = self.cuadrilla_jugador.getColor(self.panel_jugador.getSelectedColor()-1)
+        self.text_surface = self.font.render(str(self.selectedColor[1]), False, (0, 0, 0))
 
     def checkAssumtion(self,pos):
         result = 0
@@ -50,20 +58,20 @@ class PanelNonogramaColored(Panel):
         jugador_cell = self.cuadrilla_jugador.checkCell(col,row)
         resultado_cell = self.cuadrilla_resultado.checkCell(col,row)
         if col != -1 and row != -1:
-            if jugador_cell >= 2:
-                if resultado_cell!=jugador_cell-2:
+            if jugador_cell >= 1:
+                if resultado_cell!=jugador_cell:
                     result = 1
-                    self.cuadrilla_jugador.setCell(col, row, -1)
+                    self.cuadrilla_jugador.setCell(col, row, -jugador_cell)
                     self.cuadrilla_jugador.setInfo(1, self.cuadrilla_jugador.getInfo()[1]+1)
                 else:
-                    self.cuadrilla_jugador.setCell(col, row, 1)
+                    self.cuadrilla_jugador.setCell(col, row, jugador_cell)
                     self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0]+1)
             elif self.mode < 2:
-                self.cuadrilla_jugador.setCell(col, row, 0)
-                if jugador_cell==-1:
-                    self.cuadrilla_jugador.setInfo(1, self.cuadrilla_jugador.getInfo()[1]-1)
+                if resultado_cell==-jugador_cell:
+                    self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0] - 1)
                 else:
-                    self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0]-1)
+                    self.cuadrilla_jugador.setInfo(1, self.cuadrilla_jugador.getInfo()[1] - 1)
+                self.cuadrilla_jugador.setCell(col, row, 0)
         return result
 
     def saveNonograma(self):
@@ -123,6 +131,9 @@ class PanelNonogramaColored(Panel):
         self.panel_rownums.setSize(self.w*2/8, self.h*6/8)
         self.panel_rownums.fitPanel(self.board_size[1])
         self.panel_rownums.setPos(0, self.h*2/8)
+        self.colorRect = pygame.Rect(self.w*1/32, self.h*1/32, self.w*3/16, self.h*3/16)
+        self.font = pygame.font.Font(None, int(self.w/8))
+        self.text_surface = self.font.render(str(self.selectedColor[1]), False, (0, 0, 0))
 
         self.panel_jugador.fitWindow(self.w*6/8)
         self.panel_jugador.setPos(self.w*2/8, self.h*2/8)
@@ -138,3 +149,5 @@ class PanelNonogramaColored(Panel):
         self.panel_resultado.draw(self.surface)
         self.panel_colnums.draw(self.surface)
         self.panel_rownums.draw(self.surface)
+        pygame.draw.rect(self.surface, self.selectedColor[0] ,self.colorRect)
+        self.surface.blit(self.text_surface, (self.w*3/32, self.h*3/32))

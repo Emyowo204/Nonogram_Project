@@ -106,7 +106,6 @@ class CuadrillaColored:
         self.__r = int(dimensions[1])
         self._cleanBoard()
         color_line = archivo.readline().strip()
-
         colors = color_line.split(']')
         for color in colors:
             color = color.strip()
@@ -114,7 +113,6 @@ class CuadrillaColored:
                 rgb = list(map(int, color[1:].split()))
                 self.__colors.append(rgb)
 
-        color_line = archivo.readline().strip()
         while color_line:
             for i in range(self.__r):
                 valores = list(map(int, archivo.readline().strip().split()))
@@ -162,8 +160,12 @@ class CuadrillaColored:
         except OSError:
             return False
         archivo.write(f"{self.__c} {self.__r}\n")
-        for color in self.__colors:
-            archivo.write(f"{color} \n")
+        for colors in self.__colors:
+            archivo.write(f"[")
+            for color in colors:
+                archivo.write(f"{color} ")
+            archivo.write(f"]")
+        archivo.write(f"\n")
         for i in range(self.__r):
             for j in range(self.__c):
                 archivo.write(f"{0} ")

@@ -72,6 +72,10 @@ class PanelPartida(Panel):
                     self.isSolved = -1
             self.checkSolve()
 
+    def handleKey(self, event):
+        if self.game_mode%2==1:
+            self.panel_nonograma.handleKey(event)
+
     def checkSolve(self):
         if self.panel_nonograma.getInfoCuadrilla(0)[0] == self.panel_nonograma.getInfoCuadrilla(1)[0]:
             if self.game_mode < 2 and self.panel_nonograma.getInfoCuadrilla(0)[1] == 0:

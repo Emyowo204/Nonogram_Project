@@ -52,12 +52,16 @@ class PanelCuadrillaColored(Panel):
         self.zoom_x = 1
         self.draw_xoffset = 0
         self.draw_yoffset = 0
+        self.check_result = False
 
     def setBoardColors(self,colors):
         self.colors =  colors
 
     def getBoardColors(self):
         return self.colors
+
+    def getSelectedColor(self):
+        return self.selected_color
 
     def setNewCuadrilla(self, cuadrilla_colored):
         """
@@ -82,7 +86,9 @@ class PanelCuadrillaColored(Panel):
             if 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
                 current_value = self.board[col][row]
                 if current_value == 0:
-                    self.board[col][row] = self.selected_color+2
+                    self.board[col][row] = self.selected_color
+                elif current_value > 0:
+                    self.board[col][row] = -self.board[col][row]
 
     def handleKey(self, event):
         """
@@ -100,26 +106,18 @@ class PanelCuadrillaColored(Panel):
                 self.selected_color = 3
             elif event.key == pygame.K_4:
                 self.selected_color = 4
-
-    def draw(self, dest_surface):
-        """
-            Dibuja el tablero, utilizando los colores del nonograma.
-
-        Args:
-            dest_surface (pygame.Surface): Superficie sobre la que dibujar el tablero.
-        """
-        for col in range(self.size[0]):
-            for row in range(self.size[1]):
-                cell = self.board[col][row]
-                if cell == 0:
-                    color = [30,30,30]
-                elif cell == -1:
-                    color = [255,0,0]
-                else:
-                    color = self.colors[cell-1]
-
-                pygame.draw.rect(self.surface, color, (col * self.cell_size + self.draw_xoffset, row * self.cell_size + self.draw_yoffset, self.cell_size - 2, self.cell_size - 2))
-        super().draw(dest_surface)
+            elif event.key == pygame.K_5:
+                self.selected_color = 5
+            elif event.key == pygame.K_6:
+                self.selected_color = 6
+            elif event.key == pygame.K_7:
+                self.selected_color = 7
+            elif event.key == pygame.K_8:
+                self.selected_color = 8
+            elif event.key == pygame.K_9:
+                self.selected_color = 9
+            if self.selected_color > len(self.colors):
+                self.selected_color = len(self.colors)
 
     def getXOffset(self):
         """
@@ -264,3 +262,28 @@ class PanelCuadrillaColored(Panel):
 
     def setCheckResult(self, check):
         self.check_result = check
+
+
+    def draw(self, dest_surface):
+        """
+            Dibuja el tablero, utilizando los colores del nonograma.
+
+        Args:
+            dest_surface (pygame.Surface): Superficie sobre la que dibujar el tablero.
+        """
+        for col in range(self.size[0]):
+            for row in range(self.size[1]):
+                cell = self.board[col][row]
+                if cell == 0:
+                    color = (30,30,30)
+                elif cell < 0:
+                    if self.check_result:
+                        color = (255, 0, 0)
+                    else:
+                        color = self.colors[(-cell)-1]
+                else:
+                    color = self.colors[cell-1]
+
+                pygame.draw.rect(self.surface, color, (col * self.cell_size + self.draw_xoffset, row * self.cell_size + self.draw_yoffset, self.cell_size - 2, self.cell_size - 2))
+        super().draw(dest_surface)
+

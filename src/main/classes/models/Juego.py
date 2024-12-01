@@ -91,23 +91,20 @@ class Juego:
                             is_pressed = False
                             press_time = 0
 
+                    elif event.type == pygame.KEYDOWN and self.gameMode%2==1:
+                        self.panelActual.handleKey(event)
+
                     if is_pressed:
                         press_duration = press_time*deltatime
                         if press_duration >= press_delay:
                             self.panelActual.handleClick(pos)
-
                         elif press_duration < press_delay and is_click == True:
                             self.panelActual.handleClick(pos)
                             is_click = False
                         press_time += 1
-
-
-
                     if event.type == pygame.MOUSEWHEEL:
                         self.panelActual.handleZoom(event, pos)
-
                 self.panelActual.evento(event)
-
 
             panel = Panel(0,0,25,25)
             image = ImageLoader().getDefaultImage()
