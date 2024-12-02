@@ -3,26 +3,28 @@ from src.main.classes.visuals.Panel import Panel
 
 
 class PanelNumeros(Panel):
-    def __init__(self, numbers,mode, x, y, width, height):
+    def __init__(self, numbers, colors, mode, x, y, width, height):
         super().__init__(x, y, width, height)
         self.zoom = 1
         self.offset = 0
         self.numbers = numbers
+        self.colors = colors
         self.font = pygame.font.Font(None,18)
         self.mode = mode
         self.spacing = [0,0]
         self.halfCell = 0
         self.max_lenght = len(max(numbers, key=len))
 
-    def setNewNumbers(self, numbers, mode):
+    def setNewNumbers(self, numbers, colors, mode):
         self.numbers = numbers
+        self.colors = colors
         self.mode = mode
         self.max_lenght = len(max(numbers, key=len))
 
     def drawNumbers(self,mode):
         for i in range(len(self.numbers)):
             for j in range(len(self.numbers[i])):
-                text_surface = self.font.render(str(self.numbers[i][len(self.numbers[i])-1-j]), False, (255, 255, 255))  # White color
+                text_surface = self.font.render(str(self.numbers[i][len(self.numbers[i])-1-j]), False, self.colors[i][len(self.colors[i])-1-j])
                 if self.mode== 'columns':
                     self.surface.blit(text_surface, (self.halfCell+i * self.spacing[0] * self.zoom + self.offset, (self.max_lenght-1-j)/10 * self.spacing[1]))
                 elif mode== 'rows':

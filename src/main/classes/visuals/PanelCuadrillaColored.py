@@ -53,6 +53,7 @@ class PanelCuadrillaColored(Panel):
         self.draw_xoffset = 0
         self.draw_yoffset = 0
         self.check_result = False
+        self.marking = True
 
     def setBoardColors(self,colors):
         self.colors =  colors
@@ -85,10 +86,13 @@ class PanelCuadrillaColored(Panel):
         if col != -1 and row != -1:
             if 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
                 current_value = self.board[col][row]
-                if current_value == 0:
+                if current_value == 0 and self.marking:
                     self.board[col][row] = self.selected_color
                 elif current_value > 0:
                     self.board[col][row] = -self.board[col][row]
+
+    def setMarking(self, mark):
+        self.marking = mark
 
     def handleKey(self, event):
         """

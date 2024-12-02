@@ -20,14 +20,14 @@ class PanelNonogramaColored(Panel):
         self.cuadrilla_jugador = CuadrillaColored(self.board_size[0], self.board_size[1], None)
         self.cuadrilla_jugador.setColors(self.cuadrilla_resultado.getColors())
         self.panel_jugador = PanelCuadrillaColored(self.cuadrilla_jugador, 0, 0, 300)
-        self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(), 'columns', 0, 0, 700, 300)
-        self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 300, 700)
+        self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(), self.cuadrilla_resultado.getColumnColors(), 'columns', 0, 0, 700, 300)
+        self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), self.cuadrilla_resultado.getRowColors(), 'rows', 0, 0, 30, 700)
         self.colorRect = pygame.Rect(5, 5, 20, 20)
         self.selectedColor = [[0,0,0], 0]
         self.font = pygame.font.Font(None, 18)
         self.text_surface = self.font.render(str(1), False, (0, 10, 0))
         self.isPressed = False
-        self.marking = False
+        self.marking = True
 
     def setNonograma(self, path, mode):
         self.path[0] = path
@@ -44,8 +44,8 @@ class PanelNonogramaColored(Panel):
         else:
             self.panel_jugador.setCheckResult(False)
         self.panel_resultado.setNewCuadrilla(self.cuadrilla_resultado)
-        self.panel_colnums.setNewNumbers(self.cuadrilla_resultado.getColumnNums(), 'columns')
-        self.panel_rownums.setNewNumbers(self.cuadrilla_resultado.getRowNums(), 'rows')
+        self.panel_colnums.setNewNumbers(self.cuadrilla_resultado.getColumnNums(), self.cuadrilla_resultado.getColumnColors(), 'columns')
+        self.panel_rownums.setNewNumbers(self.cuadrilla_resultado.getRowNums(), self.cuadrilla_resultado.getRowColors(), 'rows')
         self.selectedColor = [[0, 0, 0], 1]
 
     def handleKey(self, event):
@@ -64,6 +64,7 @@ class PanelNonogramaColored(Panel):
                 if not self.isPressed:
                     self.marking = True
                     self.isPressed = True
+                    self.panel_jugador.setMarking(True)
                 if resultado_cell!=jugador_cell:
                     result = 1
                     self.cuadrilla_jugador.setCell(col, row, -jugador_cell)
@@ -74,7 +75,8 @@ class PanelNonogramaColored(Panel):
             elif not self.isPressed:
                     self.marking = False
                     self.isPressed = True
-            if self.mode < 2 and not self.marking:
+                    self.panel_jugador.setMarking(False)
+            if self.mode < 2 and not self.marking and jugador_cell<0:
                 if resultado_cell==-jugador_cell:
                     self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0] - 1)
                 else:
@@ -84,6 +86,7 @@ class PanelNonogramaColored(Panel):
 
     def setIsPressed(self, pressed):
         self.isPressed = pressed
+        self.panel_jugador.setMarking(True)
 
     def saveNonograma(self):
         self.cuadrilla_jugador.saveCuadrilla(str(self.path[1]))
@@ -164,3 +167,5 @@ class PanelNonogramaColored(Panel):
         self.panel_rownums.draw(self.surface)
         pygame.draw.rect(self.surface, self.selectedColor[0] ,self.colorRect)
         self.surface.blit(self.text_surface, (self.w*5/49, self.h*3/36))
+
+

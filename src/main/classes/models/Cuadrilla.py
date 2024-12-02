@@ -39,6 +39,8 @@ class Cuadrilla:
         """
         self.__col_nums = []
         self.__row_nums = []
+        self.__col_color = []
+        self.__row_color = []
         self.__board = []
         self.__c = columns
         self.__r = rows
@@ -185,6 +187,8 @@ class Cuadrilla:
         """Descubre y almacena los números de filas y columnas basados en el contenido de la cuadrilla."""
         last_in_column = [0] * self.__c
         last_in_row = [0] * self.__r
+        self.__col_color = []
+        self.__row_color = []
 
         for i in range(self.__c):
             self.__col_nums.append([])
@@ -198,6 +202,7 @@ class Cuadrilla:
                     self.__col_nums[i][-1]+=1
                 elif current_in_column > 0:
                     self.__col_nums[i].append(1)
+                    self.__col_color.append([255,255,255])
                 last_in_column[i] = current_in_column
 
                 current_in_row = self.__board[i][j]
@@ -205,6 +210,7 @@ class Cuadrilla:
                     self.__row_nums[j][-1] += 1
                 elif current_in_row > 0:
                     self.__row_nums[j].append(1)
+                    self.__row_color.append([255,255,255])
                 last_in_row[j] = current_in_row
 
     def getColumnNums(self):
@@ -218,6 +224,12 @@ class Cuadrilla:
 
     def getRowNums(self):
         return self.__row_nums
+
+    def getColumnColors(self):
+        return self.__col_color
+
+    def getRowColors(self):
+        return self.__row_color
 
     def getInfo(self):
         return self.__info
