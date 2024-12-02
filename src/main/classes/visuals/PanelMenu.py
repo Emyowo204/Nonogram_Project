@@ -91,7 +91,6 @@ class PanelMenu(Panel):
         self.btnLogro.setValues(40 * multi, self.h - 120 * multi, 80 * multi, 80 * multi)
         self.btnTutorial.setValues(self.w - 120 * multi, 40 * multi, 80 * multi, 80 * multi)
 
-
     def toggleMainMenu(self, mode):
         self.juego.setMode(mode)
         self.mainMenu = not self.mainMenu
