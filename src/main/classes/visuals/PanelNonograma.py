@@ -22,7 +22,6 @@ class PanelNonograma(Panel):
         self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(), self.cuadrilla_resultado.getColumnColors(),'columns',0,0,700,300)
         self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), self.cuadrilla_resultado.getRowColors(), 'rows', 0, 0, 30, 700)
         self.marking = [False, True]
-        self.crossing = [False, False]
 
     def setNonograma(self, path, mode):
         self.path[0] = path
@@ -60,7 +59,7 @@ class PanelNonograma(Panel):
     def getBoardPosition(self,pos):
         return pos[0] - self.x, pos[1] - self.y
 
-    def handleClick(self,pos, crossing):
+    def handleClick(self,pos,crossing):
         self.panel_jugador.handleClick(self.getBoardPosition(pos),crossing)
 
     def handleZoom(self, event, pos):
@@ -79,18 +78,14 @@ class PanelNonograma(Panel):
         self.panel_colnums.handleZoom(1, 0)
 
     def checkAssumtion(self,pos, crossing):
-        if not self.crossing[0]:
-            self.crossing = [True, crossing]
         result = 0
         col, row = self.panel_jugador.positionClick(self.getBoardPosition(pos))
         jugador_cell = self.cuadrilla_jugador.checkCell(col,row)
         resultado_cell = self.cuadrilla_resultado.checkCell(col,row)
         if col != -1 and row != -1:
             if jugador_cell == 'cross':
-                if not self.crossing[1]:
+                if not crossing and pygame.mouse.get_pressed()[0]:
                     self.cuadrilla_jugador.setCell(col, row, 0)
-                    if not self.marking[0]:
-                        self.marking = [True, False]
                 return
             if jugador_cell == 'clk' and self.marking[1]:
                 if not self.marking[0]:
@@ -113,8 +108,7 @@ class PanelNonograma(Panel):
         return result
 
     def setIsPressed(self, pressed):
-        self.marking[0] = pressed
-        self.crossing[0] = True
+        self.marking = [pressed, True]
 
     def fitWindow(self, w, h):
         if w < h:

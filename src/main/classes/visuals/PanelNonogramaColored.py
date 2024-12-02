@@ -27,7 +27,6 @@ class PanelNonogramaColored(Panel):
         self.font = pygame.font.Font(None, 18)
         self.text_surface = self.font.render(str(1), False, (0, 10, 0))
         self.marking = [False, True]
-        self.crossing = [False, False]
 
     def setNonograma(self, path, mode):
         self.path[0] = path
@@ -55,20 +54,19 @@ class PanelNonogramaColored(Panel):
         self.text_surface = self.font.render(str(self.selectedColor[1]), False, (0, 0, 0))
 
     def checkAssumtion(self,pos,crossing):
-        if not self.crossing[0]:
-            self.crossing = [True, crossing]
         result = 0
         col, row = self.panel_jugador.positionClick(self.getBoardPosition(pos))
         jugador_cell = self.cuadrilla_jugador.checkCell(col,row)
         resultado_cell = self.cuadrilla_resultado.checkCell(col,row)
         if col != -1 and row != -1:
             if jugador_cell == 'cross':
-                if not self.crossing[1]:
+                if not crossing and pygame.mouse.get_pressed()[0]:
                     self.cuadrilla_jugador.setCell(col, row, 0)
-                    if not self.marking[0]:
-                        self.marking = [True, False]
                 return
-            if jugador_cell >= 1 and not self.crossing[1]:
+            elif jugador_cell == 'check':
+                self.cuadrilla_jugador.setCell(col, row, resultado_cell)
+                return
+            elif jugador_cell >= 1:
                 if not self.marking[0]:
                     self.marking = [True, True]
                     self.panel_jugador.setMarking(True)
@@ -90,9 +88,9 @@ class PanelNonogramaColored(Panel):
                 self.cuadrilla_jugador.setCell(col, row, 0)
         return result
 
+
     def setIsPressed(self, pressed):
         self.marking[0] = pressed
-        self.crossing[0] = True
         self.panel_jugador.setMarking(True)
 
     def saveNonograma(self):
@@ -115,7 +113,7 @@ class PanelNonogramaColored(Panel):
         return pos[0] - self.x, pos[1] - self.y
 
     def handleClick(self,pos,crossing):
-        self.panel_jugador.handleClick(self.getBoardPosition(pos),crossing)
+        self.panel_jugador.handleClick(self.getBoardPosition(pos),crossing,self.mode)
         if self.selectedColor[0] == [0,0,0]:
             self.selectedColor[0] = self.cuadrilla_jugador.getColor(self.panel_jugador.getSelectedColor() - 1)
 

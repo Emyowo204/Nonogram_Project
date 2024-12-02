@@ -75,20 +75,21 @@ class PanelCuadrillaColored(Panel):
         self.board = cuadrilla_colored.getBoard()
         self.colors = cuadrilla_colored.getColors()
 
-    def handleClick(self, pos,crossing):
+    def handleClick(self, pos,crossing,mode):
         """
             Maneja el clic del usuario sobre el tablero, cambiando el valor de la celda seleccionada.
 
             Args:
                 pos (tuple): Coordenadas (x, y) del clic.
                 crossing: booleano
+                mode: Modo de juego del nonograma
         """
         col,row = self.positionClick(pos)
         if col != -1 and row != -1:
             if crossing and self.board[col][row] == 0:
                 self.board[col][row] = 'cross'
             elif self.board[col][row] == 'cross':
-                if not crossing:
+                if not crossing and not pygame.mouse.get_pressed()[2]:
                     self.board[col][row] = 0
             elif 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
                 current_value = self.board[col][row]
@@ -96,6 +97,8 @@ class PanelCuadrillaColored(Panel):
                     self.board[col][row] = self.selected_color
                 elif current_value > 0:
                     self.board[col][row] = -self.board[col][row]
+                    if mode > 2:
+                        self.board[col][row] = 'check'
 
     def setMarking(self, mark):
         self.marking = mark

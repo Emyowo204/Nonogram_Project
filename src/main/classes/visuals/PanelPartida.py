@@ -68,7 +68,7 @@ class PanelPartida(Panel):
 
     def handleClick(self, pos, crossing):
         if self.isSolved == 0:
-            self.panel_nonograma.handleClick(pos, crossing)
+            self.panel_nonograma.handleClick(pos,crossing)
             if crossing:
                 return
             if self.panel_nonograma.checkAssumtion(pos,crossing) == 1 and self.game_mode >= 2:

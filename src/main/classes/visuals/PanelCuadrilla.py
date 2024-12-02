@@ -87,9 +87,12 @@ class PanelCuadrilla(Panel):
         """
         col,row = self.positionClick(pos)
         if col != -1 and row != -1:
-            if crossing:
-                if self.board[col][row] == 0:
-                    self.board[col][row] = 'cross'
+            print(f'{self.board[col][row]}')
+            if crossing and self.board[col][row] == 0:
+                self.board[col][row] = 'cross'
+            elif self.board[col][row] == 'cross':
+                if not crossing and not pygame.mouse.get_pressed()[2]:
+                    self.board[col][row] = 0
             elif 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
                 if self.board[col][row] == 0:
                     self.board[col][row] = 'clk'
