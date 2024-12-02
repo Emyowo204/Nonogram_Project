@@ -1,5 +1,6 @@
 # NONOGRAM_PROJECT
-## Proyecto de Proramación 2024-2
+
+### Proyecto de Programación 2024-2
 
 Bibliotecas necesarias de instalar para la ejecución del código:
 
