@@ -138,7 +138,7 @@ class Juego:
             self.panelNiveles.setLoadEnable(True)
         else:
             self.panelNiveles.setLoadEnable(False)
-        if self.gameMode == 1 or self.gameMode == 3 and difficulty_index == 3:
+        if (self.gameMode == 1 or self.gameMode == 3) and difficulty_index == 3:
             quantity = self.levelsCount[4]
         else:
             quantity = self.levelsCount[difficulty_index]
