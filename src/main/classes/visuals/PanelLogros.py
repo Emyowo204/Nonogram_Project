@@ -34,33 +34,33 @@ class PanelLogros(Panel):
         """
         super().__init__(x, y, width, height)
         self.juego = juego
+        self.Og_achievements_uncompleted = []
+        self.Og_achievements_completed = []
         self.achievements_uncompleted_images = []
         self.achievements_completed_images = []
         self.achievements = []
-
         for i in range(6):
-            self.achievements_uncompleted_images.append(pygame.image.load('../images/logros/nologro'+str(i+1)+'.png'))
-            self.achievements_completed_images.append(pygame.image.load('../images/logros/nologro'+str(i+1)+'.png'))
+            self.Og_achievements_uncompleted.append(pygame.image.load('../images/logros/nologro'+str(i+1)+'.png'))
+            self.achievements_uncompleted_images.append(self.Og_achievements_uncompleted[i])
+            self.Og_achievements_completed.append(pygame.image.load('../images/logros/nologro'+str(i+1)+'.png'))
+            self.achievements_completed_images.append(self.Og_achievements_completed[i])
             self.achievements.append(False)
 
-        self.ancho, self.alto = self.achievements_completed_images[0].get_size()
-
-        self.pos_X = [
-            40,
-            width - (self.ancho+40),
-            40,
-            width - (self.ancho+40),
-            40,
-            width - (self.ancho+40),
-        ]
+        self.ancho, self.alto = self.Og_achievements_completed[0].get_size()
+        self.pos_X = []
+        for i in range(6):
+            if i%2 == 0:
+                self.pos_X.append(40)
+            else:
+                self.pos_X.append(width - (self.ancho+40))
 
         self.pos_Y = [
             40,
             40,
-            height // 3 + 40,
-            height // 3 + 40,
-            2 * height // 3 + 40,
-            2 * height // 3 + 40,
+            height // 3 + 20,
+            height // 3 + 20,
+            2 * height // 3 + 20,
+            2 * height // 3 + 20,
         ]
 
 
@@ -98,19 +98,20 @@ class PanelLogros(Panel):
 
         self.w = w
         self.h = h
+        self.surface = pygame.Surface((self.w,self.h))
+        self.surface.fill((self.red,self.green,self.blue))
+
         for i in range(len(self.achievements)):
-            self.achievements_completed_images[i] = pygame.transform.scale(self.achievements_completed_images[i],
+            self.achievements_completed_images[i] = pygame.transform.scale(self.Og_achievements_completed[i],
                                                                            (self.ancho*multi, self.alto*multi))
-            self.achievements_uncompleted_images[i] = pygame.transform.scale(self.achievements_uncompleted_images[i],
+            self.achievements_uncompleted_images[i] = pygame.transform.scale(self.Og_achievements_uncompleted[i],
                                                                            (self.ancho * multi, self.alto * multi))
-        self.pos_X = [
-            40*multi,
-            w - (self.ancho+40)*multi,
-            40*multi,
-            w - (self.ancho+40)*multi,
-            40*multi,
-            w - (self.ancho+40)*multi,
-        ]
+
+        for i in range(6):
+            if i%2 == 0:
+                self.pos_X[i] = (40*multi)
+            else:
+                self.pos_X[i] = (w - (self.ancho+40)*multi)
 
         self.pos_Y = [
             40*multi,

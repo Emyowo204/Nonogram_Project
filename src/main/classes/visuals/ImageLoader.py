@@ -19,6 +19,8 @@ class ImageLoader:
             self.resetShaded = pygame.image.load('../images/botonResetShaded.png')
             self.opcionNormal = pygame.image.load('../images/botonOpcionNormal.png')
             self.opcionShaded = pygame.image.load('../images/botonOpcionShaded.png')
+            self.hintNormal = pygame.image.load('../images/botonHintNormal.png')
+            self.hintShaded = pygame.image.load('../images/botonHintShaded.png')
             self.nivelNormal = pygame.image.load('../images/botonNivelesNormal.png')
             self.numButtonsImage = []
 
@@ -47,6 +49,12 @@ class ImageLoader:
 
     def getOpnShaded(self):
         return self.opcionShaded
+
+    def getHintNormal(self):
+        return self.hintNormal
+
+    def getHintShaded(self):
+        return self.hintShaded
 
     def getNvlNormal(self):
         return self.nivelNormal

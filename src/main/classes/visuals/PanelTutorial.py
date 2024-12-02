@@ -40,9 +40,11 @@ class PanelTutorial(Panel):
         """
         super().__init__(x, y, width, height)
         self.juego = juego
+        self.OgTutorial = []
         self.tutorial = []
         for i in range(6):
-            self.tutorial.append(pygame.image.load('../images/tutorial/t'+str(i+1)+'.png'))
+            self.OgTutorial.append(pygame.image.load('../images/tutorial/t'+str(i+1)+'.png'))
+            self.tutorial.append(self.OgTutorial[i])
 
         self.imagen_actual = 0
         self.ancho, self.alto = self.tutorial[0].get_size()
@@ -82,11 +84,11 @@ class PanelTutorial(Panel):
 
         self.w = w
         self.h = h
-
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
+
         for i in range(len(self.tutorial)):
-            self.tutorial[i] = pygame.transform.scale(self.tutorial[i], (self.ancho*multi, self.alto*multi))
+            self.tutorial[i] = pygame.transform.scale(self.OgTutorial[i], (self.ancho*multi, self.alto*multi))
 
         self.pos_X = self.w // 2 - self.ancho*multi // 2
         self.pos_Y = self.h // 2 - 3 * self.alto*multi // 5

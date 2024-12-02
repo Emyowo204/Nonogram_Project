@@ -25,7 +25,7 @@ class PanelPartida(Panel):
         self.botonReset = BotonRect(width-70, 10, 60, 60, self.resetNonograma,None)
         self.botonReset.setImage(ImageLoader().getResNormal(), ImageLoader().getResShaded())
         self.btnHints = BotonRect(width -140, 40, 80, 80, self.showHint, None)
-        self.btnHints.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
+        self.btnHints.setImage(ImageLoader().getHintNormal(), ImageLoader().getHintShaded())
         self.juego = juego
         self.game_difficulty = 0
         self.game_mode = 0
@@ -96,6 +96,7 @@ class PanelPartida(Panel):
 
     def showHint(self):
         self.panel_nonograma.showHint()
+        self.checkSolve()
 
     def handleZoom(self,event, pos):
         self.panel_nonograma.handleZoom(event, pos)

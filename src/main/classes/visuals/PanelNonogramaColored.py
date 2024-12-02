@@ -45,7 +45,7 @@ class PanelNonogramaColored(Panel):
         self.panel_resultado.setNewCuadrilla(self.cuadrilla_resultado)
         self.panel_colnums.setNewNumbers(self.cuadrilla_resultado.getColumnNums(), self.cuadrilla_resultado.getColumnColors(), 'columns')
         self.panel_rownums.setNewNumbers(self.cuadrilla_resultado.getRowNums(), self.cuadrilla_resultado.getRowColors(), 'rows')
-        self.selectedColor = [[0, 0, 0], 1]
+        self.selectedColor = [self.cuadrilla_resultado.getColor(0), 1]
 
     def handleKey(self, event):
         self.panel_jugador.handleKey(event)
@@ -124,6 +124,7 @@ class PanelNonogramaColored(Panel):
 
                 if valor_jugador != valor_resultado:
                     self.cuadrilla_jugador.setCell(col, fila, valor_resultado)
+                    self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0] + 1)
                     return
 
     def handleClick(self,pos,crossing):
