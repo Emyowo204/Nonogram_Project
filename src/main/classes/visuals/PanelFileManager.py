@@ -13,12 +13,15 @@ from src.main.classes.visuals.Panel import Panel
 class PanelFileManager(Panel):
     def __init__(self,x,y,width,height,juego):
         super().__init__(x,y,width,height)
-        self.scaled_size = None
+
         self.mode = None
         self.juego = juego
         self.filemanager = FileManager()
         self.font = pygame.font.Font(None, 20)
         self.setColor(50,50,50)
+
+        self.fondoImageOG = pygame.image.load('../images/fondoopciones.jpg')
+        self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
 
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
@@ -30,12 +33,12 @@ class PanelFileManager(Panel):
         self.buttonsDir = []
         self.buttonsFiles = []
         self.buttonBack = None
-        self.backRect = pygame.Rect(0, 0, 400, 720)
 
         self.current_imgbtn = None
         self.current_img = None
         self.scaled_img = None
         self.img_size = None
+        self.scaled_size = None
 
         self.manager = pygame_gui.UIManager((width, height))
         self.scrolling_container = pygame_gui.elements.UIScrollingContainer(
@@ -167,6 +170,7 @@ class PanelFileManager(Panel):
         self.h = h
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
+        self.fondoImage = pygame.transform.scale(self.fondoImageOG, (self.w, self.h))
         self.scaleButton = int(h / 18)
         self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
@@ -196,7 +200,7 @@ class PanelFileManager(Panel):
 
     def draw(self, dest_surface):
         super().draw(dest_surface)
-        dest_surface.blit(self.surface,(0,0))
+        dest_surface.blit(self.fondoImage, (0, 0))
         if self.scaled_img is not None:
             dest_surface.blit(self.scaled_img,(self.w/2-self.scaled_size[0]/2,int(11*self.scaleButton)))
         self.btnVolver.draw(self.juego.getWindow())
