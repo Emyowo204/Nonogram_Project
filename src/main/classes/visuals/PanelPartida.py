@@ -63,6 +63,9 @@ class PanelPartida(Panel):
     def setVolverBoton(self, game_difficulty):
         self.game_difficulty = game_difficulty
 
+    def setIsPressed(self, pressed):
+        self.panel_nonograma.setIsPressed(pressed)
+
     def handleClick(self,pos):
         if self.isSolved == 0:
             self.panel_nonograma.handleClick(pos)

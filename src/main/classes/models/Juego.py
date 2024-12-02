@@ -59,9 +59,6 @@ class Juego:
 
         pos = (0,0)
         is_pressed = False
-        is_click = True
-        press_time = 0
-        press_delay = 0.4
         running = True
         new_size = (720,720)
         self.panelPartida.fitWindow(new_size[0],new_size[1])
@@ -83,25 +80,17 @@ class Juego:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if event.button == 1:
                             is_pressed = True
-                            press_time += 1
 
                     elif event.type == pygame.MOUSEBUTTONUP:
                         if event.button == 1:
-                            is_click = True
                             is_pressed = False
-                            press_time = 0
+                            self.panelPartida.setIsPressed(is_pressed)
 
                     elif event.type == pygame.KEYDOWN and self.gameMode%2==1:
                         self.panelActual.handleKey(event)
 
                     if is_pressed:
-                        press_duration = press_time*deltatime
-                        if press_duration >= press_delay:
-                            self.panelActual.handleClick(pos)
-                        elif press_duration < press_delay and is_click == True:
-                            self.panelActual.handleClick(pos)
-                            is_click = False
-                        press_time += 1
+                        self.panelActual.handleClick(pos)
                     if event.type == pygame.MOUSEWHEEL:
                         self.panelActual.handleZoom(event, pos)
                 self.panelActual.evento(event)

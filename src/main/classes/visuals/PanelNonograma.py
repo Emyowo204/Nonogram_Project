@@ -21,6 +21,8 @@ class PanelNonograma(Panel):
         self.panel_jugador = PanelCuadrilla(self.cuadrilla_jugador, 0, 0, 300)
         self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'columns',0,0,700,300)
         self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 700)
+        self.isPressed = False
+        self.marking = False
 
     def setNonograma(self, path, mode):
         self.path[0] = path
@@ -83,6 +85,9 @@ class PanelNonograma(Panel):
         resultado_cell = self.cuadrilla_resultado.checkCell(col,row)
         if col != -1 and row != -1:
             if jugador_cell == 'clk':
+                if not self.isPressed:
+                    self.marking = True
+                    self.isPressed = True
                 if resultado_cell==0:
                     result = 1
                     self.cuadrilla_jugador.setCell(col, row, -1)
@@ -90,13 +95,20 @@ class PanelNonograma(Panel):
                 else:
                     self.cuadrilla_jugador.setCell(col, row, 1)
                     self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0]+1)
-            elif self.mode < 2:
+            elif not self.isPressed:
+                    self.marking = False
+                    self.isPressed = True
+            if self.mode < 2 and not self.marking:
                 self.cuadrilla_jugador.setCell(col, row, 0)
                 if jugador_cell==-1:
                     self.cuadrilla_jugador.setInfo(1, self.cuadrilla_jugador.getInfo()[1]-1)
                 else:
                     self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0]-1)
+        print(f'IP{self.isPressed} | M:{self.marking}')
         return result
+
+    def setIsPressed(self, pressed):
+        self.isPressed = pressed
 
     def fitWindow(self, w, h):
         if w < h:

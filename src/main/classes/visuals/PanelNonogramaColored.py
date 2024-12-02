@@ -26,6 +26,8 @@ class PanelNonogramaColored(Panel):
         self.selectedColor = [[0,0,0], 0]
         self.font = pygame.font.Font(None, 18)
         self.text_surface = self.font.render(str(1), False, (0, 10, 0))
+        self.isPressed = False
+        self.marking = False
 
     def setNonograma(self, path, mode):
         self.path[0] = path
@@ -44,6 +46,7 @@ class PanelNonogramaColored(Panel):
         self.panel_resultado.setNewCuadrilla(self.cuadrilla_resultado)
         self.panel_colnums.setNewNumbers(self.cuadrilla_resultado.getColumnNums(), 'columns')
         self.panel_rownums.setNewNumbers(self.cuadrilla_resultado.getRowNums(), 'rows')
+        self.selectedColor = [[0, 0, 0], 1]
 
     def handleKey(self, event):
         self.panel_jugador.handleKey(event)
@@ -58,6 +61,9 @@ class PanelNonogramaColored(Panel):
         resultado_cell = self.cuadrilla_resultado.checkCell(col,row)
         if col != -1 and row != -1:
             if jugador_cell >= 1:
+                if not self.isPressed:
+                    self.marking = True
+                    self.isPressed = True
                 if resultado_cell!=jugador_cell:
                     result = 1
                     self.cuadrilla_jugador.setCell(col, row, -jugador_cell)
@@ -65,13 +71,19 @@ class PanelNonogramaColored(Panel):
                 else:
                     self.cuadrilla_jugador.setCell(col, row, jugador_cell)
                     self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0]+1)
-            elif self.mode < 2:
+            elif not self.isPressed:
+                    self.marking = False
+                    self.isPressed = True
+            if self.mode < 2 and not self.marking:
                 if resultado_cell==-jugador_cell:
                     self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0] - 1)
                 else:
                     self.cuadrilla_jugador.setInfo(1, self.cuadrilla_jugador.getInfo()[1] - 1)
                 self.cuadrilla_jugador.setCell(col, row, 0)
         return result
+
+    def setIsPressed(self, pressed):
+        self.isPressed = pressed
 
     def saveNonograma(self):
         self.cuadrilla_jugador.saveCuadrilla(str(self.path[1]))
