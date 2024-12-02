@@ -9,11 +9,11 @@ from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.PanelOpciones import PanelOpciones
 from src.main.classes.visuals.PanelLogros import PanelLogros
+from src.main.classes.visuals.PanelTutorial import PanelTutorial
 from src.main.classes.visuals.PanelMenu import PanelMenu
 from src.main.classes.visuals.PanelNiveles import PanelNiveles
 from src.main.classes.models.Musica import Musica
 from src.main.classes.visuals.Ventana import Ventana
-import time
 
 
 class Juego:
@@ -29,6 +29,7 @@ class Juego:
         self.panelNiveles = None
         self.panelOpciones = None
         self.panelLogros = None
+        self.panelTutorial = None
         self.panelMenu = None
         self.panelFileManager = None
         self.custom_puzzles = []
@@ -52,6 +53,7 @@ class Juego:
         self.panelPartida = PanelPartida(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelOpciones = PanelOpciones( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelLogros = PanelLogros(0, 0, self.window_size[0], self.window_size[1], self)
+        self.panelTutorial = PanelTutorial(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelFileManager = PanelFileManager(0,0,self.window_size[0], self.window_size[1],self)
         self.mostrarPanelMenu()
@@ -174,6 +176,11 @@ class Juego:
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelLogros
         self.panelLogros.fitWindow(self.window_size[0], self.window_size[1])
+
+    def mostrarPanelTutorial(self):
+        self.panelAnterior = self.panelActual
+        self.panelActual = self.panelTutorial
+        self.panelTutorial.fitWindow(self.window_size[0], self.window_size[1])
 
     def mostrarPanelFileManager(self):
         self.panelAnterior = self.panelActual
