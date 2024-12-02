@@ -59,7 +59,7 @@ class PanelFileManager(Panel):
                 text="<< Back", container=self.scrolling_container, manager=self.manager
             )
             self.buttonBack = button
-            y+=1
+        y+=1
         self.filemanager.updateDir()
         folders = self.filemanager.getFolders()
         files = self.filemanager.getImages()
