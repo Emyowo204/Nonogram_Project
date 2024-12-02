@@ -48,7 +48,7 @@ class BotonRect:
         :param event: Objeto de evento que contiene la información relacionada al evento a procesar.
         """
         if self.enabled:
-            if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos):
+            if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos) and pygame.mouse.get_pressed()[0]:
                 self.pressed = True
             elif event.type == pygame.MOUSEBUTTONUP and self.pressed:
                 if self.action:

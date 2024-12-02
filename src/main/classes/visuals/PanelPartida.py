@@ -66,10 +66,12 @@ class PanelPartida(Panel):
     def setIsPressed(self, pressed):
         self.panel_nonograma.setIsPressed(pressed)
 
-    def handleClick(self,pos):
+    def handleClick(self, pos, crossing):
         if self.isSolved == 0:
-            self.panel_nonograma.handleClick(pos)
-            if self.panel_nonograma.checkAssumtion(pos) == 1 and self.game_mode >= 2:
+            self.panel_nonograma.handleClick(pos, crossing)
+            if crossing:
+                return
+            if self.panel_nonograma.checkAssumtion(pos,crossing) == 1 and self.game_mode >= 2:
                 self.loseLife()
                 if self.vidas == 0:
                     self.isSolved = -1

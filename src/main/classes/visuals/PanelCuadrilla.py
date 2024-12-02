@@ -77,16 +77,20 @@ class PanelCuadrilla(Panel):
         else:
             return -1,-1
 
-    def handleClick(self, pos):
+    def handleClick(self, pos, crossing):
         """
             Maneja el clic del usuario sobre el tablero, cambiando el valor de la celda seleccionada.
 
             Args:
                 pos (tuple): Coordenadas (x, y) del clic.
+                crossing: Booleano
         """
         col,row = self.positionClick(pos)
         if col != -1 and row != -1:
-            if 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
+            if crossing:
+                if self.board[col][row] == 0:
+                    self.board[col][row] = 'cross'
+            elif 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
                 if self.board[col][row] == 0:
                     self.board[col][row] = 'clk'
 
@@ -199,6 +203,8 @@ class PanelCuadrilla(Panel):
             for row in range(self.size[1]):
                 cell =self.board[col][row]
                 color = (128, 128, 128)
+                if cell == 'cross':
+                    color = (117, 117, 117)
                 if cell == 0:
                     color = (30, 30, 30)
                 elif cell == 1:

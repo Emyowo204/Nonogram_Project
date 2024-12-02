@@ -75,16 +75,22 @@ class PanelCuadrillaColored(Panel):
         self.board = cuadrilla_colored.getBoard()
         self.colors = cuadrilla_colored.getColors()
 
-    def handleClick(self, pos):
+    def handleClick(self, pos,crossing):
         """
             Maneja el clic del usuario sobre el tablero, cambiando el valor de la celda seleccionada.
 
             Args:
                 pos (tuple): Coordenadas (x, y) del clic.
+                crossing: booleano
         """
         col,row = self.positionClick(pos)
         if col != -1 and row != -1:
-            if 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
+            if crossing and self.board[col][row] == 0:
+                self.board[col][row] = 'cross'
+            elif self.board[col][row] == 'cross':
+                if not crossing:
+                    self.board[col][row] = 0
+            elif 0 <= col < len(self.board) and 0 <= row < len(self.board[col]):
                 current_value = self.board[col][row]
                 if current_value == 0 and self.marking:
                     self.board[col][row] = self.selected_color
@@ -278,7 +284,9 @@ class PanelCuadrillaColored(Panel):
         for col in range(self.size[0]):
             for row in range(self.size[1]):
                 cell = self.board[col][row]
-                if cell == 0:
+                if cell == 'cross':
+                    color = (117, 117, 117)
+                elif cell == 0:
                     color = (30,30,30)
                 elif cell < 0:
                     if self.check_result:

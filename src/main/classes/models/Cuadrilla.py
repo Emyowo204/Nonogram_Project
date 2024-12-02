@@ -191,8 +191,10 @@ class Cuadrilla:
         self.__row_color = []
 
         for i in range(self.__c):
+            self.__col_color.append([])
             self.__col_nums.append([])
         for j in range(self.__r):
+            self.__row_color.append([])
             self.__row_nums.append([])
 
         for i in range(self.__c):
@@ -202,7 +204,7 @@ class Cuadrilla:
                     self.__col_nums[i][-1]+=1
                 elif current_in_column > 0:
                     self.__col_nums[i].append(1)
-                    self.__col_color.append([255,255,255])
+                    self.__col_color[i].append([255,255,255])
                 last_in_column[i] = current_in_column
 
                 current_in_row = self.__board[i][j]
@@ -210,7 +212,7 @@ class Cuadrilla:
                     self.__row_nums[j][-1] += 1
                 elif current_in_row > 0:
                     self.__row_nums[j].append(1)
-                    self.__row_color.append([255,255,255])
+                    self.__row_color[j].append([255,255,255])
                 last_in_row[j] = current_in_row
 
     def getColumnNums(self):
