@@ -33,9 +33,9 @@ class PanelFileManager(Panel):
 
         self.manager = pygame_gui.UIManager((width, height))
         self.scrolling_container = pygame_gui.elements.UIScrollingContainer(
-            relative_rect=pygame.Rect(20, 50, 450, 450), manager=self.manager
+            relative_rect=pygame.Rect(20, 50, 0, 0), manager=self.manager
         )
-        self.scrolling_container.set_scrollable_area_dimensions((450, y * self.scaleButton))
+        self.scrolling_container.allow_scroll_x = False
 
     def updateButtons(self):
 
@@ -59,7 +59,7 @@ class PanelFileManager(Panel):
                 text="<< Back", container=self.scrolling_container, manager=self.manager
             )
             self.buttonBack = button
-        y+=1
+            y+=1
         self.filemanager.updateDir()
         folders = self.filemanager.getFolders()
         files = self.filemanager.getImages()
@@ -98,6 +98,7 @@ class PanelFileManager(Panel):
             for button, data in self.buttonsDir:
                 if event.ui_element == button:
                     self.changeDir(data)
+                    self.scrolling_container.vert_scroll_bar.set_scroll_from_start_percentage(0)
             for button, data in self.buttonsFiles:
                 if event.ui_element == button:
                     if self.mode == 'bin':
@@ -131,6 +132,7 @@ class PanelFileManager(Panel):
         self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
         self.manager.set_window_resolution((w,h))
+        self.scrolling_container.set_dimensions((int(10*self.scaleButton+20),int(10*self.scaleButton)),True)
         self.updateButtons()
 
     def actualizar(self, tiempo_delta):
