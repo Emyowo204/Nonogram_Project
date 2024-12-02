@@ -168,7 +168,7 @@ class PanelFileManager(Panel):
                             Image2Nonogram.convertImg2Color(data, int(w_text),int(h_text),int(color_text))
                     else:
                         self.show_popup(self.w / 2 - 6 * self.scaleButton / 4, self.h-self.scaleButton, f"Colores máximo: {int(w_text)*int(h_text)}")
-                else:
+                elif event.ui_element == button and not h_text.isdigit() and  not w_text.isdigit() and not color_text.isdigit():
                     self.show_popup(self.w / 2 - 6 * self.scaleButton / 4, self.h - self.scaleButton,"Entrada no válida")
             if event.ui_element == self.buttonBack:
                     self.changeDir("..")
