@@ -79,6 +79,7 @@ class PanelOpciones(Panel):
                 elif event.ui_element == self.slider_sound:
                     valor_sonido = event.value
                     self.label_sound.set_text(f"Volumen Sonido: {int(valor_sonido)}%")
+                    self.juego.sonido.setVolumen(valor_sonido / 100)
 
         self.manager.process_events(event)
 

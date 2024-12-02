@@ -13,6 +13,7 @@ from src.main.classes.visuals.PanelTutorial import PanelTutorial
 from src.main.classes.visuals.PanelMenu import PanelMenu
 from src.main.classes.visuals.PanelNiveles import PanelNiveles
 from src.main.classes.models.Musica import Musica
+from src.main.classes.models.Sonido import Sonido
 from src.main.classes.visuals.Ventana import Ventana
 
 
@@ -25,6 +26,7 @@ class Juego:
         self.panelActual = None
         self.panelAnterior = None
         self.musica = None
+        self.sonido = None
         self.panelPartida = None
         self.panelNiveles = None
         self.panelOpciones = None
@@ -47,6 +49,7 @@ class Juego:
         self.window = ventana.getWindow()
         pygame.mixer.init()
         self.musica = Musica("../../sounds/opcionesmusica.wav")
+        self.sonido = Sonido("../../sounds/sonidotest.wav")
 
         clock = pygame.time.Clock()
         self.panelMenu = PanelMenu(0,0, self.window_size[0], self.window_size[1], self)
