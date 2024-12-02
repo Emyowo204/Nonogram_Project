@@ -40,6 +40,8 @@ class PanelFileManager(Panel):
         self.img_size = None
         self.scaled_size = None
 
+        self.multi = 1
+
         self.manager = pygame_gui.UIManager((width, height))
         self.scrolling_container = pygame_gui.elements.UIScrollingContainer(
             relative_rect=pygame.Rect(20, 50, 0, 0), manager=self.manager
@@ -61,6 +63,17 @@ class PanelFileManager(Panel):
         self.entry_h.set_allowed_characters(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
         self.entry_h.placeholder_text = "Height"
         self.entry_h.unfocus()
+
+        self.entry_colors = pygame_gui.elements.UITextEntryLine(
+            relative_rect=pygame.Rect((self.w / 2+200, self.h - 50 - 50), (200, 50)),
+            manager=self.manager
+        )
+        self.entry_colors.set_allowed_characters(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+        self.entry_colors.placeholder_text = "N° colors"
+        self.entry_colors.unfocus()
+
+        self.popup_message = None
+        self.popup_timer = 0
 
     def updateButtons(self):
 
@@ -119,7 +132,25 @@ class PanelFileManager(Panel):
         self.mode = 'bin'
 
     def evento(self, event):
-        if event.type == pygame_gui.UI_BUTTON_PRESSED:
+
+        if event.type == pygame_gui.UI_TEXT_ENTRY_CHANGED:
+            if event.ui_element == self.entry_h:
+                if len(self.entry_h.get_text()) > 2:
+                    self.entry_h.set_text(self.entry_h.get_text()[:2])
+                    self.entry_h.unfocus()
+                    self.show_popup(self.w / 2 - 60*self.multi , self.h-self.scaleButton ,"Dígitos máximo: 2")
+            elif event.ui_element == self.entry_w:
+                if len(self.entry_w.get_text()) > 2:
+                    self.entry_w.set_text(self.entry_w.get_text()[:2])
+                    self.entry_w.unfocus()
+                    self.show_popup(self.w / 2 - 60*self.multi / 4, self.h-self.scaleButton ,"Dígitos máximo: 2")
+            elif event.ui_element == self.entry_colors:
+                if len(self.entry_colors.get_text()) > 1:
+                    self.entry_colors.set_text(self.entry_colors.get_text()[:1])
+                    self.entry_colors.unfocus()
+                    self.show_popup(self.w / 2 - 60*self.multi, self.h-self.scaleButton ,"Dígitos máximo: 1")
+
+        elif event.type == pygame_gui.UI_BUTTON_PRESSED:
             for button, data in self.buttonsDir:
                 if event.ui_element == button:
                     self.changeDir(data)
@@ -128,16 +159,21 @@ class PanelFileManager(Panel):
             for button, data in self.buttonsFiles:
                 w_text = self.entry_w.get_text()
                 h_text = self.entry_h.get_text()
-                if event.ui_element == button and h_text.isdigit() and w_text.isdigit():
-                    if int(w_text) > 4 and int(h_text) > 4:
+                color_text = self.entry_colors.get_text()
+                if event.ui_element == button and h_text.isdigit() and w_text.isdigit() and color_text.isdigit():
+                    if int(w_text) > int(color_text) and int(h_text) > int(color_text):
                         if self.mode == 'bin':
                             Image2Nonogram.convertImg2Bin(data,int(w_text),int(h_text))
                         elif self.mode == 'color':
-                            Image2Nonogram.convertImg2Color(data, int(w_text),int(h_text),4)
+                            Image2Nonogram.convertImg2Color(data, int(w_text),int(h_text),int(color_text))
+                    else:
+                        self.show_popup(self.w / 2 - 6 * self.scaleButton / 4, self.h-self.scaleButton, f"Colores máximo: {int(w_text)*int(h_text)}")
+                else:
+                    self.show_popup(self.w / 2 - 6 * self.scaleButton / 4, self.h - self.scaleButton,"Entrada no válida")
             if event.ui_element == self.buttonBack:
                     self.changeDir("..")
 
-        if event.type == pygame_gui.UI_BUTTON_ON_HOVERED:
+        elif event.type == pygame_gui.UI_BUTTON_ON_HOVERED:
             for button, data in self.buttonsFiles:
                 if event.ui_element == button and button != self.current_imgbtn:
                     try:
@@ -178,17 +214,23 @@ class PanelFileManager(Panel):
         if 10*self.scaleButton >= 10:
             self.scrolling_container.set_dimensions((int(10*self.scaleButton+20),int(10*self.scaleButton)),True)
             self.scrolling_container.set_position((self.w/2 - int(10*self.scaleButton+20)/2, self.scaleButton))
-            self.entry_w.set_position((self.w/2-5 * self.scaleButton, self.h-50-50))
-            self.entry_w.set_dimensions((5 * self.scaleButton,self.scaleButton))
-            self.entry_h.set_position((self.w / 2 , self.h - 50 - 50))
-            self.entry_h.set_dimensions((5 * self.scaleButton, self.scaleButton))
+            self.entry_w.set_position((self.w / 2 - 3 *50*multi , self.h-2*self.scaleButton))
+            self.entry_w.set_dimensions((100*multi,self.scaleButton))
+            self.entry_h.set_position((self.w / 2 - 50*multi , self.h - 2*self.scaleButton))
+            self.entry_h.set_dimensions((100*multi, self.scaleButton))
+            self.entry_colors.set_position((self.w / 2 + 50*multi, self.h - 2 * self.scaleButton))
+            self.entry_colors.set_dimensions((100*multi, self.scaleButton))
             if self.current_img is not None:
                 try:
-                    scale = abs((int(12 * self.scaleButton) - (self.h - 50 - 50)) / self.img_size[1])
+                    scale = abs((int(12 * self.scaleButton) - (self.h - 2*self.scaleButton)) / self.img_size[1])
                     self.scaled_size = (scale * self.img_size[0], scale * self.img_size[1])
                     self.scaled_img = pygame.transform.scale(self.current_img, self.scaled_size)
                 except pygame.error:
                     self.current_img = None
+
+            if self.popup_message is not None:
+                self.popup_message.set_position((self.w / 2 - 60 * self.multi, self.h - self.scaleButton))
+        self.multi = multi
         self.updateButtons()
 
     def actualizar(self, tiempo_delta):
@@ -197,6 +239,26 @@ class PanelFileManager(Panel):
         :param tiempo_delta: Delta de tiempo entre frames.
         """
         self.manager.update(tiempo_delta)
+
+        if self.popup_timer > 0:
+            self.popup_timer -= tiempo_delta
+            if self.popup_timer <= 0 and self.popup_message:
+                self.popup_message.kill()
+                self.popup_message = None
+
+    def show_popup(self, x, y, message):
+        """
+        Muestra un mensaje emergente durante 2 segundos.
+        """
+        if self.popup_message:
+            self.popup_message.kill()
+
+        self.popup_message = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect(x, y, 120, self.scaleButton),
+            text=message,
+            manager=self.manager
+        )
+        self.popup_timer = 2
 
     def draw(self, dest_surface):
         super().draw(dest_surface)
