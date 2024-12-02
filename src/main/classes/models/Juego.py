@@ -48,7 +48,7 @@ class Juego:
         ventana = Ventana(self.window_size[0], self.window_size[1])
         self.window = ventana.getWindow()
         pygame.mixer.init()
-        self.musica = Musica("../../sounds/opcionesmusica.wav")
+        self.musica = Musica("../../sounds/menumusica.wav")
         self.sonido = Sonido("../../sounds/sonidotest.wav")
 
         clock = pygame.time.Clock()
@@ -126,7 +126,7 @@ class Juego:
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelMenu
         self.panelMenu.fitWindow(self.window_size[0], self.window_size[1])
-        self.musica.cambiarMusica(None)
+        self.musica.cambiarMusica("../../sounds/menumusica.wav")
 
     def mostrarPanelNiveles(self, difficulty_index):
         if difficulty_index == 3:
@@ -152,7 +152,7 @@ class Juego:
         self.panelActual = self.panelNiveles
         self.panelNiveles.fitWindow(self.window_size[0], self.window_size[1])
         self.gameDifficulty = difficulty_index
-        self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
+        self.musica.cambiarMusica("../../sounds/nivelesmusica.wav")
 
     def mostrarPanelCuadrilla(self, game_index):
         self.panelAnterior = self.panelActual
@@ -181,11 +181,13 @@ class Juego:
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelLogros
         self.panelLogros.fitWindow(self.window_size[0], self.window_size[1])
+        self.musica.cambiarMusica("../../sounds/logrosmusica.wav")
 
     def mostrarPanelTutorial(self):
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelTutorial
         self.panelTutorial.fitWindow(self.window_size[0], self.window_size[1])
+        self.musica.cambiarMusica("../../sounds/tutorialmusica.wav")
 
     def mostrarPanelFileManager(self):
         self.panelAnterior = self.panelActual
