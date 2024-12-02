@@ -34,24 +34,14 @@ class PanelLogros(Panel):
         """
         super().__init__(x, y, width, height)
         self.juego = juego
+        self.achievements_uncompleted_images = []
+        self.achievements_completed_images = []
+        self.achievements = []
 
-        self.achievements_uncompleted_images = [
-            pygame.image.load('../images/nologro1.png'),
-            pygame.image.load('../images/nologro2.png'),
-            pygame.image.load('../images/nologro3.png'),
-            pygame.image.load('../images/nologro4.png'),
-            pygame.image.load('../images/nologro5.png'),
-            pygame.image.load('../images/nologro6.png'),
-        ]
-
-        self.achievements_completed_images = [
-            pygame.image.load('../images/nologro1.png'),
-            pygame.image.load('../images/nologro2.png'),
-            pygame.image.load('../images/nologro3.png'),
-            pygame.image.load('../images/nologro4.png'),
-            pygame.image.load('../images/nologro5.png'),
-            pygame.image.load('../images/nologro6.png'),
-        ]
+        for i in range(6):
+            self.achievements_uncompleted_images.append(pygame.image.load('../images/logros/nologro'+str(i+1)+'.png'))
+            self.achievements_completed_images.append(pygame.image.load('../images/logros/nologro'+str(i+1)+'.png'))
+            self.achievements.append(False)
 
         self.ancho, self.alto = self.achievements_completed_images[0].get_size()
 
@@ -73,17 +63,8 @@ class PanelLogros(Panel):
             2 * height // 3 + 40,
         ]
 
-        self.achievements = [
-            False,
-            False,
-            False,
-            False,
-            False,
-            False,
-        ]
 
-        # self.fondoImageOG = pygame.image.load('../images/fondoLogros.png')
-        # self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
+        self.setColor(150,250,220)
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
         self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelMenu,None)
@@ -150,9 +131,7 @@ class PanelLogros(Panel):
         Dibuja los componentes correspondientes en la ventana.
         :param dest_surface: Superficie en la que se dibujará el Panel.
         """
-        #self.fondoImage
-        dest_surface.fill((0, 0, 0,)) # panel en negro por mientras
-
+        super().draw(dest_surface)
         for i in range(len(self.achievements)):
             if self.achievements[i] == True:
                 dest_surface.blit(self.achievements_completed_images[i],(self.pos_X[i], self.pos_Y[i]))
