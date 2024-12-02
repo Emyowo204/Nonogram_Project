@@ -10,16 +10,21 @@ class PanelOpciones(Panel):
     Una clase que representa el Panel de Opciones que se presenta al cambiar el panelActual en juego.
 
     Variables:
-        juego (juego): El juego del cual toma referencia.
-        normalImage (image): Variable que contiene la imagen de un botón al no estar presionado.
-        shadedImage (image): Variable que contiene la imagen de un botón al tener el cursor sobre él.
-        botonVolver (BotonRect): Botón que ejecuta la acción de volver al Panel Menu Principal.
+        juego (juego): El juego asociado a este panel.
+        rect (pygame.Rect): El rectángulo que define la posición y tamaño del panel.
+        manager (pygame_gui.UIManager): El administrador de la interfaz gráfica de usuario.
+        slider_music (pygame_gui.elements.UIHorizontalSlider): Deslizador para ajustar el volumen de la música.
+        slider_sound (pygame_gui.elements.UIHorizontalSlider): Deslizador para ajustar el volumen del sonido.
+        label_music (pygame_gui.elements.UILabel): Etiqueta que muestra el volumen de la música.
+        label_sound (pygame_gui.elements.UILabel): Etiqueta que muestra el volumen del sonido.
+        botonVolver (BotonRect): Botón que permite volver al panel anterior (menú principal).
 
     Métodos:
         __init__(x, y, width, height, juego): Inicializa el panel con las dimensiones dadas y el juego.
         evento(event): Administra los eventos cuando el Panel está activo (es el panel actual).
         fitWindow(w, h): Reajusta los componentes del Panel ante el cambio de tamaño de la ventana.
         draw(dest_surface): Dibuja el contenido del Panel.
+        actualizar(tiempo_delta): Actualiza el estado de los componentes de la interfaz de usuario, como los sliders.
     """
     def __init__(self, x, y, width, height, juego):
         """
