@@ -34,11 +34,59 @@ class PanelLogros(Panel):
         """
         super().__init__(x, y, width, height)
         self.juego = juego
+
+        self.achievements_uncompleted_images = [
+            pygame.image.load('../images/nologro1.png'),
+            pygame.image.load('../images/nologro2.png'),
+            pygame.image.load('../images/nologro3.png'),
+            pygame.image.load('../images/nologro4.png'),
+            pygame.image.load('../images/nologro5.png'),
+            pygame.image.load('../images/nologro6.png'),
+        ]
+
+        self.achievements_completed_images = [
+            pygame.image.load('../images/nologro1.png'),
+            pygame.image.load('../images/nologro2.png'),
+            pygame.image.load('../images/nologro3.png'),
+            pygame.image.load('../images/nologro4.png'),
+            pygame.image.load('../images/nologro5.png'),
+            pygame.image.load('../images/nologro6.png'),
+        ]
+
+        self.ancho, self.alto = self.achievements_completed_images[0].get_size()
+
+        self.pos_X = [
+            40,
+            width - (self.ancho+40),
+            40,
+            width - (self.ancho+40),
+            40,
+            width - (self.ancho+40),
+        ]
+
+        self.pos_Y = [
+            40,
+            40,
+            height // 3 + 40,
+            height // 3 + 40,
+            2 * height // 3 + 40,
+            2 * height // 3 + 40,
+        ]
+
+        self.achievements = [
+            False,
+            False,
+            False,
+            False,
+            False,
+            False,
+        ]
+
         # self.fondoImageOG = pygame.image.load('../images/fondoLogros.png')
         # self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
-        self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelAnterior,None)
+        self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelMenu,None)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
 
     def evento(self, event):
@@ -48,6 +96,13 @@ class PanelLogros(Panel):
         """
         self.btnOpciones.evento(event)
         self.btnVolver.evento(event)
+
+    def completeAchievement(self, index):
+        """
+        Completa un logro indicado.
+        :param index: índice del logro completado.
+        """
+        self.achievements[index] = True
 
     def fitWindow(self, w, h):
         """
@@ -62,9 +117,33 @@ class PanelLogros(Panel):
 
         self.w = w
         self.h = h
+        for i in range(len(self.achievements)):
+            self.achievements_completed_images[i] = pygame.transform.scale(self.achievements_completed_images[i],
+                                                                           (self.ancho*multi, self.alto*multi))
+            self.achievements_uncompleted_images[i] = pygame.transform.scale(self.achievements_uncompleted_images[i],
+                                                                           (self.ancho * multi, self.alto * multi))
+        self.pos_X = [
+            40*multi,
+            w - (self.ancho+40)*multi,
+            40*multi,
+            w - (self.ancho+40)*multi,
+            40*multi,
+            w - (self.ancho+40)*multi,
+        ]
+
+        self.pos_Y = [
+            40*multi,
+            40*multi,
+            h // 3 + 40*multi,
+            h // 3 + 40*multi,
+            2 * h // 3 + 40*multi,
+            2 * h // 3 + 40*multi,
+        ]
+
         # self.fondoImage = pygame.transform.scale(self.fondoImageOG, (self.w, self.h))
         self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
+
 
     def draw(self, dest_surface):
         """
@@ -73,16 +152,13 @@ class PanelLogros(Panel):
         """
         #self.fondoImage
         dest_surface.fill((0, 0, 0,)) # panel en negro por mientras
+
+        for i in range(len(self.achievements)):
+            if self.achievements[i] == True:
+                dest_surface.blit(self.achievements_completed_images[i],(self.pos_X[i], self.pos_Y[i]))
+            else:
+                dest_surface.blit(self.achievements_completed_images[i], (self.pos_X[i], self.pos_Y[i]))
+
         self.btnOpciones.draw(self.juego.getWindow())
         self.btnVolver.draw(self.juego.getWindow())
-
-
-    #Ideas de logros:
-    #- 1er nonograma
-    #- 10 nonogramas
-    #- completar nonograma con tiempo en menos de x tiempo
-    #- completar nonograma con vida sin perder ninguna
-    #- perder todas las vidas por primera vez
-    #- llegar a 10 min en un nonograma
-
 

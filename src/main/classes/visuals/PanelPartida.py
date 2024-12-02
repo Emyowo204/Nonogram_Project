@@ -24,6 +24,8 @@ class PanelPartida(Panel):
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.botonReset = BotonRect(width-70, 10, 60, 60, self.resetNonograma,None)
         self.botonReset.setImage(ImageLoader().getResNormal(), ImageLoader().getResShaded())
+        self.btnHints = BotonRect(width -140, 40, 80, 80, self.showHint, None)
+        self.btnHints.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
         self.juego = juego
         self.game_difficulty = 0
         self.game_mode = 0
@@ -92,6 +94,9 @@ class PanelPartida(Panel):
                 self.stringInfo = f'Vidas: {self.vidas} - GANASTE!'
                 self.surface.fill((self.red, self.green, self.blue))
 
+    def showHint(self):
+        self.panel_nonograma.showHint()
+
     def handleZoom(self,event, pos):
         self.panel_nonograma.handleZoom(event, pos)
 
@@ -111,6 +116,7 @@ class PanelPartida(Panel):
         self.botonVolver.evento(event)
         self.btnOpciones.evento(event)
         self.botonReset.evento(event)
+        self.btnHints.evento(event)
 
     def fitWindow(self, w, h):
         self.w = w
@@ -127,6 +133,7 @@ class PanelPartida(Panel):
         self.btnOpciones.setValues(self.w-70*multi, self.h-70*multi, 60*multi, 60*multi)
         self.botonVolver.setValues(10*multi, self.h-70*multi, 60*multi, 60*multi)
         self.botonReset.setValues(self.w-70*multi, 10*multi, 60*multi, 60*multi)
+        self.btnHints.setValues(self.w-140*multi, 10*multi, 60*multi, 60*multi)
 
     def draw(self,dest_surface):
         super().draw(dest_surface)
@@ -134,5 +141,6 @@ class PanelPartida(Panel):
         self.botonVolver.draw(self.surface)
         self.btnOpciones.draw(self.juego.getWindow())
         self.botonReset.draw(self.surface)
+        self.btnHints.draw(self.surface)
         text_surface = self.font.render(self.stringInfo, False, (0, 0, 0))
         self.surface.blit(text_surface, (10, 10))

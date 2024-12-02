@@ -65,6 +65,9 @@ class PanelOpciones(Panel):
             text="Volumen Sonido: 50%",
             manager=self.manager,
         )
+
+        self.fondoImageOG = pygame.image.load('../images/fondoopciones.jpg')
+        self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
         self.botonVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelAnterior,None)
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
 
@@ -101,6 +104,7 @@ class PanelOpciones(Panel):
 
         self.w = w
         self.h = h
+        self.fondoImage = pygame.transform.scale(self.fondoImageOG, (self.w, self.h))
         self.surface = pygame.Surface((self.w,self.h))
         self.botonVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
 
@@ -122,7 +126,7 @@ class PanelOpciones(Panel):
         Dibuja los componentes correspondientes en la ventana.
         :param dest_surface: Superficie en la que se dibujará el Panel.
         """
-        dest_surface.fill((0, 0, 0,)) # panel en negro por mientras
+        dest_surface.blit(self.fondoImage, (0, 0)) # panel en negro por mientras
         self.botonVolver.draw(self.juego.getWindow())
         self.manager.draw_ui(dest_surface)
 
