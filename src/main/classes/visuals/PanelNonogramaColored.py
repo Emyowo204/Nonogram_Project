@@ -112,6 +112,20 @@ class PanelNonogramaColored(Panel):
     def getBoardPosition(self,pos):
         return pos[0] - self.x, pos[1] - self.y
 
+    def showHint(self):
+        """
+        Muestra una pista en el tablero. Encuentra una celda incorrecta o vacía
+        y la corrige basándose en el resultado esperado.
+        """
+        for fila in range(self.board_size[1]):
+            for col in range(self.board_size[0]):
+                valor_jugador = self.cuadrilla_jugador.checkCell(col, fila)
+                valor_resultado = self.cuadrilla_resultado.checkCell(col, fila)
+
+                if valor_jugador != valor_resultado:
+                    self.cuadrilla_jugador.setCell(col, fila, valor_resultado)
+                    return
+
     def handleClick(self,pos,crossing):
         self.panel_jugador.handleClick(self.getBoardPosition(pos),crossing,self.mode)
         if self.selectedColor[0] == [0,0,0]:
