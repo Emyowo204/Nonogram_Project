@@ -38,7 +38,7 @@ class PanelLogros(Panel):
         # self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
-        self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelAnterior,None)
+        self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelMenu,None)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
 
     def evento(self, event):
