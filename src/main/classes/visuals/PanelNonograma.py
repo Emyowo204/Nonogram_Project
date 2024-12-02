@@ -104,7 +104,6 @@ class PanelNonograma(Panel):
                     self.cuadrilla_jugador.setInfo(1, self.cuadrilla_jugador.getInfo()[1]-1)
                 else:
                     self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0]-1)
-        print(f'IP{self.isPressed} | M:{self.marking}')
         return result
 
     def setIsPressed(self, pressed):
