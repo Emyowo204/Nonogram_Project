@@ -110,6 +110,7 @@ class PanelCuadrillaColored(Panel):
             Args:
                 event (event): Evento a manejar.
         """
+        prev_color = self.selected_color
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
                 self.selected_color = 1
@@ -130,7 +131,7 @@ class PanelCuadrillaColored(Panel):
             elif event.key == pygame.K_9:
                 self.selected_color = 9
             if self.selected_color > len(self.colors):
-                self.selected_color = len(self.colors)
+                self.selected_color = prev_color
 
     def getXOffset(self):
         """

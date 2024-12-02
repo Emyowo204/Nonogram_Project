@@ -121,8 +121,12 @@ class PanelNonogramaColored(Panel):
             for col in range(self.board_size[0]):
                 valor_jugador = self.cuadrilla_jugador.checkCell(col, fila)
                 valor_resultado = self.cuadrilla_resultado.checkCell(col, fila)
-
-                if valor_jugador != valor_resultado:
+                if valor_jugador == 'cross':
+                    if valor_resultado != 0:
+                        self.cuadrilla_jugador.setCell(col, fila, valor_resultado)
+                        self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0] + 1)
+                        return
+                elif valor_jugador != valor_resultado:
                     self.cuadrilla_jugador.setCell(col, fila, valor_resultado)
                     self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0] + 1)
                     return
