@@ -19,8 +19,8 @@ class PanelNonograma(Panel):
         self.panel_resultado.setColor(0,0,0)
         self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], None)
         self.panel_jugador = PanelCuadrilla(self.cuadrilla_jugador, 0, 0, 300)
-        self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(),'columns',0,0,700,300)
-        self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), 'rows', 0, 0, 30, 700)
+        self.panel_colnums = PanelNumeros(self.cuadrilla_resultado.getColumnNums(), self.cuadrilla_resultado.getColumnColors(),'columns',0,0,700,300)
+        self.panel_rownums = PanelNumeros(self.cuadrilla_resultado.getRowNums(), self.cuadrilla_resultado.getRowColors(), 'rows', 0, 0, 30, 700)
         self.isPressed = False
         self.marking = False
 
@@ -38,8 +38,8 @@ class PanelNonograma(Panel):
         else:
             self.panel_jugador.setCheckResult(False)
         self.panel_resultado.setNewCuadrilla(self.cuadrilla_resultado)
-        self.panel_colnums.setNewNumbers(self.cuadrilla_resultado.getColumnNums(), 'columns')
-        self.panel_rownums.setNewNumbers(self.cuadrilla_resultado.getRowNums(), 'rows')
+        self.panel_colnums.setNewNumbers(self.cuadrilla_resultado.getColumnNums(), self.cuadrilla_resultado.getColumnColors(), 'columns')
+        self.panel_rownums.setNewNumbers(self.cuadrilla_resultado.getRowNums(), self.cuadrilla_resultado.getRowColors(), 'rows')
 
     def saveNonograma(self):
         self.cuadrilla_jugador.saveCuadrilla(str(self.path[1]))
@@ -98,7 +98,7 @@ class PanelNonograma(Panel):
             elif not self.isPressed:
                     self.marking = False
                     self.isPressed = True
-            if self.mode < 2 and not self.marking:
+            if self.mode < 2 and not self.marking and jugador_cell!=0:
                 self.cuadrilla_jugador.setCell(col, row, 0)
                 if jugador_cell==-1:
                     self.cuadrilla_jugador.setInfo(1, self.cuadrilla_jugador.getInfo()[1]-1)
