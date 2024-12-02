@@ -142,6 +142,6 @@ class PanelNonograma(Panel):
     def draw(self,dest_surface):
         super().draw(dest_surface)
         self.panel_jugador.draw(self.surface)
-        #self.panel_resultado.draw(self.surface)
+        self.panel_resultado.draw(self.surface)
         self.panel_colnums.draw(self.surface)
         self.panel_rownums.draw(self.surface)

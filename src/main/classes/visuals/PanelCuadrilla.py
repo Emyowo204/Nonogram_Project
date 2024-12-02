@@ -87,7 +87,6 @@ class PanelCuadrilla(Panel):
         """
         col,row = self.positionClick(pos)
         if col != -1 and row != -1:
-            print(f'{self.board[col][row]}')
             if crossing and self.board[col][row] == 0:
                 self.board[col][row] = 'cross'
             elif self.board[col][row] == 'cross':
