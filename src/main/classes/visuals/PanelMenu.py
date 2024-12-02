@@ -49,6 +49,8 @@ class PanelMenu(Panel):
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.btnLogro = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelLogros,None)
         self.btnLogro.setImage(pygame.image.load('../images/botonLogroNormal.png'), pygame.image.load('../images/botonLogroShaded.png'))
+        self.btnTutorial = BotonRect(width - 120, 40, 80, 80, self.juego.mostrarPanelTutorial, None)
+        self.btnTutorial.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
         self.mainMenu = False
         self.toggleMainMenu(0)
 
@@ -59,6 +61,8 @@ class PanelMenu(Panel):
         """
         self.btnOpciones.evento(event)
         self.btnVolver.evento(event)
+        self.btnLogro.evento(event)
+        self.btnTutorial.evento(event)
         for i in range(4):
             self.btnModoList[i].evento(event)
             self.btnDifficulty[i].evento(event)
@@ -85,6 +89,8 @@ class PanelMenu(Panel):
         self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnLogro.setValues(40 * multi, self.h - 120 * multi, 80 * multi, 80 * multi)
+        self.btnTutorial.setValues(self.w - 120 * multi, 40 * multi, 80 * multi, 80 * multi)
+
 
     def toggleMainMenu(self, mode):
         self.juego.setMode(mode)
@@ -105,6 +111,7 @@ class PanelMenu(Panel):
         """
         dest_surface.blit(self.fondoImage, (0, 0)) # panel en negro por mientras
         self.btnOpciones.draw(self.juego.getWindow())
+        self.btnTutorial.draw(self.juego.getWindow())
         if self.mainMenu :
             self.btnLogro.draw(self.juego.getWindow())
             for i in range(len(self.btnModoList)):
