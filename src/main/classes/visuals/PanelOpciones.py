@@ -56,13 +56,13 @@ class PanelOpciones(Panel):
 
         self.label_music = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((width/2 - 200, height/2 - 75), (400, 30)),
-            text="Volumen Música: 50%",
+            text="Music Volume: 50%",
             manager=self.manager,
         )
 
         self.label_sound = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((width/2 - 200, height/2 - 25), (400, 30)),
-            text="Volumen Sonido: 50%",
+            text="Sound Volume: 50%",
             manager=self.manager,
         )
         self.botonVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelAnterior,None)
@@ -79,11 +79,11 @@ class PanelOpciones(Panel):
             if event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED:
                 if event.ui_element == self.slider_music:
                     valor_musica = event.value
-                    self.label_music.set_text(f"Volumen Música: {int(valor_musica)}%")
+                    self.label_music.set_text(f"Music Volume: {int(valor_musica)}%")
                     self.juego.musica.setVolumen(valor_musica / 100)
                 elif event.ui_element == self.slider_sound:
                     valor_sonido = event.value
-                    self.label_sound.set_text(f"Volumen Sonido: {int(valor_sonido)}%")
+                    self.label_sound.set_text(f"Sound Volume: {int(valor_sonido)}%")
                     self.juego.sonido.setVolumen(valor_sonido / 100)
 
         self.manager.process_events(event)

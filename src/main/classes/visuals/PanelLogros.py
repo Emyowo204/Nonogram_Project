@@ -34,12 +34,16 @@ class PanelLogros(Panel):
         """
         super().__init__(x, y, width, height)
         self.juego = juego
-        # self.fondoImageOG = pygame.image.load('../images/fondoLogros.png')
-        # self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
+        self.setColor(150, 250, 220)
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
         self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelAnterior,None)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
+        self.logros = []
+        self.nologros = []
+        for i in range(6):
+            self.logros.append(pygame.image.load('../images/logros/logro'+str(i+1)+'.png'))
+            self.nologros.append(pygame.image.load('../images/logros/nologro' + str(i + 1) + '.png'))
 
     def evento(self, event):
         """
@@ -71,8 +75,7 @@ class PanelLogros(Panel):
         Dibuja los componentes correspondientes en la ventana.
         :param dest_surface: Superficie en la que se dibujará el Panel.
         """
-        #self.fondoImage
-        dest_surface.fill((0, 0, 0,)) # panel en negro por mientras
+        super().draw(dest_surface)
         self.btnOpciones.draw(self.juego.getWindow())
         self.btnVolver.draw(self.juego.getWindow())
 

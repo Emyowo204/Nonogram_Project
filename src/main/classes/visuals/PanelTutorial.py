@@ -40,32 +40,24 @@ class PanelTutorial(Panel):
         """
         super().__init__(x, y, width, height)
         self.juego = juego
-
-        self.tutorial = [
-            pygame.image.load('../images/t1.png'),
-            pygame.image.load('../images/t2.png'),
-            pygame.image.load('../images/t3.png'),
-            pygame.image.load('../images/t4.png'),
-            pygame.image.load('../images/t5.png'),
-            pygame.image.load('../images/t6.png'),
-            pygame.image.load('../images/t7.png'),
-        ]
+        self.tutorial = []
+        for i in range(6):
+            self.tutorial.append(pygame.image.load('../images/tutorial/t'+str(i+1)+'.png'))
 
         self.imagen_actual = 0
         self.ancho, self.alto = self.tutorial[0].get_size()
         self.pos_X = width // 2 - self.ancho // 2
         self.pos_Y = height // 2 - 3 * self.alto // 5
 
-        # self.fondoImageOG = pygame.image.load('../images/fondoTutorial.png')
-        # self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
+        self.setColor(150,250,220)
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
-        self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelAnterior,None)
+        self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelMenu,None)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.btnNext = BotonRect(width/2, height - 120, 80, 80, self.fotoSiguiente,None)
-        self.btnNext.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
+        self.btnNext.setImage(pygame.image.load('../images/botonSiguNormal.png'), pygame.image.load('../images/botonSiguShaded.png'))
         self.btnBack = BotonRect(width/2 - 100, height - 120, 80, 80, self.fotoAnterior, None)
-        self.btnBack.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
+        self.btnBack.setImage(pygame.image.load('../images/botonAnteNormal.png'), pygame.image.load('../images/botonAnteShaded.png'))
 
     def evento(self, event):
         """
@@ -91,6 +83,8 @@ class PanelTutorial(Panel):
         self.w = w
         self.h = h
 
+        self.surface = pygame.Surface((self.w,self.h))
+        self.surface.fill((self.red,self.green,self.blue))
         for i in range(len(self.tutorial)):
             self.tutorial[i] = pygame.transform.scale(self.tutorial[i], (self.ancho*multi, self.alto*multi))
 
@@ -108,12 +102,8 @@ class PanelTutorial(Panel):
         Dibuja los componentes correspondientes en la ventana.
         :param dest_surface: Superficie en la que se dibujará el Panel.
         """
-        #self.fondoImage
-        dest_surface.fill((0, 0, 0,)) # panel en negro por mientras
-
-        dest_surface.blit(self.tutorial[self.imagen_actual],
-                          (self.pos_X, self.pos_Y))
-
+        super().draw(dest_surface)
+        dest_surface.blit(self.tutorial[self.imagen_actual],(self.pos_X, self.pos_Y))
         self.btnOpciones.draw(self.juego.getWindow())
         self.btnVolver.draw(self.juego.getWindow())
         self.btnNext.draw(self.juego.getWindow())
@@ -132,3 +122,4 @@ class PanelTutorial(Panel):
         """
         if self.imagen_actual < len(self.tutorial) - 1:
             self.imagen_actual += 1
+
