@@ -148,7 +148,10 @@ class CuadrillaColored:
         archivo.write(f"\n")
         for i in range(self.__r):
             for j in range(self.__c):
-                archivo.write(f"{self.__board[j][i]} ")
+                if self.__board[j][i]== 'cross':
+                    archivo.write(f"{0} ")
+                else:
+                    archivo.write(f"{self.__board[j][i]} ")
             archivo.write(f"\n")
         archivo.close()
         return True
