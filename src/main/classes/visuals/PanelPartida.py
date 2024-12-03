@@ -45,6 +45,7 @@ class PanelPartida(Panel):
             if self.vidas <= 0:
                 self.isSolved = -1
                 self.stringInfo = f'Vidas: 0 - PERDISTE'
+                self.juego.sonido.play("../../sounds/losesound.wav")
         self.checkSolve()
 
     def setLevel(self, level):
@@ -93,10 +94,12 @@ class PanelPartida(Panel):
             if self.game_mode < 2 and self.panel_nonograma.getInfoCuadrilla(0)[1] == 0:
                 self.isSolved = 1
                 self.stringInfo = 'GANASTE!'
+                self.juego.sonido.play("../../sounds/winsound.wav")
                 self.surface.fill((self.red, self.green, self.blue))
             elif self.game_mode >= 2:
                 self.isSolved = 1
                 self.stringInfo = f'Vidas: {self.vidas} - GANASTE!'
+                self.juego.sonido.play("../../sounds/winsound.wav")
                 self.surface.fill((self.red, self.green, self.blue))
                 if self.vidas==5:
                     Logros().completeAchievement(6)
@@ -123,6 +126,7 @@ class PanelPartida(Panel):
         if self.vidas <= 0 :
             self.vidas = 0
             self.stringInfo = 'Vidas: 0 - PERDISTE'
+            self.juego.sonido.play("../../sounds/losesound.wav")
         else :
             self.stringInfo = f'Vidas: {self.vidas}'
         self.surface.fill((self.red, self.green, self.blue))
@@ -159,3 +163,5 @@ class PanelPartida(Panel):
         self.btnHints.draw(self.surface)
         text_surface = self.font.render(self.stringInfo, False, (0, 0, 0))
         self.surface.blit(text_surface, (10, 10))
+
+
