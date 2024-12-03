@@ -5,6 +5,7 @@ import pygame_gui
 
 from src.main.classes.models.FileManager import FileManager
 from src.main.classes.models.Image2Nonogram import Image2Nonogram
+from src.main.classes.models.Logros import Logros
 from src.main.classes.visuals.BotonRect import BotonRect
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
@@ -138,17 +139,17 @@ class PanelFileManager(Panel):
                 if len(self.entry_h.get_text()) > 2:
                     self.entry_h.set_text(self.entry_h.get_text()[:2])
                     self.entry_h.unfocus()
-                    self.show_popup(self.w / 2 - 60*self.multi , self.h-self.scaleButton ,"Dígitos máximo: 2")
+                    self.show_popup(self.w / 2 - 60*self.multi , self.h-self.scaleButton ,"Max digits: 2")
             elif event.ui_element == self.entry_w:
                 if len(self.entry_w.get_text()) > 2:
                     self.entry_w.set_text(self.entry_w.get_text()[:2])
                     self.entry_w.unfocus()
-                    self.show_popup(self.w / 2 - 60*self.multi / 4, self.h-self.scaleButton ,"Dígitos máximo: 2")
+                    self.show_popup(self.w / 2 - 60*self.multi, self.h-self.scaleButton ,"Max digits: 2")
             elif event.ui_element == self.entry_colors:
                 if len(self.entry_colors.get_text()) > 1:
                     self.entry_colors.set_text(self.entry_colors.get_text()[:1])
                     self.entry_colors.unfocus()
-                    self.show_popup(self.w / 2 - 60*self.multi, self.h-self.scaleButton ,"Dígitos máximo: 1")
+                    self.show_popup(self.w / 2 - 60*self.multi, self.h-self.scaleButton ,"Max digit: 1")
 
         elif event.type == pygame_gui.UI_BUTTON_PRESSED:
             for button, data in self.buttonsDir:
@@ -164,12 +165,16 @@ class PanelFileManager(Panel):
                     if int(w_text) > int(color_text) and int(h_text) > int(color_text):
                         if self.mode == 'bin':
                             Image2Nonogram.convertImg2Bin(data,int(w_text),int(h_text))
+                            self.show_popup(self.w / 2 - 6 * self.scaleButton / 4, self.h - self.scaleButton,"Created!!")
+                            Logros().completeAchievement(7)
                         elif self.mode == 'color':
                             Image2Nonogram.convertImg2Color(data, int(w_text),int(h_text),int(color_text))
+                            self.show_popup(self.w / 2 - 6 * self.scaleButton / 4, self.h - self.scaleButton,"Created!!")
+                            Logros().completeAchievement(7)
                     else:
-                        self.show_popup(self.w / 2 - 6 * self.scaleButton / 4, self.h-self.scaleButton, f"Colores máximo: {int(w_text)*int(h_text)}")
+                        self.show_popup(self.w / 2 - 6 * self.scaleButton / 4, self.h-self.scaleButton, f"Max color: {int(w_text)*int(h_text)}")
                 elif event.ui_element == button and not h_text.isdigit() and  not w_text.isdigit() and not color_text.isdigit():
-                    self.show_popup(self.w / 2 - 6 * self.scaleButton / 4, self.h - self.scaleButton,"Entrada no válida")
+                    self.show_popup(self.w / 2 - 6 * self.scaleButton / 4, self.h - self.scaleButton,"Invalid input")
             if event.ui_element == self.buttonBack:
                     self.changeDir("..")
 

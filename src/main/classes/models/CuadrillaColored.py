@@ -113,6 +113,9 @@ class CuadrillaColored:
             color = color.strip()
             if color.startswith('['):
                 rgb = list(map(int, color[1:].split()))
+                for i in range(3):
+                    if rgb[i] < 20:
+                        rgb[i] = 20
                 self.__colors.append(rgb)
 
         while color_line:

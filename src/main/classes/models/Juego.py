@@ -37,7 +37,7 @@ class Juego:
         self.panelFileManager = None
         self.custom_puzzles = []
         self.color_puzzles = []
-        self.levelsCount = [0, 0, 0, 0, 0]
+        self.levelsCount = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]]
         self.difficultyList = ["Easy", "Medium", "Hard", "Custom"]
         self.gameDifficulty = 0
         self.gameMode = 0
@@ -120,13 +120,12 @@ class Juego:
         pygame.quit()
 
     def contarPuzzles(self):
-        cuenta = 0
-        for i in range(3):
-            self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/"+self.difficultyList[i]))
-            self.filemanager.updateDir()
-            self.levelsCount[i] = len(self.filemanager.getPuzzles())
-            cuenta += self.levelsCount[i]
-        Logros().setAllLevelsCount(cuenta, 0)
+        for i in range(4):
+            for j in range(3):
+                self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles"+str(i)+"/"+self.difficultyList[j]))
+                self.filemanager.updateDir()
+                self.levelsCount[i][j] = len(self.filemanager.getPuzzles())
+                Logros().setAllLevelsCount(self.levelsCount[i][j], i, j)
 
     def mostrarPanelMenu(self):
         self.panelAnterior = self.panelActual
@@ -136,23 +135,22 @@ class Juego:
 
     def mostrarPanelNiveles(self, difficulty_index):
         if difficulty_index == 3:
-            self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/" + self.difficultyList[3]))
-            self.filemanager.updateDir()
-            self.custom_puzzles = self.filemanager.getPuzzles()
-            self.levelsCount[3] = len(self.custom_puzzles)
-
-            self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles_color/" + self.difficultyList[3]))
-            self.filemanager.updateDir()
-            self.color_puzzles = self.filemanager.getPuzzles()
-            self.levelsCount[4] = len(self.color_puzzles)
-
+            if self.gameMode%2 == 0:
+                self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles_custom/" + self.difficultyList[3] +str(0)))
+                self.filemanager.updateDir()
+                self.custom_puzzles = self.filemanager.getPuzzles()
+                self.levelsCount[0][3] = self.levelsCount[2][3] = len(self.custom_puzzles)
+                quantity = self.levelsCount[0][3]
+            else:
+                self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles_custom/" + self.difficultyList[3] +str(1)))
+                self.filemanager.updateDir()
+                self.color_puzzles = self.filemanager.getPuzzles()
+                self.levelsCount[1][3] = self.levelsCount[3][3] = len(self.color_puzzles)
+                quantity = self.levelsCount[1][3]
             self.panelNiveles.setLoadEnable(True)
         else:
             self.panelNiveles.setLoadEnable(False)
-        if (self.gameMode == 1 or self.gameMode == 3) and difficulty_index == 3:
-            quantity = self.levelsCount[4]
-        else:
-            quantity = self.levelsCount[difficulty_index]
+            quantity = self.levelsCount[self.gameMode][difficulty_index]
         self.panelNiveles.setLevelButtons(quantity)
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelNiveles
@@ -164,17 +162,17 @@ class Juego:
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelPartida
         diff_name = self.difficultyList[self.gameDifficulty]
+        self.panelActual.setVolverBoton(self.gameDifficulty)
+        self.panelActual.setLevel(game_index)
         if self.gameDifficulty == 3:
             if self.gameMode == 0 or self.gameMode == 2:
-                self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1], self.gameMode)
+                self.panelPartida.setNonograma(diff_name+'0/'+self.custom_puzzles[game_index-1], self.gameMode, True)
             elif self.gameMode == 1 or self.gameMode == 3:
-                self.panelPartida.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1], self.gameMode)
+                self.panelPartida.setNonograma(diff_name + '1/' + self.color_puzzles[game_index - 1], self.gameMode, True)
         else:
-            self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt', self.gameMode)
-        self.panelActual.setLevel(game_index)
+            self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt', self.gameMode, False)
         self.panelActual.defaultZoom()
         self.panelActual.fitWindow(self.window_size[0], self.window_size[1])
-        self.panelActual.setVolverBoton(self.gameDifficulty)
         self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
 
     def mostrarPanelOpciones(self):

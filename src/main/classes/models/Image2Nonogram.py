@@ -26,7 +26,7 @@ class Image2Nonogram:
                 height (int): Alto deseado de la imagen redimensionada.
 
             Archivo de salida:
-                Se guarda un archivo llamado 'image.txt' en el directorio '../../puzzles',
+                Se guarda un archivo llamado 'image.txt' en el directorio '../../puzzles2',
                 que contiene el ancho y la altura de la matriz binaria seguida por los datos
                 de la matriz en formato binario (0s y 1s).
 
@@ -43,7 +43,7 @@ class Image2Nonogram:
         img = cv2.resize(img, (width, height))
 
         img_binary_matrix = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2) // 255
-        dir = os.path.join(os.path.dirname(__file__), '../../puzzles/Custom')
+        dir = os.path.join(os.path.dirname(__file__), '../../puzzles_custom/Custom0')
         file_path = os.path.join(dir, os.path.splitext(os.path.basename(img_path))[0] +".txt")
         file = open(file_path,'w')
         file.write(f"{width} {height}\n")
@@ -69,7 +69,7 @@ class Image2Nonogram:
         unique_colors = np.array(centers.tolist())
         segmented_image = centers[labels.flatten()].reshape(img.shape)
 
-        dir = os.path.join(os.path.dirname(__file__), '../../puzzles_color/Custom/')
+        dir = os.path.join(os.path.dirname(__file__), '../../puzzles_custom/Custom1/')
         file_path = os.path.join(dir, os.path.splitext(os.path.basename(img_path))[0] + ".txt")
 
         file = open(file_path, 'w')
@@ -82,15 +82,6 @@ class Image2Nonogram:
             for pixel in r:
                 index = np.where((unique_colors == pixel).all(axis=1))[0][0]+1
                 file.write(f"{index} ")
-            file.write("\n")
-        file.close()
-        dir = os.path.join(os.path.dirname(__file__), '../../saves/Custom')
-        file_path = os.path.join(dir, os.path.splitext(os.path.basename(img_path))[0] + ".txt")
-        file = open(file_path, 'w')
-        file.write(f"{width} {height}\n")
-        for i in range(height):
-            for j in range(width):
-                file.write("0 ")
             file.write("\n")
         file.close()
         pass

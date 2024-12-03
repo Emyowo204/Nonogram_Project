@@ -32,9 +32,9 @@ class PanelPartida(Panel):
         self.game_mode = 0
         self.level = 0
 
-    def setNonograma(self, path, mode):
+    def setNonograma(self, path, mode, custom):
         self.panel_nonograma = self.type_nonograma[mode%2]
-        self.panel_nonograma.setNonograma(path, mode)
+        self.panel_nonograma.setNonograma(path, mode, custom)
         self.isSolved = 0
         self.vidas = 5-self.panel_nonograma.getInfoCuadrilla(0)[1]
         self.game_mode = mode
@@ -101,7 +101,7 @@ class PanelPartida(Panel):
                 if self.vidas==5:
                     Logros().completeAchievement(6)
             if self.game_difficulty < 3:
-                Logros().sumLevel(self.game_mode, self.level)
+                Logros().sumLevel(self.game_mode, self.game_difficulty, self.level-1)
             if self.game_mode%2==0:
                 Logros().completeAchievement(0)
                 Logros().completeAchievement(0)

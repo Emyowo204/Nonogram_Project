@@ -11,9 +11,9 @@ class PanelNonogramaColored(Panel):
     def __init__(self, x, y, width, height):
         super().__init__(x,y,width,height)
         self.setColor(0, 0, 0)
-        self.path = ['Easy/Easy_Nivel1.txt', 'Easy/0Hard_Nivel1.txt']
+        self.path = ['Easy/Easy_Nivel1.txt','Easy/M1_Easy_Nivel1.txt']
         self.mode = 0
-        self.cuadrilla_resultado = CuadrillaColored(None, None, 'puzzles_color/' + str(self.path[0]))
+        self.cuadrilla_resultado = CuadrillaColored(None, None, 'puzzles1/' + str(self.path[0]))
         self.panel_resultado = PanelCuadrillaColored(self.cuadrilla_resultado, 0, 330, 300)
         self.board_size = self.cuadrilla_resultado.getSize()
         self.panel_resultado.setColor(0, 0, 0)
@@ -28,13 +28,17 @@ class PanelNonogramaColored(Panel):
         self.text_surface = self.font.render(str(1), False, (0, 10, 0))
         self.marking = [False, True]
 
-    def setNonograma(self, path, mode):
+    def setNonograma(self, path, mode, custom):
         self.path[0] = path
         self.path[1] = path.split('/')
         self.path[1] = self.path[1][0]+'/M'+str(mode)+'_'+self.path[1][1]
         self.mode = mode
-        self.cuadrilla_resultado = CuadrillaColored(None, None, 'puzzles_color/'+self.path[0])
-        self.board_size = self.cuadrilla_resultado.getSize()
+        if custom:
+            self.cuadrilla_resultado = CuadrillaColored(None, None, 'puzzles_custom/'+self.path[0])
+            self.board_size = self.cuadrilla_resultado.getSize()
+        else:
+            self.cuadrilla_resultado = CuadrillaColored(None, None, 'puzzles'+str(mode)+'/'+self.path[0])
+            self.board_size = self.cuadrilla_resultado.getSize()
         self.cuadrilla_jugador = CuadrillaColored(self.board_size[0], self.board_size[1], 'saves_color/' + self.path[1])
         self.cuadrilla_jugador.setColors(self.cuadrilla_resultado.getColors())
         self.panel_jugador.setNewCuadrilla(self.cuadrilla_jugador)
