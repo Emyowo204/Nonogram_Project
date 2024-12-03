@@ -54,7 +54,7 @@ class PanelLogros(Panel):
             self.pos_X.append([])
             self.pos_Y.append([])
 
-        self.setColor(150,250,220)
+        self.setColor(72,1,20)
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
         self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelMenu,None)
