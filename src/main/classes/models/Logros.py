@@ -16,6 +16,7 @@ class Logros:
             self.allLevels = [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
             self.achivCount = 8
             Logros._inicializado = True
+            self.juego = None
 
     def completeAchievement(self, bitNum):
         """
@@ -26,6 +27,7 @@ class Logros:
             self.readInfoGame()
             self.achievements = self.achievements | (1<<bitNum)
             self.saveInfoGame()
+            self.juego.sonido.play("../../sounds/logrosound.wav")
 
     def sumLevel(self, mode, difficulty, level):
         if self.levelsCompleted[mode][difficulty] & (1<<level) == 0:
@@ -48,6 +50,12 @@ class Logros:
             return False
         saveAchiv = archivo.readline().strip().split()
         archivo.close()
+        if len(saveAchiv) != 13:
+            archivo = open(fulldirectory, 'w')
+            for j in range(13):
+                archivo.write(f"{0} ")
+            archivo.close()
+            saveAchiv = [0,0,0,0,0,0,0,0,0,0,0,0,0]
         self.achievements = int(saveAchiv[0])
         index = 1
         for i in range(4):
@@ -77,4 +85,7 @@ class Logros:
     def setAllLevelsCount(self, num, mode, difficulty):
         for i in range(num):
             self.allLevels[mode][difficulty] = self.allLevels[mode][difficulty] | (1<<i)
+
+    def setJuego(self, juego):
+        self.juego = juego
 

@@ -130,7 +130,7 @@ class PanelNonogramaColored(Panel):
                         self.cuadrilla_jugador.setCell(col, fila, valor_resultado)
                         self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0] + 1)
                         return
-                elif valor_jugador != valor_resultado:
+                elif valor_resultado != 0 and valor_jugador == 0:
                     self.cuadrilla_jugador.setCell(col, fila, valor_resultado)
                     self.cuadrilla_jugador.setInfo(0, self.cuadrilla_jugador.getInfo()[0] + 1)
                     return

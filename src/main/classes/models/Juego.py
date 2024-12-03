@@ -21,6 +21,7 @@ from src.main.classes.visuals.Ventana import Ventana
 class Juego:
     def __init__(self):
 
+        Logros().setJuego(self)
         self.filemanager = None
         self.window = None
         self.window_size = [None, None]

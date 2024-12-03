@@ -112,8 +112,9 @@ class PanelPartida(Panel):
                 Logros().completeAchievement(1)
 
     def showHint(self):
-        self.panel_nonograma.showHint()
-        self.checkSolve()
+        if self.isSolved == 0:
+            self.panel_nonograma.showHint()
+            self.checkSolve()
 
     def handleZoom(self,event, pos):
         self.panel_nonograma.handleZoom(event, pos)
