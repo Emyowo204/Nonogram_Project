@@ -73,6 +73,7 @@ class Juego:
             deltatime = clock.tick(60) / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    Logros().readInfoGame()
                     Logros().saveInfoGame()
                     running = False
 
@@ -85,11 +86,11 @@ class Juego:
 
                 if self.panelActual == self.panelPartida:
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        if event.button == 1 or 3:
+                        if event.button == 1 or event.button == 3:
                             is_pressed = True
 
                     elif event.type == pygame.MOUSEBUTTONUP:
-                        if event.button == 1 or 3:
+                        if event.button == 1 or event.button == 3:
                             is_pressed = False
                             self.panelPartida.setIsPressed(is_pressed)
 
@@ -119,10 +120,13 @@ class Juego:
         pygame.quit()
 
     def contarPuzzles(self):
+        cuenta = 0
         for i in range(3):
             self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles/"+self.difficultyList[i]))
             self.filemanager.updateDir()
             self.levelsCount[i] = len(self.filemanager.getPuzzles())
+            cuenta += self.levelsCount[i]
+        Logros().setAllLevelsCount(cuenta, 0)
 
     def mostrarPanelMenu(self):
         self.panelAnterior = self.panelActual
@@ -165,9 +169,9 @@ class Juego:
                 self.panelPartida.setNonograma(diff_name+'/'+self.custom_puzzles[game_index-1], self.gameMode)
             elif self.gameMode == 1 or self.gameMode == 3:
                 self.panelPartida.setNonograma(diff_name + '/' + self.color_puzzles[game_index - 1], self.gameMode)
-
         else:
             self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt', self.gameMode)
+        self.panelActual.setLevel(game_index)
         self.panelActual.defaultZoom()
         self.panelActual.fitWindow(self.window_size[0], self.window_size[1])
         self.panelActual.setVolverBoton(self.gameDifficulty)
@@ -222,4 +226,3 @@ class Juego:
 
     def getWindowSize(self):
         return self.window_size
-

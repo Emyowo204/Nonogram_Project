@@ -11,18 +11,29 @@ class Logros:
 
     def __init__(self):
         if not self._inicializado:
-            self.achievements = []
-            for i in range(10):
-                self.achievements.append(0)
+            self.achievements = 0
+            self.levelsCompleted = [0,0,0,0]
+            self.allLevels = [0, 0, 0, 0]
+            self.achivCount = 10
             Logros._inicializado = True
 
-    def completeAchievement(self, index):
+    def completeAchievement(self, bitNum):
         """
         Completa un logro indicado.
-        :param index: índice del logro completado.
+        :param bitNum: índice del logro completado.
         """
-        self.achievements[index] = 1
-        self.saveInfoGame()
+        if self.achievements & (1<<bitNum) == 0:
+            self.readInfoGame()
+            self.achievements = self.achievements | (1<<bitNum)
+            self.saveInfoGame()
+
+    def sumLevel(self, mode, level):
+        if self.levelsCompleted[mode] & (1<<level) == 0:
+            self.readInfoGame()
+            self.levelsCompleted[mode] = self.levelsCompleted[mode] | (1<<level)
+            if self.levelsCompleted[mode] == self.allLevels[mode]:
+                self.completeAchievement(mode+2)
+            self.saveInfoGame()
 
     def readInfoGame(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -33,8 +44,9 @@ class Logros:
             return False
         saveAchiv = archivo.readline().strip().split()
         archivo.close()
-        for i in range(len(saveAchiv)):
-            self.achievements[i] = int(saveAchiv[i])
+        self.achievements = int(saveAchiv[0])
+        for i in range(4):
+            self.levelsCompleted[i] = int(saveAchiv[i+1])
 
     def saveInfoGame(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -43,12 +55,20 @@ class Logros:
             archivo = open(fulldirectory,'w')
         except OSError:
             return False
-        for i in range(len(self.achievements)):
-            archivo.write(f"{int(self.achievements[i])} ")
+        archivo.write(f"{int(self.achievements)} ")
+        for i in range(4):
+            archivo.write(f"{int(self.levelsCompleted[i])} ")
         archivo.close()
 
     def getAchievements(self):
         return self.achievements
 
-    def getAchievement(self, index):
-        return self.achievements[index]
+    def getAchievCount(self):
+        return self.achivCount
+
+    def setAllLevelsCount(self, num, index):
+        for i in range(num):
+            self.allLevels[index] = self.allLevels[index] | (1<<(i+1))
+        print(f'{self.allLevels[index]}')
+
+

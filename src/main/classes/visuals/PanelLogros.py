@@ -40,17 +40,17 @@ class PanelLogros(Panel):
         self.Og_achievements_completed = []
         self.achievements_uncompleted_images = []
         self.achievements_completed_images = []
-        self.achievements = []
         self.pos_X = []
         self.pos_Y = []
         self.ancho = 200
+        self.achievements = 0
+        self.achivCount = Logros().getAchievCount()
 
-        for i in range(10):
+        for i in range(self.achivCount):
             self.Og_achievements_uncompleted.append(pygame.image.load('../images/logros/nologro'+str(i+1)+'.png'))
             self.achievements_uncompleted_images.append(self.Og_achievements_uncompleted[i])
             self.Og_achievements_completed.append(pygame.image.load('../images/logros/logro'+str(i+1)+'.png'))
             self.achievements_completed_images.append(self.Og_achievements_completed[i])
-            self.achievements.append(0)
             self.pos_X.append([])
             self.pos_Y.append([])
 
@@ -92,9 +92,9 @@ class PanelLogros(Panel):
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
 
-        self.ancho = 240*multi
+        self.ancho = 300*multi
 
-        for i in range(len(self.achievements)):
+        for i in range(self.achivCount):
             self.achievements_completed_images[i] = pygame.transform.scale(self.Og_achievements_completed[i], (self.ancho, self.ancho/3))
             self.achievements_uncompleted_images[i] = pygame.transform.scale(self.Og_achievements_uncompleted[i],(self.ancho, self.ancho/3))
             if i%2==0:
@@ -122,11 +122,12 @@ class PanelLogros(Panel):
         :param dest_surface: Superficie en la que se dibujará el Panel.
         """
         super().draw(dest_surface)
-        for i in range(len(self.achievements)):
-            if self.achievements[i]==1:
-                dest_surface.blit(self.achievements_completed_images[i],(self.pos_X[i], self.pos_Y[i]))
-            else:
+        for i in range(self.achivCount):
+            if (self.achievements & (1<<i)) == 0:
                 dest_surface.blit(self.achievements_uncompleted_images[i], (self.pos_X[i], self.pos_Y[i]))
+            else:
+                dest_surface.blit(self.achievements_completed_images[i],(self.pos_X[i], self.pos_Y[i]))
+
 
         self.btnOpciones.draw(self.juego.getWindow())
         self.btnVolver.draw(self.juego.getWindow())

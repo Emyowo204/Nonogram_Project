@@ -30,6 +30,7 @@ class PanelPartida(Panel):
         self.juego = juego
         self.game_difficulty = 0
         self.game_mode = 0
+        self.level = 0
 
     def setNonograma(self, path, mode):
         self.panel_nonograma = self.type_nonograma[mode%2]
@@ -45,6 +46,9 @@ class PanelPartida(Panel):
                 self.isSolved = -1
                 self.stringInfo = f'Vidas: 0 - PERDISTE'
         self.checkSolve()
+
+    def setLevel(self, level):
+        self.level = level
 
     def saveNonograma(self):
         self.panel_nonograma.saveNonograma()
@@ -94,11 +98,14 @@ class PanelPartida(Panel):
                 self.isSolved = 1
                 self.stringInfo = f'Vidas: {self.vidas} - GANASTE!'
                 self.surface.fill((self.red, self.green, self.blue))
-                if Logros().getAchievement(6) == 0 and self.vidas==5:
+                if self.vidas==5:
                     Logros().completeAchievement(6)
-            if Logros().getAchievement(0)==0 and self.game_mode%2==0:
+            if self.game_difficulty < 3:
+                Logros().sumLevel(self.game_mode, self.level)
+            if self.game_mode%2==0:
                 Logros().completeAchievement(0)
-            elif Logros().getAchievement(1)==0 and self.game_mode%2==1:
+                Logros().completeAchievement(0)
+            elif self.game_mode%2==1:
                 Logros().completeAchievement(1)
 
     def showHint(self):
