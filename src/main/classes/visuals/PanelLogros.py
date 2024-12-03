@@ -1,5 +1,7 @@
 import pygame
+import os
 
+from src.main.classes.models.Logros import Logros
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
 from src.main.classes.visuals.BotonRect import BotonRect
@@ -39,30 +41,18 @@ class PanelLogros(Panel):
         self.achievements_uncompleted_images = []
         self.achievements_completed_images = []
         self.achievements = []
-        for i in range(6):
+        self.pos_X = []
+        self.pos_Y = []
+        self.ancho = 200
+
+        for i in range(10):
             self.Og_achievements_uncompleted.append(pygame.image.load('../images/logros/nologro'+str(i+1)+'.png'))
             self.achievements_uncompleted_images.append(self.Og_achievements_uncompleted[i])
-            self.Og_achievements_completed.append(pygame.image.load('../images/logros/nologro'+str(i+1)+'.png'))
+            self.Og_achievements_completed.append(pygame.image.load('../images/logros/logro'+str(i+1)+'.png'))
             self.achievements_completed_images.append(self.Og_achievements_completed[i])
-            self.achievements.append(False)
-
-        self.ancho, self.alto = self.Og_achievements_completed[0].get_size()
-        self.pos_X = []
-        for i in range(6):
-            if i%2 == 0:
-                self.pos_X.append(40)
-            else:
-                self.pos_X.append(width - (self.ancho+40))
-
-        self.pos_Y = [
-            40,
-            40,
-            height // 3 + 20,
-            height // 3 + 20,
-            2 * height // 3 + 20,
-            2 * height // 3 + 20,
-        ]
-
+            self.achievements.append(0)
+            self.pos_X.append([])
+            self.pos_Y.append([])
 
         self.setColor(150,250,220)
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
@@ -78,12 +68,13 @@ class PanelLogros(Panel):
         self.btnOpciones.evento(event)
         self.btnVolver.evento(event)
 
-    def completeAchievement(self, index):
+    def reloadAchievement(self):
         """
         Completa un logro indicado.
         :param index: índice del logro completado.
         """
-        self.achievements[index] = True
+        Logros().readInfoGame()
+        self.achievements = Logros().getAchievements()
 
     def fitWindow(self, w, h):
         """
@@ -101,28 +92,26 @@ class PanelLogros(Panel):
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
 
+        self.ancho = 240*multi
+
         for i in range(len(self.achievements)):
-            self.achievements_completed_images[i] = pygame.transform.scale(self.Og_achievements_completed[i],
-                                                                           (self.ancho*multi, self.alto*multi))
-            self.achievements_uncompleted_images[i] = pygame.transform.scale(self.Og_achievements_uncompleted[i],
-                                                                           (self.ancho * multi, self.alto * multi))
-
-        for i in range(6):
-            if i%2 == 0:
-                self.pos_X[i] = (40*multi)
+            self.achievements_completed_images[i] = pygame.transform.scale(self.Og_achievements_completed[i], (self.ancho, self.ancho/3))
+            self.achievements_uncompleted_images[i] = pygame.transform.scale(self.Og_achievements_uncompleted[i],(self.ancho, self.ancho/3))
+            if i%2==0:
+                self.pos_X[i]=(self.w/2-self.ancho-self.w/16)
             else:
-                self.pos_X[i] = (w - (self.ancho+40)*multi)
+                self.pos_X[i]=(self.w/2+self.w/16)
+            if i < 2:
+                self.pos_Y[i]=(self.h*1/20)
+            elif i < 4:
+                self.pos_Y[i]=(self.h*2/20+self.ancho/3)
+            elif i < 6:
+                self.pos_Y[i]=(self.h*3/20+self.ancho*2/3)
+            elif i < 8:
+                self.pos_Y[i]=(self.h*4/20+self.ancho*3/3)
+            else:
+                self.pos_Y[i]=(self.h*5/20+self.ancho*4/3)
 
-        self.pos_Y = [
-            40*multi,
-            40*multi,
-            h // 3 + 40*multi,
-            h // 3 + 40*multi,
-            2 * h // 3 + 40*multi,
-            2 * h // 3 + 40*multi,
-        ]
-
-        # self.fondoImage = pygame.transform.scale(self.fondoImageOG, (self.w, self.h))
         self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
 
@@ -134,10 +123,10 @@ class PanelLogros(Panel):
         """
         super().draw(dest_surface)
         for i in range(len(self.achievements)):
-            if self.achievements[i] == True:
+            if self.achievements[i]==1:
                 dest_surface.blit(self.achievements_completed_images[i],(self.pos_X[i], self.pos_Y[i]))
             else:
-                dest_surface.blit(self.achievements_completed_images[i], (self.pos_X[i], self.pos_Y[i]))
+                dest_surface.blit(self.achievements_uncompleted_images[i], (self.pos_X[i], self.pos_Y[i]))
 
         self.btnOpciones.draw(self.juego.getWindow())
         self.btnVolver.draw(self.juego.getWindow())

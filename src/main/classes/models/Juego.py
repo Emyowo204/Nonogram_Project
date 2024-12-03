@@ -3,6 +3,7 @@ import os
 import pygame
 
 from src.main.classes.models.FileManager import FileManager
+from src.main.classes.models.Logros import Logros
 from src.main.classes.visuals.PanelFileManager import PanelFileManager
 from src.main.classes.visuals.PanelPartida import PanelPartida
 from src.main.classes.visuals.ImageLoader import ImageLoader
@@ -72,6 +73,7 @@ class Juego:
             deltatime = clock.tick(60) / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    Logros().saveInfoGame()
                     running = False
 
                 elif event.type == pygame.VIDEORESIZE:
@@ -181,6 +183,7 @@ class Juego:
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelLogros
         self.panelLogros.fitWindow(self.window_size[0], self.window_size[1])
+        self.panelLogros.reloadAchievement()
         self.musica.cambiarMusica("../../sounds/logrosmusica.wav")
 
     def mostrarPanelTutorial(self):

@@ -1,5 +1,6 @@
 import pygame
 
+from src.main.classes.models.Logros import Logros
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.PanelNonograma import PanelNonograma
 from src.main.classes.visuals.Panel import Panel
@@ -93,6 +94,12 @@ class PanelPartida(Panel):
                 self.isSolved = 1
                 self.stringInfo = f'Vidas: {self.vidas} - GANASTE!'
                 self.surface.fill((self.red, self.green, self.blue))
+                if Logros().getAchievement(6) == 0 and self.vidas==5:
+                    Logros().completeAchievement(6)
+            if Logros().getAchievement(0)==0 and self.game_mode%2==0:
+                Logros().completeAchievement(0)
+            elif Logros().getAchievement(1)==0 and self.game_mode%2==1:
+                Logros().completeAchievement(1)
 
     def showHint(self):
         self.panel_nonograma.showHint()
