@@ -1,8 +1,8 @@
 import pygame
 
-from src.main.classes.visuals.ImageLoader import ImageLoader
-from src.main.classes.visuals.Panel import Panel
-from src.main.classes.visuals.BotonRect import BotonRect
+from main.classes.visuals.ImageLoader import ImageLoader
+from main.classes.visuals.Panel import Panel
+from main.classes.visuals.BotonRect import BotonRect
 
 class PanelTutorial(Panel):
     """
@@ -42,8 +42,9 @@ class PanelTutorial(Panel):
         self.juego = juego
         self.OgTutorial = []
         self.tutorial = []
+
         for i in range(7):
-            self.OgTutorial.append(pygame.image.load('../images/tutorial/t'+str(i+1)+'.png'))
+            self.OgTutorial.append(pygame.image.load('main/images/tutorial/t'+str(i+1)+'.png'))
             self.tutorial.append(self.OgTutorial[i])
 
         self.imagen_actual = 0
@@ -57,9 +58,9 @@ class PanelTutorial(Panel):
         self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelMenu,None)
         self.btnVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())
         self.btnNext = BotonRect(width/2, height - 120, 80, 80, self.fotoSiguiente,None)
-        self.btnNext.setImage(pygame.image.load('../images/botonSiguNormal.png'), pygame.image.load('../images/botonSiguShaded.png'))
+        self.btnNext.setImage(pygame.image.load('main/images/botonSiguNormal.png'), pygame.image.load('main/images/botonSiguShaded.png'))
         self.btnBack = BotonRect(width/2 - 100, height - 120, 80, 80, self.fotoAnterior, None)
-        self.btnBack.setImage(pygame.image.load('../images/botonAnteNormal.png'), pygame.image.load('../images/botonAnteShaded.png'))
+        self.btnBack.setImage(pygame.image.load('main/images/botonAnteNormal.png'), pygame.image.load('main/images/botonAnteShaded.png'))
 
     def evento(self, event):
         """

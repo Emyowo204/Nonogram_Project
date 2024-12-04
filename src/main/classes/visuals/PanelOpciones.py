@@ -1,9 +1,9 @@
 import pygame
 import pygame_gui
 
-from src.main.classes.visuals.BotonRect import BotonRect
-from src.main.classes.visuals.ImageLoader import ImageLoader
-from src.main.classes.visuals.Panel import Panel
+from main.classes.visuals.BotonRect import BotonRect
+from main.classes.visuals.ImageLoader import ImageLoader
+from main.classes.visuals.Panel import Panel
 
 
 class PanelOpciones(Panel):
@@ -72,7 +72,7 @@ class PanelOpciones(Panel):
             manager=self.manager,
         )
 
-        self.fondoImageOG = pygame.image.load('../images/fondoopciones.jpg')
+        self.fondoImageOG = pygame.image.load('main/images/fondoopciones.jpg')
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
         self.botonVolver = BotonRect(40, height - 120, 80, 80, self.juego.mostrarPanelAnterior, None)
         self.botonVolver.setImage(ImageLoader().getVolNormal(), ImageLoader().getVolShaded())

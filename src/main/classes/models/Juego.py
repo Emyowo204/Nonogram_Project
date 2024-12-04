@@ -2,21 +2,21 @@ import os
 
 import pygame
 
-from src.main.classes.models.FileManager import FileManager
-from src.main.classes.models.Logros import Logros
-from src.main.classes.visuals.PanelFileManager import PanelFileManager
-from src.main.classes.visuals.PanelNivelCustom import PanelNivelesCustom
-from src.main.classes.visuals.PanelPartida import PanelPartida
-from src.main.classes.visuals.ImageLoader import ImageLoader
-from src.main.classes.visuals.Panel import Panel
-from src.main.classes.visuals.PanelOpciones import PanelOpciones
-from src.main.classes.visuals.PanelLogros import PanelLogros
-from src.main.classes.visuals.PanelTutorial import PanelTutorial
-from src.main.classes.visuals.PanelMenu import PanelMenu
-from src.main.classes.visuals.PanelNiveles import PanelNiveles
-from src.main.classes.models.Musica import Musica
-from src.main.classes.models.Sonido import Sonido
-from src.main.classes.visuals.Ventana import Ventana
+from main.classes.models.FileManager import FileManager
+from main.classes.models.Logros import Logros
+from main.classes.visuals.PanelFileManager import PanelFileManager
+from main.classes.visuals.PanelNivelCustom import PanelNivelesCustom
+from main.classes.visuals.PanelPartida import PanelPartida
+from main.classes.visuals.ImageLoader import ImageLoader
+from main.classes.visuals.Panel import Panel
+from main.classes.visuals.PanelOpciones import PanelOpciones
+from main.classes.visuals.PanelLogros import PanelLogros
+from main.classes.visuals.PanelTutorial import PanelTutorial
+from main.classes.visuals.PanelMenu import PanelMenu
+from main.classes.visuals.PanelNiveles import PanelNiveles
+from main.classes.models.Musica import Musica
+from main.classes.models.Sonido import Sonido
+from main.classes.visuals.Ventana import Ventana
 
 
 class Juego:
@@ -52,8 +52,8 @@ class Juego:
         ventana = Ventana(self.window_size[0], self.window_size[1])
         self.window = ventana.getWindow()
         pygame.mixer.init()
-        self.musica = Musica("../../sounds/menumusica.wav")
-        self.sonido = Sonido("../../sounds/sonidotest.wav")
+        self.musica = Musica("main/sounds/menumusica.wav")
+        self.sonido = Sonido("main/sounds/sonidotest.wav")
 
         clock = pygame.time.Clock()
         self.panelMenu = PanelMenu(0,0, self.window_size[0], self.window_size[1], self)
@@ -126,7 +126,7 @@ class Juego:
     def contarPuzzles(self):
         for i in range(4):
             for j in range(3):
-                self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles"+str(i)+"/"+self.difficultyList[j]))
+                self.filemanager.changeDir(os.path.join(os.getcwd(), "main/puzzles"+str(i)+"/"+self.difficultyList[j]))
                 self.filemanager.updateDir()
                 self.levelsCount[i][j] = len(self.filemanager.getPuzzles())
                 Logros().setAllLevelsCount(self.levelsCount[i][j], i, j)
@@ -135,7 +135,7 @@ class Juego:
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelMenu
         self.panelMenu.fitWindow(self.window_size[0], self.window_size[1])
-        self.musica.cambiarMusica("../../sounds/menumusica.wav")
+        self.musica.cambiarMusica("main/sounds/menumusica.wav")
 
     def mostrarPanelNiveles(self, difficulty_index):
         if difficulty_index == 3:
@@ -144,14 +144,14 @@ class Juego:
             if self.gameMode == 0 or self.gameMode == 2:
                 self.panelNivelesCustom.setBinMode()
                 self.filemanager.changeDir(
-                    os.path.join(os.getcwd(), "../puzzles_custom/" + self.difficultyList[3] + str(0)))
+                    os.path.join(os.getcwd(), "main/puzzles_custom/" + self.difficultyList[3] + str(0)))
                 self.filemanager.updateDir()
                 self.custom_puzzles = self.filemanager.getPuzzles()
                 self.levelsCount[0][3] = self.levelsCount[2][3] = len(self.custom_puzzles)
             elif self.gameMode == 1 or self.gameMode == 3:
                 self.panelNivelesCustom.setColorMode()
                 self.filemanager.changeDir(
-                    os.path.join(os.getcwd(), "../puzzles_custom/" + self.difficultyList[3] + str(1)))
+                    os.path.join(os.getcwd(), "main/puzzles_custom/" + self.difficultyList[3] + str(1)))
                 self.filemanager.updateDir()
                 self.color_puzzles = self.filemanager.getPuzzles()
                 self.levelsCount[1][3] = self.levelsCount[3][3] = len(self.color_puzzles)
@@ -166,8 +166,9 @@ class Juego:
             self.panelActual = self.panelNiveles
             self.panelNiveles.fitWindow(self.window_size[0], self.window_size[1])
         self.gameDifficulty = difficulty_index
+
         if self.panelAnterior != self.panelFileManager:
-            self.musica.cambiarMusica("../../sounds/nivelesmusica.wav")
+            self.musica.cambiarMusica("main/sounds/nivelesmusica.wav")
 
     def mostrarPanelCuadrilla(self, game_index):
         self.panelAnterior = self.panelActual
@@ -184,26 +185,26 @@ class Juego:
             self.panelPartida.setNonograma(diff_name+'/'+diff_name+'_Nivel'+str(game_index)+'.txt', self.gameMode, False)
         self.panelActual.defaultZoom()
         self.panelActual.fitWindow(self.window_size[0], self.window_size[1])
-        self.musica.cambiarMusica("../../sounds/cuadrillamusica.wav")
+        self.musica.cambiarMusica("main/sounds/cuadrillamusica.wav")
 
     def mostrarPanelOpciones(self):
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelOpciones
         self.panelOpciones.fitWindow(self.window_size[0], self.window_size[1])
-        self.musica.cambiarMusica("../../sounds/opcionesmusica.wav")
+        self.musica.cambiarMusica("main/sounds/opcionesmusica.wav")
 
     def mostrarPanelLogros(self):
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelLogros
         self.panelLogros.fitWindow(self.window_size[0], self.window_size[1])
         self.panelLogros.reloadAchievement()
-        self.musica.cambiarMusica("../../sounds/logrosmusica.wav")
+        self.musica.cambiarMusica("main/sounds/logrosmusica.wav")
 
     def mostrarPanelTutorial(self):
         self.panelAnterior = self.panelActual
         self.panelActual = self.panelTutorial
         self.panelTutorial.fitWindow(self.window_size[0], self.window_size[1])
-        self.musica.cambiarMusica("../../sounds/tutorialmusica.wav")
+        self.musica.cambiarMusica("main/sounds/tutorialmusica.wav")
 
     def mostrarPanelFileManager(self):
         self.panelAnterior = self.panelActual
