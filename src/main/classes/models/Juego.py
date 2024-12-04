@@ -166,7 +166,8 @@ class Juego:
             self.panelActual = self.panelNiveles
             self.panelNiveles.fitWindow(self.window_size[0], self.window_size[1])
         self.gameDifficulty = difficulty_index
-        self.musica.cambiarMusica("../../sounds/nivelesmusica.wav")
+        if self.panelAnterior == self.panelMenu:
+            self.musica.cambiarMusica("../../sounds/nivelesmusica.wav")
 
     def mostrarPanelCuadrilla(self, game_index):
         self.panelAnterior = self.panelActual
