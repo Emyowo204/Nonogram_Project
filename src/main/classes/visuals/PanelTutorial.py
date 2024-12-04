@@ -42,7 +42,8 @@ class PanelTutorial(Panel):
         self.juego = juego
         self.OgTutorial = []
         self.tutorial = []
-        for i in range(6):
+
+        for i in range(7):
             self.OgTutorial.append(pygame.image.load('main/images/tutorial/t'+str(i+1)+'.png'))
             self.tutorial.append(self.OgTutorial[i])
 

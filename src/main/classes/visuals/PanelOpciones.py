@@ -40,6 +40,10 @@ class PanelOpciones(Panel):
         super().__init__(x, y, width, height)
         self.juego = juego
 
+        self.logoOG = pygame.image.load('../images/logoOpciones.png')
+        self.logo = pygame.transform.scale(self.logoOG, (400, 150))
+        self.locoCord = [width/2-200, height/10]
+
         self.rect = pygame.Rect(x, y, width, height)
         self.manager = pygame_gui.UIManager((width, height))
 
@@ -116,6 +120,8 @@ class PanelOpciones(Panel):
         self.surface = pygame.Surface((self.w, self.h))
         self.botonVolver.setValues(40 * multi, self.h - 120 * multi, 80 * multi, 80 * multi)
         self.btnSonidoTest.setValues(self.w - 120 * multi, self.h - 120 * multi, 80 * multi, 80 * multi)
+        self.logo = pygame.transform.scale(self.logoOG, (400*multi, 150*multi))
+        self.locoCord = [self.w / 2 - (200*multi), self.h / 16]
 
         self.rect.size = (self.w, self.h)
         self.manager.set_window_resolution((self.w, self.h))
@@ -135,7 +141,8 @@ class PanelOpciones(Panel):
         Dibuja los componentes correspondientes en la ventana.
         :param dest_surface: Superficie en la que se dibujará el Panel.
         """
-        dest_surface.blit(self.fondoImage, (0, 0))  # panel en negro por mientras
+        dest_surface.blit(self.fondoImage, (0, 0))
+        dest_surface.blit(self.logo, (self.locoCord[0], self.locoCord[1]))
         self.botonVolver.draw(self.juego.getWindow())
         self.btnSonidoTest.draw(self.juego.getWindow())
         self.manager.draw_ui(dest_surface)

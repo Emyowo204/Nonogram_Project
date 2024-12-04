@@ -34,7 +34,12 @@ class PanelMenu(Panel):
         """
         super().__init__(x, y, width, height)
         self.juego = juego
+
         self.fondoImageOG = pygame.image.load('main/images/fondoMenuTest.png')
+        self.logoOG = pygame.image.load('main/images/logoNonocat.png')
+        self.logo = pygame.transform.scale(self.logoOG, (400, 150))
+        self.locoCord = [width/2-200, height/10]
+
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
         self.btnModoList = []
         self.btnDifficulty = []
@@ -81,10 +86,12 @@ class PanelMenu(Panel):
         self.w = w
         self.h = h
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (self.w, self.h))
+        self.logo = pygame.transform.scale(self.logoOG, (400*multi, 150*multi))
+        self.locoCord = [self.w / 2 - (200*multi), self.h / 16]
         self.surface = pygame.Surface((self.w,self.h))
         self.surface.fill((self.red,self.green,self.blue))
         for i in range(4):
-            self.btnModoList[i].setValues(self.w/2-200*multi, self.h*(3+3*i)/20, 400*multi, 90*multi)
+            self.btnModoList[i].setValues(self.w/2-200*multi, self.h*(6+3*i)/20, 400*multi, 90*multi)
             self.btnDifficulty[i].setValues(self.w/2-150*multi, self.h*(2+3*i)/16, 300*multi, 100*multi)
         self.btnOpciones.setValues(self.w-120*multi, self.h-120*multi, 80*multi, 80*multi)
         self.btnVolver.setValues(40*multi, self.h-120*multi, 80*multi, 80*multi)
@@ -109,9 +116,10 @@ class PanelMenu(Panel):
         Dibuja los componentes correspondientes en la ventana.
         :param dest_surface: Superficie en la que se dibujará el Panel.
         """
-        dest_surface.blit(self.fondoImage, (0, 0)) # panel en negro por mientras
+        dest_surface.blit(self.fondoImage, (0, 0))
         self.btnOpciones.draw(self.juego.getWindow())
         if self.mainMenu :
+            dest_surface.blit(self.logo, (self.locoCord[0], self.locoCord[1]))
             self.btnLogro.draw(self.juego.getWindow())
             self.btnTutorial.draw(self.juego.getWindow())
             for i in range(len(self.btnModoList)):
