@@ -5,6 +5,7 @@ import pygame
 from src.main.classes.models.FileManager import FileManager
 from src.main.classes.models.Logros import Logros
 from src.main.classes.visuals.PanelFileManager import PanelFileManager
+from src.main.classes.visuals.PanelNivelCustom import PanelNivelesCustom
 from src.main.classes.visuals.PanelPartida import PanelPartida
 from src.main.classes.visuals.ImageLoader import ImageLoader
 from src.main.classes.visuals.Panel import Panel
@@ -31,6 +32,7 @@ class Juego:
         self.sonido = None
         self.panelPartida = None
         self.panelNiveles = None
+        self.panelNivelesCustom = None
         self.panelOpciones = None
         self.panelLogros = None
         self.panelTutorial = None
@@ -60,6 +62,7 @@ class Juego:
         self.panelLogros = PanelLogros(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelTutorial = PanelTutorial(0, 0, self.window_size[0], self.window_size[1], self)
         self.panelNiveles = PanelNiveles( 0, 0, self.window_size[0], self.window_size[1], self)
+        self.panelNivelesCustom = PanelNivelesCustom( 0, 0, self.window_size[0], self.window_size[1], self)
         self.panelFileManager = PanelFileManager(0,0,self.window_size[0], self.window_size[1],self)
         self.mostrarPanelMenu()
         self.panelFileManager.updateButtons()
@@ -110,7 +113,7 @@ class Juego:
 
             self.panelActual.draw(self.window)
 
-            if self.panelActual == self.panelOpciones or self.panelActual == self.panelFileManager:
+            if self.panelActual == self.panelOpciones or self.panelActual == self.panelFileManager or self.panelActual == self.panelNivelesCustom:
                 self.panelActual.actualizar(deltatime)
 
             self.window.fill((255,255,255))
@@ -136,26 +139,32 @@ class Juego:
 
     def mostrarPanelNiveles(self, difficulty_index):
         if difficulty_index == 3:
-            if self.gameMode%2 == 0:
-                self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles_custom/" + self.difficultyList[3] +str(0)))
+            self.panelAnterior = self.panelActual
+            self.panelActual = self.panelNivelesCustom
+            if self.gameMode == 0 or self.gameMode == 2:
+                self.panelNivelesCustom.setBinMode()
+                self.filemanager.changeDir(
+                    os.path.join(os.getcwd(), "../puzzles_custom/" + self.difficultyList[3] + str(0)))
                 self.filemanager.updateDir()
                 self.custom_puzzles = self.filemanager.getPuzzles()
                 self.levelsCount[0][3] = self.levelsCount[2][3] = len(self.custom_puzzles)
-                quantity = self.levelsCount[0][3]
-            else:
-                self.filemanager.changeDir(os.path.join(os.getcwd(), "../puzzles_custom/" + self.difficultyList[3] +str(1)))
+            elif self.gameMode == 1 or self.gameMode == 3:
+                self.panelNivelesCustom.setColorMode()
+                self.filemanager.changeDir(
+                    os.path.join(os.getcwd(), "../puzzles_custom/" + self.difficultyList[3] + str(1)))
                 self.filemanager.updateDir()
                 self.color_puzzles = self.filemanager.getPuzzles()
                 self.levelsCount[1][3] = self.levelsCount[3][3] = len(self.color_puzzles)
-                quantity = self.levelsCount[1][3]
+            self.panelNivelesCustom.fitWindow(self.window_size[0], self.window_size[1])
             self.panelNiveles.setLoadEnable(True)
         else:
             self.panelNiveles.setLoadEnable(False)
+
             quantity = self.levelsCount[self.gameMode][difficulty_index]
-        self.panelNiveles.setLevelButtons(quantity)
-        self.panelAnterior = self.panelActual
-        self.panelActual = self.panelNiveles
-        self.panelNiveles.fitWindow(self.window_size[0], self.window_size[1])
+            self.panelNiveles.setLevelButtons(quantity)
+            self.panelAnterior = self.panelActual
+            self.panelActual = self.panelNiveles
+            self.panelNiveles.fitWindow(self.window_size[0], self.window_size[1])
         self.gameDifficulty = difficulty_index
         self.musica.cambiarMusica("../../sounds/nivelesmusica.wav")
 
