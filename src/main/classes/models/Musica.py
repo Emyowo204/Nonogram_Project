@@ -36,8 +36,7 @@ class Musica:
         if self.archivo == None:
             pygame.mixer.music.stop()
             return
-        fulldirectory = os.path.join(os.path.dirname(__file__), self.archivo)
-        pygame.mixer.music.load(fulldirectory)
+        pygame.mixer.music.load(self.archivo)
         pygame.mixer.music.set_volume(self.volumen)
         pygame.mixer.music.play(-1)  # -1 = loop
 

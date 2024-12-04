@@ -1,6 +1,6 @@
 import pygame
 
-from src.main.classes.visuals.ImageLoader import ImageLoader
+from main.classes.visuals.ImageLoader import ImageLoader
 
 class BotonRect:
     """

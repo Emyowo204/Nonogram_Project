@@ -1,9 +1,9 @@
 import pygame
 
-from src.main.classes.models.Cuadrilla import Cuadrilla
-from src.main.classes.visuals.Panel import Panel
-from src.main.classes.visuals.PanelCuadrilla import PanelCuadrilla
-from src.main.classes.visuals.PanelNumeros import PanelNumeros
+from main.classes.models.Cuadrilla import Cuadrilla
+from main.classes.visuals.Panel import Panel
+from main.classes.visuals.PanelCuadrilla import PanelCuadrilla
+from main.classes.visuals.PanelNumeros import PanelNumeros
 
 
 class PanelNonograma(Panel):
@@ -13,7 +13,7 @@ class PanelNonograma(Panel):
         self.setColor(0,0,0)
         self.path = ['Easy/Easy_Nivel1.txt','Easy/M0_Easy_Nivel1.txt']
         self.mode = 0
-        self.cuadrilla_resultado = Cuadrilla(None, None, 'puzzles0/'+str(self.path[0]))
+        self.cuadrilla_resultado = Cuadrilla(None, None, 'main/puzzles0/'+str(self.path[0]))
         self.panel_resultado = PanelCuadrilla(self.cuadrilla_resultado, 0, 330, 300)
         self.board_size = self.cuadrilla_resultado.getSize()
         self.panel_resultado.setColor(0,0,0)
@@ -29,12 +29,12 @@ class PanelNonograma(Panel):
         self.path[1] = self.path[1][0]+'/M'+str(mode)+'_'+self.path[1][1]
         self.mode = mode
         if custom:
-            self.cuadrilla_resultado = Cuadrilla(None, None, 'puzzles_custom/'+self.path[0])
+            self.cuadrilla_resultado = Cuadrilla(None, None, 'main/puzzles_custom/'+self.path[0])
             self.board_size = self.cuadrilla_resultado.getSize()
         else:
-            self.cuadrilla_resultado = Cuadrilla(None, None, 'puzzles'+str(mode)+'/'+self.path[0])
+            self.cuadrilla_resultado = Cuadrilla(None, None, 'main/puzzles'+str(mode)+'/'+self.path[0])
             self.board_size = self.cuadrilla_resultado.getSize()
-        self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], 'saves/' + self.path[1])
+        self.cuadrilla_jugador = Cuadrilla(self.board_size[0], self.board_size[1], 'main/saves/' + self.path[1])
         self.panel_jugador.setNewCuadrilla(self.cuadrilla_jugador)
         if mode >= 2:
             self.panel_jugador.setCheckResult(True)
