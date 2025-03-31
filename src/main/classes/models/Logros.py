@@ -27,7 +27,7 @@ class Logros:
             self.readInfoGame()
             self.achievements = self.achievements | (1<<bitNum)
             self.saveInfoGame()
-            self.juego.sonido.play("../../sounds/logrosound.wav")
+            self.juego.sonido.play("main/sounds/logrosound.wav")
 
     def sumLevel(self, mode, difficulty, level):
         if self.levelsCompleted[mode][difficulty] & (1<<level) == 0:
@@ -42,8 +42,7 @@ class Logros:
             self.saveInfoGame()
 
     def readInfoGame(self):
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        fulldirectory = os.path.join(current_dir, '..','..','info_game.txt')
+        fulldirectory = 'main/info_game.txt'
         try:
             archivo = open(fulldirectory,'r')
         except OSError:
@@ -64,8 +63,7 @@ class Logros:
                 index += 1
 
     def saveInfoGame(self):
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        fulldirectory = os.path.join(current_dir, '..','..','info_game.txt')
+        fulldirectory = 'main/info_game.txt'
         try:
             archivo = open(fulldirectory,'w')
         except OSError:

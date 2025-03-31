@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 import pygame
 
-from src.main.classes.visuals.Componente import Componente
+from main.classes.visuals.Componente import Componente
 
 class Panel(Componente):
     def __init__(self, x, y, width, height):

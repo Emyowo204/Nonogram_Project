@@ -1,6 +1,6 @@
 import pygame
 
-from src.main.classes.visuals.Panel import Panel
+from main.classes.visuals.Panel import Panel
 
 class PanelCuadrilla(Panel):
     """

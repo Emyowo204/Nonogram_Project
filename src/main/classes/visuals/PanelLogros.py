@@ -1,10 +1,10 @@
 import pygame
 import os
 
-from src.main.classes.models.Logros import Logros
-from src.main.classes.visuals.ImageLoader import ImageLoader
-from src.main.classes.visuals.Panel import Panel
-from src.main.classes.visuals.BotonRect import BotonRect
+from main.classes.models.Logros import Logros
+from main.classes.visuals.ImageLoader import ImageLoader
+from main.classes.visuals.Panel import Panel
+from main.classes.visuals.BotonRect import BotonRect
 
 class PanelLogros(Panel):
     """
@@ -47,9 +47,9 @@ class PanelLogros(Panel):
         self.achivCount = Logros().getAchievCount()
 
         for i in range(self.achivCount):
-            self.Og_achievements_uncompleted.append(pygame.image.load('../images/logros/nologro'+str(i+1)+'.png'))
+            self.Og_achievements_uncompleted.append(pygame.image.load('main/images/logros/nologro'+str(i+1)+'.png'))
             self.achievements_uncompleted_images.append(self.Og_achievements_uncompleted[i])
-            self.Og_achievements_completed.append(pygame.image.load('../images/logros/logro'+str(i+1)+'.png'))
+            self.Og_achievements_completed.append(pygame.image.load('main/images/logros/logro'+str(i+1)+'.png'))
             self.achievements_completed_images.append(self.Og_achievements_completed[i])
             self.pos_X.append([])
             self.pos_Y.append([])

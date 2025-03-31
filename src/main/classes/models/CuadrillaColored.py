@@ -1,5 +1,5 @@
 import os
-from src.main.classes.models.Cuadrilla import Cuadrilla
+from main.classes.models.Cuadrilla import Cuadrilla
 
 class CuadrillaColored:
     """
@@ -97,10 +97,8 @@ class CuadrillaColored:
             Args:
                 name (str): Nombre del archivo desde el que cargar la cuadrilla.
         """
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        fulldirectory = os.path.join(current_dir, '..','..', name)
         try:
-            archivo = open(fulldirectory,'r')
+            archivo = open(name,'r')
         except OSError:
             return False
         dimensions = archivo.readline().strip().split()
@@ -136,8 +134,7 @@ class CuadrillaColored:
             Carga una cuadrilla desde un archivo dado su nombre. Se espera que el
             archivo contenga las dimensiones de la cuadrilla seguidas de los valores.
         """
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        fulldirectory = os.path.join(current_dir, '..','..', 'saves_color', str(name))
+        fulldirectory = os.path.join('main/saves_color', str(name))
         try:
             archivo = open(fulldirectory,'w')
         except OSError:
@@ -161,8 +158,7 @@ class CuadrillaColored:
 
     def resetSave(self, name):
         self.__info[1] = 0
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        fulldirectory = os.path.join(current_dir, '..','..', 'saves_color', str(name))
+        fulldirectory = os.path.join('main/saves', str(name))
         try:
             archivo = open(fulldirectory,'w')
         except OSError:

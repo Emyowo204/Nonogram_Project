@@ -1,20 +1,20 @@
 import pygame
 
-from src.main.classes.visuals.ImageLoader import ImageLoader
-from src.main.classes.visuals.Panel import Panel
-from src.main.classes.visuals.BotonRect import BotonRect
+from main.classes.visuals.ImageLoader import ImageLoader
+from main.classes.visuals.Panel import Panel
+from main.classes.visuals.BotonRect import BotonRect
 
 class PanelNiveles(Panel):
 
     def __init__(self, x, y, width, height, juego):
         super().__init__(x, y, width, height)
         self.juego = juego
-        self.fondoImageOG = pygame.image.load('../images/fondoMenuTest.png')
+        self.fondoImageOG = pygame.image.load('main/images/fondoMenuTest.png')
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
         self.btnNiveles = []
         self.cantidad_nivel = 0
         self.btnLoadImg = BotonRect(self.w/2-80, self.h-120, 160, 80, self.juego.mostrarPanelFileManager, None)
-        self.btnLoadImg.setImage(pygame.image.load('../images/btnImg2NonoNormal.png'), pygame.image.load('../images/btnImg2NonoShaded.png'))
+        self.btnLoadImg.setImage(pygame.image.load('main/images/btnImg2NonoNormal.png'), pygame.image.load('main/images/btnImg2NonoShaded.png'))
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
         self.btnVolver = BotonRect(40, height-120, 80, 80, self.juego.mostrarPanelMenu,None)
@@ -29,8 +29,8 @@ class PanelNiveles(Panel):
         j = 0
         i = 0
         for a in range(quantity):
-            lvlSurNormal = pygame.image.load('../images/botonNivelesNormal.png')
-            lvlSurShaded = pygame.image.load('../images/botonNivelesShaded.png')
+            lvlSurNormal = pygame.image.load('main/images/botonNivelesNormal.png')
+            lvlSurShaded = pygame.image.load('main/images/botonNivelesShaded.png')
             text_surface = self.font.render(str(a+1), False, (0, 0, 0))
             lvlSurNormal.blit(text_surface, (20,20))
             lvlSurShaded.blit(text_surface, (20, 20))

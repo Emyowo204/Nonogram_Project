@@ -1,9 +1,9 @@
 import pygame
 
-from src.main.classes.models.CuadrillaColored import CuadrillaColored
-from src.main.classes.visuals.Panel import Panel
-from src.main.classes.visuals.PanelCuadrillaColored import PanelCuadrillaColored
-from src.main.classes.visuals.PanelNumeros import PanelNumeros
+from main.classes.models.CuadrillaColored import CuadrillaColored
+from main.classes.visuals.Panel import Panel
+from main.classes.visuals.PanelCuadrillaColored import PanelCuadrillaColored
+from main.classes.visuals.PanelNumeros import PanelNumeros
 
 
 class PanelNonogramaColored(Panel):
@@ -13,7 +13,7 @@ class PanelNonogramaColored(Panel):
         self.setColor(0, 0, 0)
         self.path = ['Easy/Easy_Nivel1.txt','Easy/M1_Easy_Nivel1.txt']
         self.mode = 0
-        self.cuadrilla_resultado = CuadrillaColored(None, None, 'puzzles1/' + str(self.path[0]))
+        self.cuadrilla_resultado = CuadrillaColored(None, None, 'main/puzzles1/' + str(self.path[0]))
         self.panel_resultado = PanelCuadrillaColored(self.cuadrilla_resultado, 0, 330, 300)
         self.board_size = self.cuadrilla_resultado.getSize()
         self.panel_resultado.setColor(0, 0, 0)
@@ -34,12 +34,12 @@ class PanelNonogramaColored(Panel):
         self.path[1] = self.path[1][0]+'/M'+str(mode)+'_'+self.path[1][1]
         self.mode = mode
         if custom:
-            self.cuadrilla_resultado = CuadrillaColored(None, None, 'puzzles_custom/'+self.path[0])
+            self.cuadrilla_resultado = CuadrillaColored(None, None, 'main/puzzles_custom/'+self.path[0])
             self.board_size = self.cuadrilla_resultado.getSize()
         else:
-            self.cuadrilla_resultado = CuadrillaColored(None, None, 'puzzles'+str(mode)+'/'+self.path[0])
+            self.cuadrilla_resultado = CuadrillaColored(None, None, 'main/puzzles'+str(mode)+'/'+self.path[0])
             self.board_size = self.cuadrilla_resultado.getSize()
-        self.cuadrilla_jugador = CuadrillaColored(self.board_size[0], self.board_size[1], 'saves_color/' + self.path[1])
+        self.cuadrilla_jugador = CuadrillaColored(self.board_size[0], self.board_size[1], 'main/saves_color/' + self.path[1])
         self.cuadrilla_jugador.setColors(self.cuadrilla_resultado.getColors())
         self.panel_jugador.setNewCuadrilla(self.cuadrilla_jugador)
         if mode >= 2:

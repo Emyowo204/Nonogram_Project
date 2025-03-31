@@ -3,10 +3,10 @@ import os
 import pygame
 import pygame_gui
 
-from src.main.classes.models.FileManager import FileManager
-from src.main.classes.visuals.ImageLoader import ImageLoader
-from src.main.classes.visuals.Panel import Panel
-from src.main.classes.visuals.BotonRect import BotonRect
+from main.classes.models.FileManager import FileManager
+from main.classes.visuals.ImageLoader import ImageLoader
+from main.classes.visuals.Panel import Panel
+from main.classes.visuals.BotonRect import BotonRect
 
 class PanelNivelesCustom(Panel):
 
@@ -18,14 +18,14 @@ class PanelNivelesCustom(Panel):
         self.font = pygame.font.Font(None, 20)
         self.setColor(50, 50, 50)
 
-        self.fondoImageOG = pygame.image.load('../images/fondoMenuTest.png')
+        self.fondoImageOG = pygame.image.load('main/images/fondoMenuTest.png')
         self.fondoImage = pygame.transform.scale(self.fondoImageOG, (width, height))
 
         self.scaleButton = 720 / 18
         self.buttonsFiles = []
 
         self.btnLoadImg = BotonRect(self.w/2-80, self.h-120, 160, 80, self.juego.mostrarPanelFileManager, None)
-        self.btnLoadImg.setImage(pygame.image.load('../images/btnImg2NonoNormal.png'), pygame.image.load('../images/btnImg2NonoShaded.png'))
+        self.btnLoadImg.setImage(pygame.image.load('main/images/btnImg2NonoNormal.png'), pygame.image.load('main/images/btnImg2NonoShaded.png'))
 
         self.btnOpciones = BotonRect(width-120, height-120, 80, 80, self.juego.mostrarPanelOpciones,None)
         self.btnOpciones.setImage(ImageLoader().getOpnNormal(), ImageLoader().getOpnShaded())
@@ -45,13 +45,13 @@ class PanelNivelesCustom(Panel):
         self.btnLoadImg.setEnable(enabled)
 
     def setColorMode(self):
-        new_path = os.path.join(os.getcwd(),"../puzzles_custom/Custom1")
+        new_path = os.path.join(os.getcwd(),"main/puzzles_custom/Custom1")
         self.filemanager.changeDir(new_path)
         self.updateButtons()
 
 
     def setBinMode(self):
-        new_path = os.path.join(os.getcwd(),"../puzzles_custom/Custom0")
+        new_path = os.path.join(os.getcwd(),"main/puzzles_custom/Custom0")
         self.filemanager.changeDir(new_path)
         self.updateButtons()
 
